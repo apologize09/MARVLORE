@@ -16,3 +16,7 @@
 - Locale：`zh-CN` + `en`
 - Work URL：继续 hash（`#case/{id}`）
 - 视频：先引用静态 `dist/assets/hero-video/*`
+
+## 下一阶段
+
+波次 B / Phase 1 产出见 [`docs/cms-phase1/`](../cms-phase1/README.md)（`work-*` schema + 验证记录）。
