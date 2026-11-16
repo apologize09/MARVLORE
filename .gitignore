@@ -1,0 +1,29 @@
+# Root helpers / logs
+_shell_out.txt
+_shell_probe.txt
+_upload_all_log.txt
+_force-push-log.txt
+_push-log.txt
+*.log
+
+# Nested repo metadata must not become gitlinks
+# (handled by upload script: remove nested .git before add)
+
+# Secrets — keep local only
+.env
+.env.*
+!.env.example
+**/.env
+!**/.env.example
+
+# Dependencies & caches
+**/node_modules/
+**/.cache/
+**/.strapi/
+**/.publish-state/
+**/.openai/
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
