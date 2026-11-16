@@ -8,3 +8,6 @@ node_modules/
 !.env.example
 .publish-state/
 *.log
+.tmp/
+# Video masters for local recompress only
+design/videos/hero-source/*.mp4
