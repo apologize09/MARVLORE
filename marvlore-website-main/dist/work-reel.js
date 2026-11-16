@@ -2,12 +2,14 @@ import {titleCase} from './typography.js';
 import {createWorkNavigation} from './work-navigation.js';
 import {stepSpring,reducedMotion,clamp} from './motion.js';
 import {cardCornerRadius} from './card-shape.js';
-import {workReelItems as items,workReelOptions as options} from './work-reel-data.js?v=cover-crops-125';
+import {getWorkReelItems,getWorkReelOptions} from './cms/work-runtime.js';
 
 // Independent photo-reel implementation. Pointer-distance magnification follows
 // the open-source Dock pattern: https://github.com/ibelick/motion-primitives
 // No React Bits Pro source or private registry dependency is included.
 export function mountWorkReel(){
+ const items=getWorkReelItems();
+ const options=getWorkReelOptions();
  const root=document.querySelector('#work'),stage=root?.querySelector('.elastic-reel-stage');
  if(!stage)return;
  const overview=root.querySelector('#work-overview'),reel=root.querySelector('.elastic-reel');

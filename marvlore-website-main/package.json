@@ -21,7 +21,7 @@
     "build": "node scripts/build-hero.mjs && node scripts/build-services.mjs && node scripts/build-about.mjs && node scripts/build-work.mjs && node scripts/build-menu.mjs && node scripts/build-contact.mjs && node scripts/apply-media-cdn.mjs",
     "media:cdn": "node scripts/apply-media-cdn.mjs",
     "media:cdn:list": "node scripts/list-media-cdn.mjs",
-    "check": "node --check dist/app.js && node --check dist/components.js && node --check dist/data.js && node --check dist/motion.js",
+    "check": "node --check dist/app.js && node --check dist/components.js && node --check dist/data.js && node --check dist/motion.js && node --check dist/cms/work-runtime.js && node --check dist/cms/work-loader.js && node --check dist/cms/work-normalize.js",
     "test": "node --test tests/*.test.mjs",
     "build:work": "node scripts/build-work.mjs",
     "build:menu": "node scripts/build-menu.mjs",
