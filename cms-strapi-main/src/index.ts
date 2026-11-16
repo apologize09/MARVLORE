@@ -1,4 +1,5 @@
 import type { Core } from '@strapi/strapi';
+import { registerWorkDocumentRules } from './middlewares/work-document-rules';
 
 const PUBLIC_ACTIONS: Record<string, string[]> = {
   article: ['find', 'findOne'],
@@ -13,7 +14,12 @@ const PUBLIC_ACTIONS: Record<string, string[]> = {
   'service-model': ['find', 'findOne'],
   'page-seo': ['find', 'findOne'],
   'quote-request': ['create'],
-  // Work public read is deferred to Phase 2 (permissions matrix).
+  // Phase 2 — Work public read (Draft & Publish already scopes live content for Public)
+  'work-category': ['find', 'findOne'],
+  'work-tag': ['find', 'findOne'],
+  'work-project': ['find', 'findOne'],
+  'work-project-media': ['find', 'findOne'],
+  'work-page': ['find'],
 };
 
 const REQUIRED_LOCALES: Array<{ code: string; name: string }> = [
@@ -76,7 +82,9 @@ async function ensureContentLocales(strapi: Core.Strapi) {
 }
 
 export default {
-  register() {},
+  register({ strapi }: { strapi: Core.Strapi }) {
+    registerWorkDocumentRules(strapi);
+  },
 
   async bootstrap({ strapi }: { strapi: Core.Strapi }) {
     await ensureContentLocales(strapi);

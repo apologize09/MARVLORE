@@ -1,6 +1,6 @@
-# Permissions matrix (Phase 2 target)
+# Permissions matrix
 
-Phase 1 does **not** grant Public work-* read. Existing bootstrap `PUBLIC_ACTIONS` unchanged for work types.
+Phase 2 grants Public work-* read (see `cms-strapi-main/src/index.ts`). Controllers additionally filter `isActive` / active categories.
 
 | Content type | Public | Authenticated | Editor | Admin |
 |---|---|---|---|---|
