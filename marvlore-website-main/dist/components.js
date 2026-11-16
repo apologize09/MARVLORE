@@ -7,11 +7,11 @@ import {renderExploreCards} from './explore-scene.js?v=cover-edges-164';
 import {renderWallCards} from './wall-cards.js?v=cover-edges-164';
 import {assetUrl} from './media-cdn.js';
 const imageSizes={
- 'work-covers/film-blue-152.webp':[1692,890], 'work-covers/culture-lophty-152.webp':[1920,1080],
- 'about-arc-top.webp':[1890,760], 'about-arc-bottom.webp':[1890,690],
- 'hero-video/swft-icon-poster.webp':[1920,1080], 'work-visual/lophthy-visual.webp':[1920,1080],
+ 'work-covers/film-blue-152.webp':[1600,842], 'work-covers/culture-lophty-152.webp':[1600,900],
+ 'about-arc-top.webp':[1600,643], 'about-arc-bottom.webp':[1600,584],
+ 'hero-video/swft-icon-poster.webp':[1440,810], 'work-visual/lophthy-visual.webp':[1600,900],
  'work-web.webp':[835,347], 'work-culture.webp':[834,347],
- 'explore-arc.webp':[1945,1200], 'marvlore-wall.webp':[2154,1030],
+ 'explore-arc.webp':[1600,987], 'marvlore-wall.webp':[1600,765],
  'award-aigc.webp':[470,760], 'award-reddot.webp':[475,760], 'award-partner.webp':[480,760],
 };
 const img=(name,alt,extra='')=>{

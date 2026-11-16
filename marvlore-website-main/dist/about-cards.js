@@ -17,7 +17,7 @@ const bottom = [
 ];
 export const aboutCards = [top,bottom].flatMap((row,rowIndex)=>row.map(([id,alt,cx,cy,rotation],index)=>({
  id,alt,row:rowIndex?'bottom':'top',index,image:'',fit:'cover',position:'50% 50%',
- preview:{image:`about-arc-${rowIndex?'bottom':'top'}.webp`,width:1890,height:rowIndex?690:760,cx,cy,rotation},
+ preview:{image:`about-arc-${rowIndex?'bottom':'top'}.webp`,width:1600,height:rowIndex?584:643,cx,cy,rotation},
 })));
 
 const escapeAttr = value => String(value).replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;');

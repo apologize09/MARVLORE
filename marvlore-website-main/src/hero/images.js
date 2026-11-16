@@ -1,52 +1,52 @@
-// 来自原品牌 VI 的独立图片，width/height 保留原始长宽比。
+// 来自原品牌 VI 的独立图片，width/height 与 published WebP 内禀尺寸一致（长边 ≤1600）。
 export const heroImages = [
   {
     "src": "./assets/orbit/vapx-surface.webp",
     "alt": "VapX 品牌视觉",
-    "width": 4001,
-    "height": 2251
+    "width": 1400,
+    "height": 788
   },
   {
     "src": "./assets/orbit/vapx-screen.webp",
     "alt": "VapX 数字展示",
-    "width": 4001,
-    "height": 2250
+    "width": 1400,
+    "height": 787
   },
   {
     "src": "./assets/orbit/vapes-bars.webp",
     "alt": "Vapes Bars 品牌视觉",
-    "width": 4002,
-    "height": 2251
+    "width": 1400,
+    "height": 787
   },
   {
     "src": "./assets/orbit/vapx-direction.webp",
     "alt": "VapX 视觉叙事",
-    "width": 4002,
-    "height": 2251
+    "width": 1400,
+    "height": 787
   },
   {
     "src": "./assets/orbit/vapes-space.webp",
     "alt": "Vapes Bars 空间视觉",
-    "width": 4001,
-    "height": 2250
+    "width": 1400,
+    "height": 787
   },
   {
     "src": "./assets/orbit/lophthy-apparel.webp",
     "alt": "LOPHTY 品牌应用",
-    "width": 4001,
-    "height": 2250
+    "width": 1400,
+    "height": 787
   },
   {
     "src": "./assets/orbit/lophthy-pop.webp",
     "alt": "LOPHTY 品牌主视觉",
-    "width": 4001,
-    "height": 2251
+    "width": 1400,
+    "height": 788
   },
   {
     "src": "./assets/orbit/vapes-dog.webp",
     "alt": "Vapes Bars 品牌周边",
-    "width": 4002,
-    "height": 2250
+    "width": 1400,
+    "height": 787
   }
 ].map(item=>({...item,id:item.src.split('/').pop().replace(/\.webp$/,'')}));
 
@@ -72,4 +72,4 @@ export const heroProjects=[
  {id:'hero-image-vapx',slug:'vapx',title:'VapX 品牌视觉'},
 ].map(item=>({...item,alt:item.title,src:'./assets/home-projects/'+item.slug+'-cover.webp',
  slides:Array.from({length:5},(_,index)=>'./assets/home-projects/'+item.slug+'-'+String(index+1).padStart(2,'0')+'.webp'),
- width:2400,height:1350})));
+ width:1600,height:900})));

@@ -12,5 +12,5 @@ export const visualProjects=[
  ...project,id:'reel-visual-'+project.slug,category:'visual',
  src:'./assets/work-visual/'+(project.coverFile||project.slug)+'.webp',alt:project.title+'项目封面',
  thumbnailSrc:project.thumbnailFile?'./assets/work-visual/'+project.thumbnailFile+'.webp':null,
- width:1920,height:1080,aspect:1920/1080,
+ width:1600,height:900,aspect:1600/900,
 }));
