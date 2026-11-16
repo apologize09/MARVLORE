@@ -3,5 +3,6 @@
   "slug": "meadow-laurel-5ejg",
   "url": "https://meadow-laurel-5ejg.here.now/",
   "directory": "dist",
-  "displayName": "MARVLORE 迈络"
+  "displayName": "MARVLORE 迈络",
+  "mediaCdnBase": ""
 }

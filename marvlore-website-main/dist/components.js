@@ -6,6 +6,7 @@ import {workReelItems} from './work-reel-data.js?v=cover-crops-125';
 import {renderAboutCards} from './about-cards.js';
 import {renderExploreCards} from './explore-scene.js?v=cover-edges-164';
 import {renderWallCards} from './wall-cards.js?v=cover-edges-164';
+import {assetUrl} from './media-cdn.js';
 const imageSizes={
  'work-covers/film-blue-152.webp':[1692,890], 'work-covers/culture-lophty-152.webp':[1920,1080],
  'about-arc-top.webp':[1890,760], 'about-arc-bottom.webp':[1890,690],
@@ -16,7 +17,7 @@ const imageSizes={
 };
 const img=(name,alt,extra='')=>{
  const size=imageSizes[name];
- return `<img src="./assets/${name}" alt="${alt}" loading="lazy" decoding="async" ${size?`width="${size[0]}" height="${size[1]}"`:''} ${extra}>`;
+ return `<img src="${assetUrl(name)}" alt="${alt}" loading="lazy" decoding="async" ${size?`width="${size[0]}" height="${size[1]}"`:''} ${extra}>`;
 };
 const workMedia=p=>{
  const image=p.overviewImage??p.image;

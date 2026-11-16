@@ -62,3 +62,14 @@ pnpm dev
 ## 素材
 
 `dist/assets/` 中包含官网使用的素材。保留字体及第三方组件的版权说明。仓库保持私有，不附带旧发布账户配置、验证码或登录凭据。
+
+## 可选：媒体 CDN
+
+默认媒体与页面同域发布到 here.now（已由 Cloudflare 边缘加速）。若要把字体 / 图片 / 视频迁到独立源：
+
+1. 将 `dist/assets/` 原样同步到 CDN（或 R2 等），路径保持 `/assets/...`。
+2. 在 `deployment.json` 设置 `mediaCdnBase`（例如 `https://media.example.com`），或构建时设置环境变量 `MEDIA_CDN_BASE`。
+3. 运行 `pnpm media:cdn`（已含在 `pnpm build` 末尾）：会把 `./assets/` 引用改写为 CDN 绝对地址，并更新 `dist/media-cdn.js`。
+4. 用 `pnpm media:cdn:list` 查看待同步素材清单（不会上传）。
+
+`mediaCdnBase` 留空时保持相对路径，本地与 here.now 行为不变。独立 CDN 需允许跨域字体（CORS / `Access-Control-Allow-Origin`）；本地 `server.mjs` 已对媒体响应加上跨域头，便于把本机当作临时媒体源调试。
