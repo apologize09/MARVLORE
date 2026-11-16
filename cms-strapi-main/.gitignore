@@ -155,4 +155,5 @@ types/generated/.cache
 .tmp/migrate-*
 .tmp/verify-*
 admin-credentials.txt
-
+.tmp/admin-credentials.txt
+.tmp/backup/

@@ -11,6 +11,7 @@
     "develop": "strapi develop --no-watch-admin",
     "develop:watch-admin": "strapi develop --watch-admin",
     "seed:example": "node ./scripts/seed.js",
+    "reinit:local": "node ./scripts/reinit-local.mjs",
     "start": "strapi start",
     "strapi": "strapi",
     "upgrade": "npx @strapi/upgrade latest",
