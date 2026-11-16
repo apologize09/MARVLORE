@@ -17,11 +17,12 @@ import { mountServices } from './services/experience.js?v=service-matched-motion
 import { mountExploreScene } from './explore-scene.js?v=explore-entry-172';
 import { mountPortalWall } from './portal-wall.js';
 import { mountReferenceCollage,mountWorkTextReveal,mountSectionTextReveal } from './about/reference.js?v=about-white-170';
+import { assetUrl } from './media-cdn.js';
 
 document.querySelector('#app').innerHTML=[Hero,Services,About,Work,Explore,Portal,Awards,Contact].map(component=>component()).join('');
 document.documentElement.classList.add('js');
 const brandProjects=heroProjects;
-const workProjects=projects.map(project=>({id:`work-${project.id}`,src:project.image?`./assets/${project.image}`:null,title:project.title}));
+const workProjects=projects.map(project=>({id:`work-${project.id}`,src:project.image?assetUrl(project.image):null,title:project.title}));
 const gallery=createProjectGallery({groups:[brandProjects,workProjects,workReelItems],sourceFor:id=>{
  if(id.startsWith('reel-'))return document.querySelector(`.elastic-reel-item[data-reel-index="${workReelItems.findIndex(item=>item.id===id)}"]`);
  if(id.startsWith('work-'))return document.querySelector(`.work-card[data-project="${CSS.escape(id.slice(5))}"] .work-image`);
