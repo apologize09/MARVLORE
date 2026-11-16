@@ -101,8 +101,16 @@ cd cms-strapi-main && npm run build
 - `docs/cms-phase0/url-inventory.csv`
 - `docs/cms-phase0/migration-risks.md`
 
-## 8. 下一步（需确认后才改代码）
+## 8. 产品决策（已确认）
+
+| 项 | 选择 |
+|---|---|
+| Locale | `zh-CN` + `en` |
+| Work URL | 保持 `#case/{id}` / `#work` hash，暂不引入 `/work/...` |
+| 视频 | 先引用 `dist/assets/hero-video/*` 静态路径；CMS 不先上传大文件 |
+
+## 9. 下一步（确认后才改业务代码）
 
 1. 备份 `cms-strapi-main/.tmp/data.db` 与 `public/uploads`（本地演练恢复）。  
-2. 在**可丢弃库**上设计/验证 V1.1 五个 `work-*` 类型 + i18n 安装计划。  
-3. 仍不删除任何既有 Content-Type。
+2. 在**可丢弃库**上设计/验证 V1.1 五个 `work-*` 类型 + i18n（`zh-CN`/`en`）安装计划。  
+3. 仍不删除任何既有 Content-Type；前端 Adapter 映射到现有 ViewModel，不动排版/动画。

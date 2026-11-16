@@ -32,12 +32,17 @@
 | 缓存头与媒体 URL | 文件名不变时 CDN 易脏读 | 结合已有 hash/CDN batch；发布清缓存 |
 | 包管理混用 | 官网 pnpm、CMS npm | 各用各的锁文件，不混装 |
 
-## 决策待确认（阻塞项）
+## 决策已确认（2026-11-16）
 
-1. **Locale**：`zh-CN` vs `zh`？  
-2. **Work 详情 URL**：继续 `#case/{id}` 还是增加 `/work/...`？  
-3. **视频策略**：CMS 上传 vs 继续引用 `dist/assets/hero-video/*`？  
-4. **旧 CMS 内容**：本地 reinit 数据是否需保留到生产？  
+1. **Locale**：**`zh-CN` + `en`**（不用 `zh`）  
+2. **Work 详情 URL**：**继续 hash**（`#case/{id}` / `#work`）；暂不做 `/work/...` 路径  
+3. **视频策略**：**先引用静态路径** `dist/assets/hero-video/*`；CMS 存元数据/URL，不大文件上传  
+
+## 仍待确认（非阻塞 Phase 1 建模）
+
+4. **旧 CMS 内容**：本地 reinit / SQLite 数据是否需保留到生产？  
+5. 备份演练通过后再合入 schema。  
+
 
 ## 回滚原则
 

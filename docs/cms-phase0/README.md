@@ -10,3 +10,9 @@
 | `migration-risks.md` | 风险分级与待确认决策 |
 
 **本阶段未修改** `marvlore-website-main` / `cms-strapi-main` 业务代码。
+
+## 已确认决策
+
+- Locale：`zh-CN` + `en`
+- Work URL：继续 hash（`#case/{id}`）
+- 视频：先引用静态 `dist/assets/hero-video/*`
