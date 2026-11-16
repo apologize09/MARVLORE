@@ -1,0 +1,452 @@
+{
+  "generatedAt": "2026-11-16T09:16:22.529Z",
+  "mode": "dry-run-default",
+  "locale": "zh-CN",
+  "rules": {
+    "defaultDryRun": true,
+    "executeRequiresFlag": "--execute",
+    "idempotencyKey": "legacyId + locale",
+    "skipExistingByDefault": true,
+    "updateExistingRequiresFlag": "--update-existing",
+    "neverInvent": [
+      "clientName",
+      "projectYear",
+      "outcomes",
+      "translations"
+    ],
+    "videoStrategy": "static-path-refs (coverUrl/videoUrl string fields)"
+  },
+  "counts": {
+    "categoriesL1": 1,
+    "categoriesL2": 4,
+    "tags": 13,
+    "projects": 19,
+    "mediaItems": 2,
+    "assets": 47,
+    "missingAssets": 0
+  },
+  "duplicateSlugsBeforeFix": [
+    {
+      "legacyId": "web",
+      "slug": "web",
+      "title": "Web Development"
+    },
+    {
+      "legacyId": "culture",
+      "slug": "culture",
+      "title": "Marvlore"
+    },
+    {
+      "legacyId": "reel-web",
+      "slug": "web",
+      "title": "Web Development"
+    },
+    {
+      "legacyId": "reel-culture",
+      "slug": "culture",
+      "title": "Marvlore"
+    }
+  ],
+  "warnings": [],
+  "missingAssets": [],
+  "categories": {
+    "l1": {
+      "legacyId": "cat-l1-work",
+      "slug": "work",
+      "name": "Work",
+      "level": 1
+    },
+    "l2": [
+      {
+        "legacyId": "cat-l2-film",
+        "slug": "film",
+        "name": "Film & Animation",
+        "nameZh": "影视动画",
+        "level": 2,
+        "parentLegacyId": "cat-l1-work",
+        "sortOrder": 0,
+        "description": "AI 时代下技术赋能与视觉表达的融合实践探索",
+        "coverUrl": "/assets/hero-video/swft-icon-poster.webp"
+      },
+      {
+        "legacyId": "cat-l2-visual",
+        "slug": "visual",
+        "name": "Visual Design",
+        "nameZh": "视觉设计",
+        "level": 2,
+        "parentLegacyId": "cat-l1-work",
+        "sortOrder": 1,
+        "description": "极简形态下的试验语言与多元视觉的研究",
+        "coverUrl": "/assets/work-visual/lophthy-visual.webp"
+      },
+      {
+        "legacyId": "cat-l2-web",
+        "slug": "web",
+        "name": "Web Development",
+        "nameZh": "网站设计",
+        "level": 2,
+        "parentLegacyId": "cat-l1-work",
+        "sortOrder": 2,
+        "description": "以品牌为起点，连接内容、界面与交互体验",
+        "coverUrl": "/assets/work-web.webp"
+      },
+      {
+        "legacyId": "cat-l2-culture",
+        "slug": "culture",
+        "name": "Marvlore",
+        "nameZh": "迈络文化",
+        "level": 2,
+        "parentLegacyId": "cat-l1-work",
+        "sortOrder": 3,
+        "description": "迈络的创作、实验与持续发生的新想法",
+        "coverUrl": "/assets/work-culture.webp"
+      }
+    ]
+  },
+  "tags": [
+    {
+      "legacyId": "tag-t-e5bdb1e8a786e58a",
+      "slug": "t-e5bdb1e8a786e58a",
+      "name": "影视动画"
+    },
+    {
+      "legacyId": "tag-3d-animation",
+      "slug": "3d-animation",
+      "name": "3D Animation"
+    },
+    {
+      "legacyId": "tag-t-e8a786e9a2912026",
+      "slug": "t-e8a786e9a2912026",
+      "name": "视频 & 广告"
+    },
+    {
+      "legacyId": "tag-cgi",
+      "slug": "cgi",
+      "name": "CGI"
+    },
+    {
+      "legacyId": "tag-t-e8a786e8a789e8ae",
+      "slug": "t-e8a786e8a789e8ae",
+      "name": "视觉设计"
+    },
+    {
+      "legacyId": "tag-t-e7bd91e7ab99e8ae",
+      "slug": "t-e7bd91e7ab99e8ae",
+      "name": "网站设计"
+    },
+    {
+      "legacyId": "tag-t-e8bf88e7bb9ce696",
+      "slug": "t-e8bf88e7bb9ce696",
+      "name": "迈络文化"
+    },
+    {
+      "legacyId": "tag-t-e59381e7898ce4b8",
+      "slug": "t-e59381e7898ce4b8",
+      "name": "品牌主视觉"
+    },
+    {
+      "legacyId": "tag-t-e59381e7898ce8a7",
+      "slug": "t-e59381e7898ce8a7",
+      "name": "品牌视觉"
+    },
+    {
+      "legacyId": "tag-t-e59381e7898ce8a7",
+      "slug": "t-e59381e7898ce8a7",
+      "name": "品牌视觉系统"
+    },
+    {
+      "legacyId": "tag-t-e5889be6848fe8a7",
+      "slug": "t-e5889be6848fe8a7",
+      "name": "创意角色视觉"
+    },
+    {
+      "legacyId": "tag-t-e59381e7898ce7ad",
+      "slug": "t-e59381e7898ce7ad",
+      "name": "品牌策划与视觉"
+    },
+    {
+      "legacyId": "tag-t-e8a786e8a789e59b",
+      "slug": "t-e8a786e8a789e59b",
+      "name": "视觉图形"
+    }
+  ],
+  "projects": [
+    {
+      "action": "create",
+      "legacyId": "film",
+      "slug": "film",
+      "title": "Film & Animation",
+      "categorySlug": "film",
+      "tagNames": [
+        "影视动画",
+        "3D Animation",
+        "视频 & 广告",
+        "CGI"
+      ],
+      "projectType": "image",
+      "mediaCount": 0,
+      "coverUrl": "/assets/hero-video/swft-icon-poster.webp",
+      "videoUrl": null
+    },
+    {
+      "action": "create",
+      "legacyId": "visual",
+      "slug": "visual",
+      "title": "Visual Design",
+      "categorySlug": "visual",
+      "tagNames": [
+        "视觉设计"
+      ],
+      "projectType": "image",
+      "mediaCount": 0,
+      "coverUrl": "/assets/work-visual/lophthy-visual.webp",
+      "videoUrl": null
+    },
+    {
+      "action": "create",
+      "legacyId": "web",
+      "slug": "web-web",
+      "title": "Web Development",
+      "categorySlug": "web",
+      "tagNames": [
+        "网站设计"
+      ],
+      "projectType": "mixed",
+      "mediaCount": 1,
+      "coverUrl": "/assets/work-web.webp",
+      "videoUrl": null
+    },
+    {
+      "action": "create",
+      "legacyId": "culture",
+      "slug": "culture-culture",
+      "title": "Marvlore",
+      "categorySlug": "culture",
+      "tagNames": [
+        "迈络文化"
+      ],
+      "projectType": "image",
+      "mediaCount": 0,
+      "coverUrl": "/assets/work-culture.webp",
+      "videoUrl": null
+    },
+    {
+      "action": "create",
+      "legacyId": "reel-web",
+      "slug": "web-reel-web",
+      "title": "Web Development",
+      "categorySlug": "web",
+      "tagNames": [
+        "网站设计"
+      ],
+      "projectType": "mixed",
+      "mediaCount": 1,
+      "coverUrl": "/assets/work-web.webp",
+      "videoUrl": null
+    },
+    {
+      "action": "create",
+      "legacyId": "reel-culture",
+      "slug": "culture-reel-culture",
+      "title": "Marvlore",
+      "categorySlug": "culture",
+      "tagNames": [
+        "迈络文化"
+      ],
+      "projectType": "image",
+      "mediaCount": 0,
+      "coverUrl": "/assets/work-culture.webp",
+      "videoUrl": null
+    },
+    {
+      "action": "create",
+      "legacyId": "reel-film-swft-icon",
+      "slug": "swft-icon",
+      "title": "SWFT ICON",
+      "categorySlug": "film",
+      "tagNames": [
+        "影视动画"
+      ],
+      "projectType": "video",
+      "mediaCount": 0,
+      "coverUrl": "/assets/hero-video/swft-icon-poster.webp",
+      "videoUrl": "/assets/hero-video/swft-icon.mp4"
+    },
+    {
+      "action": "create",
+      "legacyId": "reel-film-pop-palm",
+      "slug": "pop-palm",
+      "title": "POP Palm",
+      "categorySlug": "film",
+      "tagNames": [
+        "影视动画"
+      ],
+      "projectType": "video",
+      "mediaCount": 0,
+      "coverUrl": "/assets/hero-video/pop-palm-poster.webp",
+      "videoUrl": "/assets/hero-video/pop-palm.mp4"
+    },
+    {
+      "action": "create",
+      "legacyId": "reel-film-puff",
+      "slug": "puff",
+      "title": "PUFF",
+      "categorySlug": "film",
+      "tagNames": [
+        "影视动画"
+      ],
+      "projectType": "video",
+      "mediaCount": 0,
+      "coverUrl": "/assets/hero-video/puff-poster.webp",
+      "videoUrl": "/assets/hero-video/puff.mp4"
+    },
+    {
+      "action": "create",
+      "legacyId": "reel-film-flum-mi",
+      "slug": "flum-mi",
+      "title": "FLUM MI",
+      "categorySlug": "film",
+      "tagNames": [
+        "影视动画"
+      ],
+      "projectType": "video",
+      "mediaCount": 0,
+      "coverUrl": "/assets/hero-video/flum-mi-poster.webp",
+      "videoUrl": "/assets/hero-video/flum-mi.mp4"
+    },
+    {
+      "action": "create",
+      "legacyId": "reel-film-flum-pebble-x",
+      "slug": "flum-pebble-x",
+      "title": "Flum Pebble X",
+      "categorySlug": "film",
+      "tagNames": [
+        "影视动画"
+      ],
+      "projectType": "video",
+      "mediaCount": 0,
+      "coverUrl": "/assets/hero-video/flum-pebble-x-poster.webp",
+      "videoUrl": "/assets/hero-video/flum-pebble-x.mp4"
+    },
+    {
+      "action": "create",
+      "legacyId": "reel-visual-lophthy-visual",
+      "slug": "lophthy-visual",
+      "title": "LOPHTY",
+      "categorySlug": "visual",
+      "tagNames": [
+        "视觉设计",
+        "品牌主视觉"
+      ],
+      "projectType": "image",
+      "mediaCount": 0,
+      "coverUrl": "/assets/work-visual/lophthy-visual.webp",
+      "videoUrl": null
+    },
+    {
+      "action": "create",
+      "legacyId": "reel-visual-vapes-bars",
+      "slug": "vapes-bars",
+      "title": "Vapes Bars",
+      "categorySlug": "visual",
+      "tagNames": [
+        "视觉设计",
+        "品牌视觉"
+      ],
+      "projectType": "image",
+      "mediaCount": 0,
+      "coverUrl": "/assets/work-visual/vapes-bars.webp",
+      "videoUrl": null
+    },
+    {
+      "action": "create",
+      "legacyId": "reel-visual-vapx",
+      "slug": "vapx",
+      "title": "VapX",
+      "categorySlug": "visual",
+      "tagNames": [
+        "视觉设计",
+        "品牌视觉系统"
+      ],
+      "projectType": "image",
+      "mediaCount": 0,
+      "coverUrl": "/assets/work-visual/vapx.webp",
+      "videoUrl": null
+    },
+    {
+      "action": "create",
+      "legacyId": "reel-visual-volantique",
+      "slug": "volantique",
+      "title": "Volantique",
+      "categorySlug": "visual",
+      "tagNames": [
+        "视觉设计",
+        "品牌视觉系统"
+      ],
+      "projectType": "image",
+      "mediaCount": 0,
+      "coverUrl": "/assets/work-visual/volantique-logo.webp",
+      "videoUrl": null
+    },
+    {
+      "action": "create",
+      "legacyId": "reel-visual-creative-ip",
+      "slug": "creative-ip",
+      "title": "Creative IP",
+      "categorySlug": "visual",
+      "tagNames": [
+        "视觉设计",
+        "创意角色视觉"
+      ],
+      "projectType": "image",
+      "mediaCount": 0,
+      "coverUrl": "/assets/work-visual/creative-ip.webp",
+      "videoUrl": null
+    },
+    {
+      "action": "create",
+      "legacyId": "reel-visual-daily",
+      "slug": "daily",
+      "title": "DAILY",
+      "categorySlug": "visual",
+      "tagNames": [
+        "视觉设计",
+        "品牌视觉"
+      ],
+      "projectType": "image",
+      "mediaCount": 0,
+      "coverUrl": "/assets/work-visual/daily.webp",
+      "videoUrl": null
+    },
+    {
+      "action": "create",
+      "legacyId": "reel-visual-summo",
+      "slug": "summo",
+      "title": "SUMMO",
+      "categorySlug": "visual",
+      "tagNames": [
+        "视觉设计",
+        "品牌策划与视觉"
+      ],
+      "projectType": "image",
+      "mediaCount": 0,
+      "coverUrl": "/assets/work-visual/summo.webp",
+      "videoUrl": null
+    },
+    {
+      "action": "create",
+      "legacyId": "reel-visual-lophthy-graphic",
+      "slug": "lophthy-graphic",
+      "title": "LOPHTY",
+      "categorySlug": "visual",
+      "tagNames": [
+        "视觉设计",
+        "视觉图形"
+      ],
+      "projectType": "image",
+      "mediaCount": 0,
+      "coverUrl": "/assets/work-visual/lophthy-graphic.webp",
+      "videoUrl": null
+    }
+  ]
+}
