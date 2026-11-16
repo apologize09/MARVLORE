@@ -37,7 +37,7 @@ function cacheControl(relPath, version, ext){
   }
   if(version) return 'public, max-age=0, must-revalidate';
   if(MEDIA_EXTS.has(ext) || relPath.startsWith('assets/')){
-    // Same-origin here.now / local media: day-long cache until Batch 5 hashes merge
+    // Unhashed media fallback: day-long cache
     return 'public, max-age=86400';
   }
   return 'no-cache';

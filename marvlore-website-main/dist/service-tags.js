@@ -1,4 +1,4 @@
-import {serviceTagAssets,serviceTagCanvas} from './service-tag-assets.js';
+import {serviceTagAssets,serviceTagCanvas} from './service-tag-assets.js?v=e37bb9eb18';
 // Each item is an independent original crop. Override box:{x,y,width,height}
 // in source pixels to change its placement, or edit text/color/fontScale.
 export const serviceTagRows=[

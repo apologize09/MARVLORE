@@ -1,5 +1,5 @@
-import { cmsGet } from './http.js';
-import { cacheGet, cacheSet } from './work-cache.js';
+import { cmsGet } from './http.js?v=69fefe8807';
+import { cacheGet, cacheSet } from './work-cache.js?v=bb57b07579';
 
 function url(base, path, query) {
   const root = base.endsWith('/') ? base : `${base}/`;

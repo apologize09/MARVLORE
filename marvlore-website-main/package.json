@@ -16,11 +16,12 @@
     "esbuild": "^0.25.12"
   },
   "scripts": {
-    "dev": "node scripts/build-hero.mjs && node scripts/build-services.mjs && node scripts/build-about.mjs && node scripts/build-work.mjs && node scripts/build-menu.mjs && node scripts/build-contact.mjs && node scripts/apply-media-cdn.mjs && node server.mjs",
+    "dev": "node scripts/build-hero.mjs && node scripts/build-services.mjs && node scripts/build-about.mjs && node scripts/build-work.mjs && node scripts/build-menu.mjs && node scripts/build-contact.mjs && node scripts/apply-media-cdn.mjs && node scripts/hash-assets.mjs && node server.mjs",
     "start": "node server.mjs",
-    "build": "node scripts/build-hero.mjs && node scripts/build-services.mjs && node scripts/build-about.mjs && node scripts/build-work.mjs && node scripts/build-menu.mjs && node scripts/build-contact.mjs && node scripts/apply-media-cdn.mjs",
+    "build": "node scripts/build-hero.mjs && node scripts/build-services.mjs && node scripts/build-about.mjs && node scripts/build-work.mjs && node scripts/build-menu.mjs && node scripts/build-contact.mjs && node scripts/apply-media-cdn.mjs && node scripts/hash-assets.mjs",
     "media:cdn": "node scripts/apply-media-cdn.mjs",
     "media:cdn:list": "node scripts/list-media-cdn.mjs",
+    "hash:assets": "node scripts/hash-assets.mjs",
     "check": "node --check dist/app.js && node --check dist/components.js && node --check dist/data.js && node --check dist/motion.js && node --check dist/cms/work-runtime.js && node --check dist/cms/work-loader.js && node --check dist/cms/work-normalize.js && node --check dist/cms/work-filter-state.js && node --check dist/cms/work-filter-mount.js && node --check dist/cms/locale.js && node --check dist/cms/seo.js && node --check dist/cms/work-cache-sync.js",
     "test": "node --test tests/*.test.mjs",
     "build:work": "node scripts/build-work.mjs",

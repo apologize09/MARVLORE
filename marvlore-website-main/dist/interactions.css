@@ -82,7 +82,7 @@ button:active,.dialog-contact:active { filter: brightness(.9); }
 #awards .section-label h2 { font-size: clamp(30px, 2.55vw, 48px); }
 #awards .awards-carousel { max-width: 1600px; width: 100%; }
 #awards .awards-track figure { flex-basis: clamp(240px, 18vw, 336px); }
-#explore .dot-arrow { background: url('./assets/explore-arrow.png') center / contain no-repeat; clip-path: none; width: clamp(50px, 4.4vw, 76px); height: clamp(56px, 4.92vw, 85px); }
+#explore .dot-arrow { background: url('./assets/explore-arrow.png?v=881412859d') center / contain no-repeat; clip-path: none; width: clamp(50px, 4.4vw, 76px); height: clamp(56px, 4.92vw, 85px); }
 /* Clip the complete award surface once, so all four corners remain circular. */
 #awards .awards-track figure { overflow: hidden; isolation: isolate; }
 #awards .awards-track img { display: block; aspect-ratio: auto; border-radius: 0 !important; }

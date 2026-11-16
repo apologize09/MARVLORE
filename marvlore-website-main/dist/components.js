@@ -1,11 +1,11 @@
-import {titleCase} from './typography.js';
-import {coverImageScale} from './cover-framing.js?v=cover-edges-164';
-import {renderContact} from './contact-template.js?v=contact-service-motion-169';
-import {getProjects,getWorkReelItems,getAwards,getContact} from './cms/work-runtime.js';
-import {renderAboutCards} from './about-cards.js';
-import {renderExploreCards} from './explore-scene.js?v=cover-edges-164';
-import {renderWallCards} from './wall-cards.js?v=cover-edges-164';
-import {assetUrl} from './media-cdn.js';
+import {titleCase} from './typography.js?v=bff0b2cf2f';
+import {coverImageScale} from './cover-framing.js?v=4d498fdbae';
+import {renderContact} from './contact-template.js?v=acaf0960a0';
+import {getProjects,getWorkReelItems,getAwards,getContact} from './cms/work-runtime.js?v=a3472201c9';
+import {renderAboutCards} from './about-cards.js?v=6d5625a465';
+import {renderExploreCards} from './explore-scene.js?v=56e7f29d06';
+import {renderWallCards} from './wall-cards.js?v=d7a9e93892';
+import {assetUrl} from './media-cdn.js?v=4a6c7d09a5';
 const imageSizes={
  'work-covers/film-blue-152.webp':[1692,890], 'work-covers/culture-lophty-152.webp':[1920,1080],
  'about-arc-top.webp':[1890,760], 'about-arc-bottom.webp':[1890,690],
