@@ -1,0 +1,23 @@
+/* Three rows of independently replaceable project cards on a rotating curved wall. */
+#marvlore-go.portal {max-width:none;min-height:100svh;padding:0;display:block;overflow:hidden;background:#000;}
+#marvlore-go .portal-wall {position:relative;height:100svh;min-height:720px;overflow:hidden;cursor:grab;user-select:none;touch-action:pan-y;}
+#marvlore-go .portal-wall.is-dragging {cursor:grabbing;}
+#marvlore-go .portal-viewport {position:absolute;inset:0;display:flex;align-items:center;justify-content:center;perspective:900px;perspective-origin:50% 50%;pointer-events:none;}
+#marvlore-go .portal-origin {position:relative;width:0;height:0;transform-style:preserve-3d;}
+#marvlore-go .portal-column {position:absolute;left:calc(var(--wall-card-w) / -2);top:calc((3 * var(--wall-card-h) + 2 * var(--wall-row-gap)) / -2);width:var(--wall-card-w);height:calc(3 * var(--wall-card-h) + 2 * var(--wall-row-gap));transform-style:preserve-3d;will-change:transform,opacity;}
+#marvlore-go .portal-card {position:absolute;left:0;top:calc(var(--wall-row) * (var(--wall-card-h) + var(--wall-row-gap)));width:var(--wall-card-w);height:var(--wall-card-h);margin:0;border-radius:calc(min(var(--wall-card-w),var(--wall-card-h)) * .08);overflow:hidden;background:#151515;backface-visibility:hidden;box-shadow:0 0 0 1px #ffffff0d;}
+#marvlore-go .portal-card img,#marvlore-go .portal-card svg {display:block;width:100%;height:100%;object-fit:cover;}
+/* DOM wall fallback: the canvas applies the matching treatment per card. */
+#marvlore-go .portal-card{isolation:isolate;pointer-events:auto;}
+#marvlore-go .portal-card img,#marvlore-go .portal-card svg{filter:grayscale(1) sepia(1) hue-rotate(172deg) saturate(.55) brightness(.94) contrast(.97);transition:filter .4s ease;}
+#marvlore-go .portal-card::before{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(150deg,#63728b30,#1721323d);opacity:1;pointer-events:none;transition:opacity .4s ease;}
+#marvlore-go .portal-card:is(:hover,[data-wall-color="original"]) img,#marvlore-go .portal-card:is(:hover,[data-wall-color="original"]) svg{filter:none;}
+#marvlore-go .portal-card:is(:hover,[data-wall-color="original"])::before{opacity:0;}
+@media(prefers-reduced-motion:reduce){#marvlore-go .portal-card img,#marvlore-go .portal-card svg,#marvlore-go .portal-card::before{transition:none;}}
+#marvlore-go .portal-wall::after {content:'';position:absolute;inset:0;background:radial-gradient(ellipse 48% 37% at center,#0008,transparent 80%);pointer-events:none;}
+#marvlore-go .portal-copy {position:absolute;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%);width:max-content;max-width:80%;text-align:center;color:#fff;pointer-events:none;text-shadow:0 2px 24px #000;}
+#marvlore-go .portal-copy h2 {font-family:var(--font-sans,'OPPO Sans'),sans-serif;font-size:clamp(42px,5.2vw,92px);font-weight:400;line-height:1;letter-spacing:-.045em;}
+#marvlore-go .portal-copy p {font-family:var(--font-sans,'OPPO Sans'),sans-serif;font-size:clamp(15px,1.4vw,25px);margin:14px 0 0;}
+
+/* Fixed black edge masks; cards stay fully opaque as they pass beneath. */
+#marvlore-go .portal-wall::before {content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to right,#000 0%,rgba(0,0,0,.9) 3%,transparent 17%,transparent 83%,rgba(0,0,0,.9) 97%,#000 100%);}

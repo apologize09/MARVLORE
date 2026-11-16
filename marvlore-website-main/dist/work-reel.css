@@ -1,0 +1,62 @@
+/* Elastic photo slices, adapted to MARVLORE's desktop project gallery. */
+#work.work-reel{width:100%;max-width:none;min-height:100svh;padding:clamp(40px,5svh,64px) 0 100px;overflow:clip;font-family:var(--font-sans);}
+#work.work-reel .work-heading{padding:0 5vw;margin:0 0 clamp(32px,4svh,48px);text-align:center;}
+#work .work-heading h2{padding-top:24px;font:400 clamp(42px,4.2vw,76px)/1.08 var(--font-sans);letter-spacing:-.055em;}
+#work .work-heading p{font:400 clamp(12px,.85vw,16px)/1.65 var(--font-sans);color:#8c8c91;margin-top:20px;}
+#work.work-reel .work-categories{margin:0 auto clamp(32px,4svh,48px);}
+#work.work-reel .elastic-reel{width:min(94vw,1840px);margin:auto;}
+.elastic-reel-stage{width:100%;height:clamp(320px,50svh,620px);position:relative;touch-action:pan-y pinch-zoom;}
+.elastic-reel-track{position:absolute;inset:0;isolation:isolate;}
+#work .elastic-reel-item{position:absolute;left:0;top:0;width:8%;height:77%;overflow:hidden;padding:0;border:0;background:#141414;cursor:pointer;isolation:isolate;outline:none;will-change:transform,width,height;box-shadow:0 0 0 1px #ffffff12 inset,0 12px 40px #0004;}
+#work .elastic-reel-item img{display:block;width:100%;height:100%;max-width:none;object-fit:cover;pointer-events:none;user-select:none;-webkit-user-drag:none;}
+#work .work-reel-media{position:absolute;inset:0;z-index:0;display:block;pointer-events:none;filter:grayscale(1) sepia(1) hue-rotate(172deg) saturate(.55) brightness(.94) contrast(.97);transition:filter .55s cubic-bezier(.22,1,.36,1);}
+#work .elastic-reel-item::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(150deg,#63728b30,#1721323d);opacity:1;transition:opacity .55s cubic-bezier(.22,1,.36,1);}
+#work .elastic-reel-item:is(:hover,:focus-visible,.is-open) .work-reel-media{filter:grayscale(0) sepia(0) hue-rotate(0deg) saturate(1) brightness(1) contrast(1);}
+#work .elastic-reel-item:is(:hover,:focus-visible,.is-open)::before{opacity:0;}
+#work .work-reel-preview{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;}
+#work .elastic-reel-item::after{content:'';position:absolute;inset:0;z-index:2;border:1px solid #ffffff18;border-radius:inherit;pointer-events:none;}
+#work .elastic-reel-item:focus-visible::after{border:2px solid #fff;}
+.reel-open-mark{position:absolute;right:16px;bottom:16px;z-index:3;display:grid;place-items:center;width:34px;height:34px;background:#fff;color:#101010;border-radius:50%;font-size:19px;opacity:0;transform:translateY(8px);transition:opacity .2s,transform .25s;pointer-events:none;}
+.elastic-reel-item.is-open:hover .reel-open-mark,.elastic-reel-item.is-open:focus-visible .reel-open-mark{opacity:1;transform:none;}
+.work-reel-caption{position:relative;min-height:60px;max-width:1600px;margin:20px auto 0;display:flex;align-items:center;justify-content:center;}
+.work-reel-meta{display:flex;align-items:center;justify-content:center;gap:clamp(20px,2vw,40px);min-height:64px;}
+.work-reel-index{font:400 11px/1 var(--font-sans);font-variant-numeric:tabular-nums;letter-spacing:.08em;color:#6f6f75;}
+.work-reel-name{min-width:160px;text-align:left;}
+.work-reel-name h3{font:400 clamp(18px,1.3vw,25px)/1.4 var(--font-sans);letter-spacing:-.025em;margin:0;color:#f5f5ef;}
+.work-reel-name p{font:400 12px/1.5 var(--font-sans);color:#89898f;margin:5px 0 0;}
+.work-reel-detail{display:flex;align-items:center;gap:16px;color:#fff;font:400 12px/1.4 var(--font-sans);text-decoration:none;white-space:nowrap;}
+.work-reel-detail span{display:grid;place-items:center;width:34px;height:34px;border:1px solid #ffffff44;border-radius:50%;font-size:17px;transition:background .2s,color .2s;}
+.work-reel-detail:hover span{background:#fff;color:#101010;}
+.work-reel-collapse{position:absolute;right:0;top:24px;display:flex;align-items:center;gap:12px;padding:0;background:transparent;border:0;color:#8a8a90;cursor:pointer;font:400 12px/1.5 var(--font-sans);}
+.work-reel-collapse span{font-size:20px;}
+.work-reel-collapse:hover{color:#f4f4ef;}
+#work.work-reel :is(button,a):focus-visible{outline:2px solid #fff;outline-offset:5px;}
+#work.work-reel .elastic-reel-item:focus-visible{outline:none;}
+@media(min-width:761px) and (max-height:850px){
+ #work.work-reel{padding-top:36px;padding-bottom:96px;}
+ #work.work-reel .work-heading{margin-bottom:32px;}
+ #work .work-heading h2{font-size:clamp(40px,3.6vw,60px);}
+ #work .work-heading p{margin-top:16px;}
+ #work.work-reel .work-categories{margin-bottom:32px;}
+ .elastic-reel-stage{height:46svh;min-height:280px;}
+ .work-reel-caption{margin-top:20px;min-height:60px;}
+}
+@media(prefers-reduced-motion:reduce){#work .elastic-reel-item{will-change:auto}#work .work-reel-media,#work .elastic-reel-item::before,.reel-open-mark{transition:none}.work-reel-detail span{transition:none}}
+/* Shared category feedback, driven by Motion from the current presentation. */
+#work .work-categories.has-motion-pill{position:relative;isolation:isolate;}
+#work .work-category-pill{position:absolute;top:0;left:0;z-index:0;pointer-events:none;border-radius:100px;background:#363639;box-shadow:0 1px 3px #0005;}
+#work .has-motion-pill button{position:relative;z-index:1;}
+#work .has-motion-pill button[aria-pressed="true"]{background:transparent;box-shadow:none;}
+#work .work-categories button:active{color:#fff;}
+#work .work-card:active{border-color:#ffffff88;}
+/* Side controls keep the gallery width bounded as projects are added. */
+.elastic-reel-shell{position:relative;padding-inline:64px;}
+.elastic-reel-stage{overflow:hidden;}
+#work .work-reel-arrow{position:absolute;top:50%;translate:0 -50%;display:grid;place-items:center;width:44px;height:44px;border:1px solid #ffffff2b;border-radius:50%;background:#151515b3;color:#fff;cursor:pointer;font:400 24px/1 var(--font-sans);transition:background .2s,color .2s,border-color .2s,scale .2s;}
+#work .work-reel-prev{left:4px;}
+#work .work-reel-next{right:4px;}
+#work .work-reel-arrow:hover{background:#fff;color:#101010;border-color:#fff;}
+#work .work-reel-arrow:active{scale:.94;}
+#work .work-reel-arrow:disabled{opacity:.3;cursor:default;}
+#work .work-reel-range{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;}
+@media(prefers-reduced-motion:reduce){#work .work-reel-arrow{transition:none;}}

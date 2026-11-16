@@ -1,0 +1,5 @@
+/* SplitText 的行容器继承原字号/行高，图片与卡片外框保持原样。 */
+#work .work-reveal-line { overflow:visible; }
+.work-card:hover .view-work > [data-work-reveal] { transform:none; }
+.work-card .view-work:focus-visible .work-reveal-line,
+.work-card:focus-visible .work-reveal-line { opacity:1!important;filter:none!important; }

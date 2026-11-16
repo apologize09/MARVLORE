@@ -1,0 +1,4 @@
+PhotoSwipe 5.4.4
+https://github.com/dimsemenov/PhotoSwipe
+Distributed from the official npm package photoswipe@5.4.4.
+MIT license: see LICENSE in this folder.

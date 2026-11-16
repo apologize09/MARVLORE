@@ -1,0 +1,41 @@
+/* Match the established OPPO Sans line-by-line text reveal. */
+#awards .section-label h2>span{display:block;letter-spacing:-.045em;}
+#awards .section-label h2>span:last-child{font-size:.45em;letter-spacing:-.035em;}
+#awards .work-reveal-line{overflow:visible;}
+/* Wide, symmetric smootherstep falloff: flat slopes at the dark and clear ends. */
+#awards .awards-viewport{
+ --award-edge-mask:linear-gradient(90deg,
+  transparent 0%,rgb(0 0 0/.009) 2.2%,rgb(0 0 0/.058) 4.4%,
+  rgb(0 0 0/.163) 6.6%,rgb(0 0 0/.317) 8.8%,rgb(0 0 0/.5) 11%,
+  rgb(0 0 0/.683) 13.2%,rgb(0 0 0/.837) 15.4%,rgb(0 0 0/.942) 17.6%,
+  rgb(0 0 0/.991) 19.8%,#000 22%,#000 78%,
+  rgb(0 0 0/.991) 80.2%,rgb(0 0 0/.942) 82.4%,rgb(0 0 0/.837) 84.6%,
+  rgb(0 0 0/.683) 86.8%,rgb(0 0 0/.5) 89%,rgb(0 0 0/.317) 91.2%,
+  rgb(0 0 0/.163) 93.4%,rgb(0 0 0/.058) 95.6%,rgb(0 0 0/.009) 97.8%,transparent 100%);
+ -webkit-mask-image:var(--award-edge-mask);mask-image:var(--award-edge-mask);
+ -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+ -webkit-mask-size:100% 100%;mask-size:100% 100%;
+}
+/* A narrow reflection sits above the existing artwork without changing it. */
+#awards .awards-track figure{position:relative;--award-light:218 232 255;}
+#awards .awards-track figure[data-award="1"]{--award-light:255 232 166;}
+#awards .awards-track figure[data-award="2"]{--award-light:241 242 230;}
+#awards .award-sheen{position:absolute;inset:0;z-index:2;overflow:hidden;pointer-events:none;mix-blend-mode:screen;mask-size:100% 100%;mask-repeat:no-repeat;}
+#awards .award-sheen-band{position:absolute;left:-45%;top:-25%;width:55%;height:150%;opacity:0;transform:translateX(-160%) skewX(-22deg);background:linear-gradient(90deg,transparent 0%,rgb(var(--award-light)/.025) 23%,rgb(var(--award-light)/.16) 43%,rgb(var(--award-light)/.38) 50%,rgb(var(--award-light)/.12) 59%,transparent 100%);}
+/* Keep the left-aligned heading clear of the fixed brand/menu header. */
+#awards.awards{padding-top:clamp(96px,10svh,120px);}
+/* Give the title its own reading space before the carousel starts. */
+@media(min-width:761px){
+ #awards.awards{gap:clamp(88px,11svh,132px);padding-bottom:clamp(88px,10svh,132px);}
+ #awards .awards-carousel{flex:0 0 auto;margin-top:0;}
+}
+
+#awards .awards-track figure{border:0;box-shadow:none;background:transparent;}
+#awards .award-artwork{position:absolute;overflow:hidden;}
+#awards .award-enter-ready:not(.award-entered) .awards-track figure{opacity:0!important;}
+@media(prefers-reduced-motion:reduce){#awards .award-enter-ready:not(.award-entered) .awards-track figure{opacity:1!important;}}
+#awards .awards-track .award-artwork img{position:absolute;inset:0;display:block;width:100%;height:100%;max-height:none;object-fit:fill;}
+#awards figure[data-award="0"] .award-sheen{mask-image:url('./assets/award-inner-aigc.svg');}
+#awards figure[data-award="1"] .award-sheen{mask-image:url('./assets/award-inner-reddot.svg');}
+#awards figure[data-award="2"] .award-sheen{mask-image:url('./assets/award-inner-partner.svg');}
+@media(prefers-reduced-motion:reduce){#awards .award-sheen{display:none;}}

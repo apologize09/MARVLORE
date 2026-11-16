@@ -1,0 +1,60 @@
+/* Desktop exploration: full-bleed sheets frame a quiet, central reading area. */
+#explore.explore {
+  width:100%; max-width:none; min-height:calc(max(100svh,720px) * 3.45); padding:0;
+  display:block; background:#000; overflow:clip; isolation:isolate;
+}
+#explore .explore-scene {
+  position:sticky; top:0; width:100%; max-width:none; height:100svh;
+  min-height:720px; margin:0; overflow:hidden;
+}
+
+#explore .explore-field { position:absolute; inset:0; pointer-events:none; }
+#explore .explore-canvas { position:absolute; inset:0; width:100%; height:100%; }
+#explore .explore-sheet { position:absolute; left:50%; top:50%; width:clamp(140px,13vw,240px); aspect-ratio:1; margin:0; transform:translate(-50%,-50%) rotate(var(--fallback-angle)) translateY(-36vh) rotate(20deg); border-radius:8%; }
+#explore .is-webgl-ready .explore-sheet { visibility:hidden; }
+#explore .explore-sheet__surface { position:absolute; inset:0; overflow:hidden; border-radius:inherit; }
+#explore .explore-sheet svg,#explore .explore-sheet img { display:block; width:100%; height:100%; }
+#explore .explore-copy {
+  position:absolute; left:50%; top:50%; right:auto;
+  width:max-content; max-width:48%; transform:translate(-50%,-50%);
+  z-index:20; text-align:center; font-family:var(--font-sans,'OPPO Sans'),sans-serif;
+  padding:22px 24px; text-decoration:none; color:#f4f4f0;
+}
+#explore .explore-copy h2 {
+  font-family:inherit; font-size:clamp(40px,4.1vw,72px); line-height:1.08;
+  font-weight:400; letter-spacing:-.045em; margin:0;
+}
+#explore .explore-copy p { font:400 clamp(12px,1vw,17px)/1.8 var(--font-sans,'OPPO Sans'),sans-serif; margin:22px 0 0; color:#a4a4a4; letter-spacing:.04em; }
+#explore .dot-arrow { width:clamp(40px,4vw,64px); height:clamp(48px,5vw,78px); margin:30px auto 0; }
+#explore .explore-copy:focus-visible { outline:1px solid var(--lime); outline-offset:12px; border-radius:12px; }
+#explore .explore-copy small { display:none; }
+@media(prefers-reduced-motion:reduce) { #explore .dot-arrow { animation:none; } }
+
+/* The background enters alongside the scroll-driven title, with no timed gate. */
+#explore .explore-field { opacity:0; }
+#explore .explore-field.is-started { opacity:1; }
+#explore .explore-field.is-fallback { transition:opacity .8s ease; }
+#explore .explore-reveal-line { display:block; opacity:0; transform:translate3d(0,54px,0); filter:blur(8px); will-change:transform,opacity,filter; }
+#explore .explore-arrow-reveal { display:block; opacity:0; transform:translate3d(0,28px,0); filter:blur(8px); }
+#explore [data-explore-stage="images"] .explore-reveal-line { will-change:auto; }
+@media(prefers-reduced-motion:reduce) {
+  #explore .explore-reveal-line,#explore .explore-arrow-reveal { opacity:1; transform:none; filter:none; }
+}
+
+/* Do not reveal the static fallback while the paper textures are loading. */
+#explore .explore-field.is-started:not(.is-webgl-ready):not(.is-fallback) { opacity:0; }
+
+#explore #marvlore-go.portal-assembly {position:absolute;inset:0;width:100%;height:100%;min-height:0;opacity:0;pointer-events:none;z-index:3;}
+#explore #marvlore-go .portal-wall {height:100%;}
+#explore .explore-field {z-index:1;}
+#explore .explore-copy {z-index:4;}
+
+/* Share the foreground and fixed masks while the same cards settle beneath. */
+#explore #marvlore-go.portal-assembly {background:transparent;}
+#explore #marvlore-go .portal-viewport {opacity:var(--wall-reveal,0);}
+#explore #marvlore-go .portal-copy,#explore #marvlore-go .portal-link-new,
+#explore #marvlore-go .portal-wall::before,#explore #marvlore-go .portal-wall::after {opacity:var(--copy-reveal,0);}
+
+/* One canvas owns every card through the final curved-wall pose. */
+#explore .dot-arrow {animation:none;}
+#explore #marvlore-go .portal-viewport {visibility:hidden;}

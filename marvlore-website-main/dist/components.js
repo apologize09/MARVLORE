@@ -1,0 +1,44 @@
+import {titleCase} from './typography.js';
+import {coverImageScale} from './cover-framing.js?v=cover-edges-164';
+import {renderContact} from './contact-template.js?v=contact-service-motion-169';
+import {projects,awards} from './data.js?v=work-covers-153';
+import {workReelItems} from './work-reel-data.js?v=cover-crops-125';
+import {renderAboutCards} from './about-cards.js';
+import {renderExploreCards} from './explore-scene.js?v=cover-edges-164';
+import {renderWallCards} from './wall-cards.js?v=cover-edges-164';
+const imageSizes={
+ 'work-covers/film-blue-152.webp':[1692,890], 'work-covers/culture-lophty-152.webp':[1920,1080],
+ 'about-arc-top.webp':[1890,760], 'about-arc-bottom.webp':[1890,690],
+ 'hero-video/swft-icon-poster.webp':[1920,1080], 'work-visual/lophthy-visual.webp':[1920,1080],
+ 'work-web.webp':[835,347], 'work-culture.webp':[834,347],
+ 'explore-arc.webp':[1945,1200], 'marvlore-wall.webp':[2154,1030],
+ 'award-aigc.webp':[470,760], 'award-reddot.webp':[475,760], 'award-partner.webp':[480,760],
+};
+const img=(name,alt,extra='')=>{
+ const size=imageSizes[name];
+ return `<img src="./assets/${name}" alt="${alt}" loading="lazy" decoding="async" ${size?`width="${size[0]}" height="${size[1]}"`:''} ${extra}>`;
+};
+const workMedia=p=>{
+ const image=p.overviewImage??p.image;
+ return image?img(image,p.overviewLabel??p.label,`style="--image-fit:${p.imageFit};--image-position:${p.imagePosition};scale:${coverImageScale(image)}"`):`<span class="media-placeholder">${p.mediaPlaceholder}</span>`;
+};
+const arrow='<span class="pixel-arrow" aria-hidden="true">↘</span>';
+const sectionHead=(en,cn)=>`<div class="section-label reveal"><h2>${titleCase(en)}<span>${cn}</span></h2>${arrow}</div>`;
+
+export function Hero(){return `<section id="home" class="hero screen" data-screen="01-hero" aria-labelledby="hero-title"><div class="hero-inner"><h1 id="hero-title">Ideas Make Brands POP</h1><div class="hero-stage"><div id="hero-orbit" aria-label="迈络品牌作品立体轮播"></div></div></div></section>`;}
+
+export function Services(){return `<section id="services" class="services screen wrap" data-screen="02-services" aria-label="创意服务"><div class="services-stage"><div id="services-title" class="services-title"></div><div id="services-directory" class="services-directory" inert></div></div></section>`;}
+
+export function AboutStory(){return `<section id="about" class="about screen wrap" data-screen="03-about" aria-labelledby="about-title"><div class="about-scroll-track"><div class="about-stage"><div class="about-art">${renderAboutCards('top')}</div><div class="about-copy"><div class="about-text-group" data-about-group="0"><h2 id="about-title">Marvlore<span>（迈络）</span></h2><p class="partner">Your Full-Service Partner for Brand Visuals & Creative Content<br><span>您的品牌视觉与内容创意全案伙伴</span></p></div><div class="stat about-text-group" data-about-group="1"><strong>8<span>+</span></strong><p>Industries Served<br>八大行业服务经验<br>FMCG, Beauty, 3C, Electronics...<br>快消、美妆、3C 等</p></div><div class="stat about-text-group" data-about-group="2"><strong>60<span>+</span></strong><p>Brand Cases<br>Pop-worthy visuals for 60+ brands<br>赋能 60+ 品牌打造出圈视觉</p></div></div><div class="about-art bottom-arc">${renderAboutCards('bottom')}</div></div></div><div class="about-tail" aria-hidden="true"></div></section>`;}
+
+export function About(){return `<section id="about" class="about reference-about screen" data-screen="03-about" aria-labelledby="about-title"><div id="reference-collage"></div></section>`;}
+
+export function Work(){return `<section id="work" class="work screen wrap" data-work-mode="overview" data-screen="04-work" aria-labelledby="work-title"><header class="work-heading"><h2 id="work-title" data-work-reveal>Creative Work</h2><p data-work-reveal>从品牌视觉到动态影像与数字体验，让创意成为品牌的表达。</p></header><div class="work-categories" role="toolbar" aria-label="作品分类"><button type="button" data-work-category="all" aria-pressed="true">全部方向</button>${projects.map(p=>`<button type="button" data-work-category="${p.id}" aria-pressed="false">${p.cn}</button>`).join('')}</div><div id="work-overview" class="work-grid">${projects.map(p=>`<a href="#work" class="work-card" data-work-group="${p.id}" aria-label="浏览${p.cn}项目组"><span class="eyebrow"><i></i><span data-work-reveal>${p.eyebrow}</span></span><h3 data-work-reveal>${titleCase(p.title)}<span class="work-card-cn">${p.cn}</span></h3><p data-work-reveal>${p.description}</p><div class="work-image">${workMedia(p)}</div><span class="view-work"><span data-work-reveal>浏览项目组</span> <span>↗</span></span></a>`).join('')}</div><div class="elastic-reel" aria-label="创意作品切片画廊" hidden><div class="elastic-reel-shell"><button class="work-reel-arrow work-reel-prev" type="button" aria-label="向左浏览作品" aria-controls="work-reel-track"><span aria-hidden="true">←</span></button><div class="elastic-reel-stage" role="group" aria-label="移过图片弹性展开，点击放大，左右方向键切换"><div id="work-reel-track" class="elastic-reel-track">${workReelItems.map((p,i)=>`<button class="elastic-reel-item" type="button" data-reel-index="${i}" aria-label="展开 ${p.title}" aria-expanded="false" aria-controls="work-reel-caption" data-card-shape><span class="work-reel-media"><img src="${p.thumbnailSrc||p.src}" alt="${p.alt}" loading="lazy" decoding="async" draggable="false" style="object-position:${p.focusX}% 50%">${p.previewSrc?`<video class="work-reel-preview" src="${p.previewSrc}" poster="${p.src}" muted playsinline loop preload="metadata" aria-hidden="true"></video>`:''}</span><span class="reel-open-mark" aria-hidden="true">↗</span></button>`).join('')}</div></div><button class="work-reel-arrow work-reel-next" type="button" aria-label="向右浏览作品" aria-controls="work-reel-track"><span aria-hidden="true">→</span></button></div><p class="work-reel-range sr-only" aria-live="polite" aria-atomic="true"></p><div id="work-reel-caption" class="work-reel-caption"><div class="work-reel-meta"><span class="work-reel-index">01 — 08</span><div class="work-reel-name"><h3>精选作品</h3><p>移过展开 · 点击放大</p></div><a class="work-reel-detail" href="#" aria-label="查看完整项目" hidden>查看项目 <span aria-hidden="true">↗</span></a></div><button class="work-reel-collapse" type="button" aria-label="收起展开的图片" hidden>收起 <span aria-hidden="true">×</span></button></div></div></section>`;}
+
+export function Explore(){return `<section id="explore" class="explore screen wrap" data-screen="05-explore"><div class="explore-scene" data-explore-stage="waiting"><div class="explore-field">${renderExploreCards()}</div><a class="explore-copy" href="#marvlore-go"><h2><span class="explore-reveal-line">Scroll Down</span><span class="explore-reveal-line">For More</span></h2><p class="explore-reveal-line">向下滑动，解锁更多精彩</p><span class="explore-arrow-reveal"><span class="dot-arrow" aria-hidden="true"></span></span><small>SCROLL TO EXPLORE</small></a></div></section>`;}
+
+export function Portal(){return `<section id="marvlore-go" class="portal screen" data-screen="06-marvlore-go"><div class="portal-wall" tabindex="0" aria-label="迈络作品墙，可左右拖动或使用方向键浏览"><div class="portal-viewport" aria-hidden="true"><div class="portal-origin">${renderWallCards()}</div></div><div class="portal-copy"><h2>Marvlore Go</h2><p>赛道既定布局，但玩法可层出不穷</p></div></div></section>`;}
+
+export function Awards(){return `<section id="awards" class="awards screen wrap" data-screen="07-awards" aria-labelledby="awards-title"><header class="section-label"><h2 id="awards-title" aria-label="Awards & Recognition 荣誉与认可"><span data-award-reveal>Awards &</span><span data-award-reveal>Recognition</span><span data-award-reveal>荣誉与认可</span></h2></header><div class="awards-carousel reveal" aria-roledescription="轮播" aria-label="荣誉与认可"><button class="carousel-button prev" type="button" aria-label="上一项荣誉">‹</button><div class="awards-viewport" tabindex="0" role="group" aria-label="荣誉卡片，左右拖动或使用左右方向键切换"><div class="awards-track">${Array.from({length:3},()=>awards.map((a,i)=>`<figure data-award="${i}" aria-hidden="true">${img(a.image,'')}</figure>`).join('')).join('')}</div></div><button class="carousel-button next" type="button" aria-label="下一项荣誉">›</button><div class="award-pagination" aria-label="选择荣誉">${awards.map((a,i)=>`<button class="award-dot" type="button" aria-label="${a.alt}" aria-pressed="${i===0}"><span></span></button>`).join('')}</div><p class="award-gesture-hint">拖动探索 <span aria-hidden="true">↔</span></p></div><p class="sr-only" id="award-status" aria-live="polite"></p></section>`;}
+
+export function Contact(){return renderContact();}

@@ -1,0 +1,35 @@
+@font-face {
+ font-family:'OPPO Sans';
+ src:local('OPPO Sans 4.0'),url('./assets/fonts/OPPOSans4.0.ttf') format('truetype');
+ font-weight:100 700;
+ font-style:normal;
+ font-display:swap;
+}
+/* Latin-only faces keep every Chinese glyph in the existing OPPO Sans face. */
+@font-face {
+ font-family:'Newsreader 6pt Light';
+ src:url('./assets/fonts/Newsreader6pt-Light.woff2') format('woff2');
+ font-weight:100 700;font-style:normal;font-display:swap;
+ unicode-range:U+0000-024F,U+1E00-1EFF,U+2000-206F;
+}
+@font-face {
+ font-family:'FK Grotesk Trial';
+ src:url('./assets/fonts/FKGroteskTrial-Regular.woff2') format('woff2');
+ font-weight:100 700;font-style:normal;font-display:swap;
+ unicode-range:U+0000-024F,U+1E00-1EFF,U+2000-206F;
+}
+:root {
+ --font-sans:'FK Grotesk Trial','OPPO Sans',sans-serif;
+ --font-heading:'Newsreader 6pt Light','OPPO Sans',serif;
+}
+body,button,input,textarea,select { font-family:var(--font-sans); }
+.gallery-pagination { font-family:var(--font-sans);font-variant-numeric:tabular-nums; }
+.reference-partner,.reference-stat p { font-variant-caps:normal; }
+h1,h2,h3,h4,h5,h6,.circular-carousel__title,
+.talk-bottom,#contact .contact-brand>a,
+#contact .location,.reference-stat strong {
+ font-family:var(--font-heading)!important;
+ font-synthesis: none;
+ text-transform:none!important;
+}
+.marvlore-menu,.marvlore-menu * { font-family:var(--font-sans)!important; }
