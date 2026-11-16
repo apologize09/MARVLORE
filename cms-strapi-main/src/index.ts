@@ -7,13 +7,9 @@ const PUBLIC_ACTIONS: Record<string, string[]> = {
   author: ['find', 'findOne'],
   global: ['find', 'findOne'],
   about: ['find', 'findOne'],
-  'product-line': ['find', 'findOne'],
-  'process-step': ['find', 'findOne'],
   faq: ['find', 'findOne'],
   certification: ['find', 'findOne'],
-  'service-model': ['find', 'findOne'],
   'page-seo': ['find', 'findOne'],
-  'quote-request': ['create'],
   // Phase 2 — Work public read (Draft & Publish already scopes live content for Public)
   'work-category': ['find', 'findOne'],
   'work-tag': ['find', 'findOne'],
