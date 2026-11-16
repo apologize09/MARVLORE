@@ -1,0 +1,34 @@
+{
+  "startedAt": "2026-11-16T09:16:24.003Z",
+  "locale": "zh-CN",
+  "updateExisting": false,
+  "created": {
+    "categories": 0,
+    "tags": 0,
+    "projects": 0,
+    "media": 0
+  },
+  "skipped": {
+    "categories": 5,
+    "tags": 13,
+    "projects": 19,
+    "media": 2
+  },
+  "updated": {
+    "categories": 0,
+    "tags": 0,
+    "projects": 0,
+    "media": 0
+  },
+  "failed": [],
+  "finishedAt": "2026-11-16T09:16:24.049Z",
+  "planCounts": {
+    "categoriesL1": 1,
+    "categoriesL2": 4,
+    "tags": 13,
+    "projects": 19,
+    "mediaItems": 2,
+    "assets": 47,
+    "missingAssets": 0
+  }
+}

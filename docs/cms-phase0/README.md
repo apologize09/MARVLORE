@@ -21,4 +21,5 @@
 
 波次 B / Phase 1 产出见 [`docs/cms-phase1/`](../cms-phase1/README.md)（`work-*` schema + 验证记录）。  
 Phase 2 产出见 [`docs/cms-phase2/`](../cms-phase2/README.md)（校验规则 + Public 只读）。  
-Phase 3 产出见 [`docs/cms-phase3/`](../cms-phase3/README.md)（Work Public API / DTO / 搜索）。
+Phase 3 产出见 [`docs/cms-phase3/`](../cms-phase3/README.md)（Work Public API / DTO / 搜索）。  
+Phase 4 产出见 [`docs/cms-phase4/`](../cms-phase4/README.md)（静态数据迁移工具；默认 dry-run）。

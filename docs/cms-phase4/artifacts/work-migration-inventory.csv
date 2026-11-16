@@ -1,0 +1,20 @@
+legacyId,slug,title,category,projectType,tags,coverUrl,videoUrl,mediaCount,source
+film,film,Film & Animation,film,image,影视动画|3D Animation|视频 & 广告|CGI,/assets/hero-video/swft-icon-poster.webp,,0,direction
+visual,visual,Visual Design,visual,image,视觉设计,/assets/work-visual/lophthy-visual.webp,,0,direction
+web,web-web,Web Development,web,mixed,网站设计,/assets/work-web.webp,,1,direction
+culture,culture-culture,Marvlore,culture,image,迈络文化,/assets/work-culture.webp,,0,direction
+reel-web,web-reel-web,Web Development,web,mixed,网站设计,/assets/work-web.webp,,1,reel
+reel-culture,culture-reel-culture,Marvlore,culture,image,迈络文化,/assets/work-culture.webp,,0,reel
+reel-film-swft-icon,swft-icon,SWFT ICON,film,video,影视动画,/assets/hero-video/swft-icon-poster.webp,/assets/hero-video/swft-icon.mp4,0,film
+reel-film-pop-palm,pop-palm,POP Palm,film,video,影视动画,/assets/hero-video/pop-palm-poster.webp,/assets/hero-video/pop-palm.mp4,0,film
+reel-film-puff,puff,PUFF,film,video,影视动画,/assets/hero-video/puff-poster.webp,/assets/hero-video/puff.mp4,0,film
+reel-film-flum-mi,flum-mi,FLUM MI,film,video,影视动画,/assets/hero-video/flum-mi-poster.webp,/assets/hero-video/flum-mi.mp4,0,film
+reel-film-flum-pebble-x,flum-pebble-x,Flum Pebble X,film,video,影视动画,/assets/hero-video/flum-pebble-x-poster.webp,/assets/hero-video/flum-pebble-x.mp4,0,film
+reel-visual-lophthy-visual,lophthy-visual,LOPHTY,visual,image,视觉设计|品牌主视觉,/assets/work-visual/lophthy-visual.webp,,0,visual
+reel-visual-vapes-bars,vapes-bars,Vapes Bars,visual,image,视觉设计|品牌视觉,/assets/work-visual/vapes-bars.webp,,0,visual
+reel-visual-vapx,vapx,VapX,visual,image,视觉设计|品牌视觉系统,/assets/work-visual/vapx.webp,,0,visual
+reel-visual-volantique,volantique,Volantique,visual,image,视觉设计|品牌视觉系统,/assets/work-visual/volantique-logo.webp,,0,visual
+reel-visual-creative-ip,creative-ip,Creative IP,visual,image,视觉设计|创意角色视觉,/assets/work-visual/creative-ip.webp,,0,visual
+reel-visual-daily,daily,DAILY,visual,image,视觉设计|品牌视觉,/assets/work-visual/daily.webp,,0,visual
+reel-visual-summo,summo,SUMMO,visual,image,视觉设计|品牌策划与视觉,/assets/work-visual/summo.webp,,0,visual
+reel-visual-lophthy-graphic,lophthy-graphic,LOPHTY,visual,image,视觉设计|视觉图形,/assets/work-visual/lophthy-graphic.webp,,0,visual

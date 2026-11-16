@@ -152,5 +152,7 @@ types/generated/.cache
 .tmp/*.bak
 .tmp/validate-*
 .tmp/blank-*
+.tmp/migrate-*
+.tmp/verify-*
 admin-credentials.txt
 

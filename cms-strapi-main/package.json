@@ -13,7 +13,9 @@
     "start": "strapi start",
     "strapi": "strapi",
     "upgrade": "npx @strapi/upgrade latest",
-    "upgrade:dry": "npx @strapi/upgrade latest --dry"
+    "upgrade:dry": "npx @strapi/upgrade latest --dry",
+    "migrate:work": "node ./scripts/work-migrate/cli.mjs",
+    "migrate:work:execute": "node ./scripts/work-migrate/cli.mjs --execute"
   },
   "dependencies": {
     "@strapi/database": "5.52.1",
