@@ -130,13 +130,6 @@ async function importFaqs() {
   }
 }
 
-async function importServiceModels() {
-  if ((await count('api::service-model.service-model')) > 0) return;
-  for (const entry of seed.serviceModels) {
-    await createEntry('api::service-model.service-model', entry);
-  }
-}
-
 async function importPageSeos() {
   if ((await count('api::page-seo.page-seo')) > 0) return;
   for (const entry of seed.pageSeos || []) {
@@ -144,39 +137,6 @@ async function importPageSeos() {
     await createEntry('api::page-seo.page-seo', {
       ...entry,
       shareImage: shareImage || undefined,
-    });
-  }
-}
-
-async function importProcessSteps() {
-  if ((await count('api::process-step.process-step')) > 0) return;
-  for (const step of seed.processSteps) {
-    const image = await checkFileExistsBeforeUpload(step.image);
-    await createEntry('api::process-step.process-step', {
-      ...step,
-      image: image || undefined,
-    });
-  }
-}
-
-async function importProductLines() {
-  if ((await count('api::product-line.product-line')) > 0) return;
-  for (const line of seed.productLines) {
-    const heroImage = await checkFileExistsBeforeUpload(line.heroImage);
-    const canImage = await checkFileExistsBeforeUpload(line.canImage);
-    const openCanImage = await checkFileExistsBeforeUpload(line.openCanImage);
-    const heroBanner = await checkFileExistsBeforeUpload(line.heroBanner);
-    const categoryImage = await checkFileExistsBeforeUpload(line.categoryImage);
-    const packagingImage = await checkFileExistsBeforeUpload(line.packagingImage);
-    await createEntry('api::product-line.product-line', {
-      ...line,
-      heroImage: heroImage || undefined,
-      canImage: canImage || undefined,
-      openCanImage: openCanImage || undefined,
-      heroBanner: heroBanner || undefined,
-      categoryImage: categoryImage || undefined,
-      packagingImage: packagingImage || undefined,
-      publishedAt: Date.now(),
     });
   }
 }
@@ -288,21 +248,19 @@ async function importSeedData() {
     author: ['find', 'findOne'],
     global: ['find', 'findOne'],
     about: ['find', 'findOne'],
-    'product-line': ['find', 'findOne'],
-    'process-step': ['find', 'findOne'],
     faq: ['find', 'findOne'],
     certification: ['find', 'findOne'],
-    'service-model': ['find', 'findOne'],
     'page-seo': ['find', 'findOne'],
-    'quote-request': ['create'],
+    'work-category': ['find', 'findOne'],
+    'work-tag': ['find', 'findOne'],
+    'work-project': ['find', 'findOne'],
+    'work-project-media': ['find', 'findOne'],
+    'work-page': ['find'],
   });
 
   await importCertifications();
   await importFaqs();
-  await importServiceModels();
   await importPageSeos();
-  await importProcessSteps();
-  await importProductLines();
   await importGlobal();
   await importAbout();
   await importTaxonomy();

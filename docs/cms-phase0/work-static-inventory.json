@@ -1,0 +1,790 @@
+{
+  "generatedAt": "2026-11-16T08:30:00Z",
+  "website": {
+    "categories": [
+      {
+        "id": "film",
+        "eyebrow": "Creative Visuals",
+        "title": "Film & Animation",
+        "cn": "影视动画"
+      },
+      {
+        "id": "visual",
+        "eyebrow": "Brand Visuals",
+        "title": "Visual Design",
+        "cn": "视觉设计"
+      },
+      {
+        "id": "web",
+        "eyebrow": "Digital Experiences",
+        "title": "Web Development",
+        "cn": "网站设计"
+      },
+      {
+        "id": "culture",
+        "eyebrow": "Marvlore Culture",
+        "title": "Marvlore",
+        "cn": "迈络文化"
+      }
+    ],
+    "services": [
+      {
+        "id": "film",
+        "en": "Film",
+        "cn": "影视制作"
+      },
+      {
+        "id": "animation",
+        "en": "Animation",
+        "cn": "动画创作"
+      },
+      {
+        "id": "web",
+        "en": "Web Development",
+        "cn": "网站开发"
+      },
+      {
+        "id": "visual",
+        "en": "Visual Design",
+        "cn": "视觉设计"
+      },
+      {
+        "id": "marvlore",
+        "en": "Marvlore",
+        "cn": "迈络文化"
+      },
+      {
+        "id": "cgi",
+        "en": "CGI",
+        "cn": "数字影像"
+      },
+      {
+        "id": "aigc",
+        "en": "AIGC",
+        "cn": "人工智能创作"
+      },
+      {
+        "id": "advertising",
+        "en": "Advertising",
+        "cn": "广告创意"
+      },
+      {
+        "id": "3d-animation",
+        "en": "3D Animation",
+        "cn": "三维动画"
+      }
+    ],
+    "orbitImageCount": 8,
+    "orbitImages": [
+      "./assets/orbit/vapx-surface.webp",
+      "./assets/orbit/vapx-screen.webp",
+      "./assets/orbit/vapes-bars.webp",
+      "./assets/orbit/vapx-direction.webp",
+      "./assets/orbit/vapes-space.webp",
+      "./assets/orbit/lophthy-apparel.webp",
+      "./assets/orbit/lophthy-pop.webp",
+      "./assets/orbit/vapes-dog.webp"
+    ],
+    "heroProjects": [
+      {
+        "slug": "swft-icon",
+        "title": "SWFT ICON",
+        "type": "video",
+        "poster": "./assets/hero-video/swft-icon-poster.webp",
+        "videoSrc": "./assets/hero-video/swft-icon.mp4",
+        "previewSrc": "./assets/hero-video/swft-icon-preview.mp4",
+        "homePreviewSrc": "./assets/hero-video/swft-icon-home-360p.mp4",
+        "poster_exists": true,
+        "poster_bytes": 65766,
+        "videoSrc_exists": true,
+        "videoSrc_bytes": 8603563,
+        "previewSrc_exists": true,
+        "previewSrc_bytes": 608540,
+        "homePreviewSrc_exists": true,
+        "homePreviewSrc_bytes": 205248
+      },
+      {
+        "slug": "pop-palm",
+        "title": "POP Palm",
+        "type": "video",
+        "poster": "./assets/hero-video/pop-palm-poster.webp",
+        "videoSrc": "./assets/hero-video/pop-palm.mp4",
+        "previewSrc": "./assets/hero-video/pop-palm-preview.mp4",
+        "homePreviewSrc": "./assets/hero-video/pop-palm-home-360p.mp4",
+        "poster_exists": true,
+        "poster_bytes": 139340,
+        "videoSrc_exists": true,
+        "videoSrc_bytes": 8947033,
+        "previewSrc_exists": true,
+        "previewSrc_bytes": 1174709,
+        "homePreviewSrc_exists": true,
+        "homePreviewSrc_bytes": 466779
+      },
+      {
+        "slug": "puff",
+        "title": "PUFF",
+        "type": "video",
+        "poster": "./assets/hero-video/puff-poster.webp",
+        "videoSrc": "./assets/hero-video/puff.mp4",
+        "previewSrc": "./assets/hero-video/puff-preview.mp4",
+        "homePreviewSrc": "./assets/hero-video/puff-home-360p.mp4",
+        "poster_exists": true,
+        "poster_bytes": 99666,
+        "videoSrc_exists": true,
+        "videoSrc_bytes": 17126980,
+        "previewSrc_exists": true,
+        "previewSrc_bytes": 409562,
+        "homePreviewSrc_exists": true,
+        "homePreviewSrc_bytes": 145263
+      },
+      {
+        "slug": "flum-mi",
+        "title": "FLUM MI",
+        "type": "video",
+        "poster": "./assets/hero-video/flum-mi-poster.webp",
+        "videoSrc": "./assets/hero-video/flum-mi.mp4",
+        "previewSrc": "./assets/hero-video/flum-mi-preview.mp4",
+        "homePreviewSrc": "./assets/hero-video/flum-mi-home-360p.mp4",
+        "poster_exists": true,
+        "poster_bytes": 87092,
+        "videoSrc_exists": true,
+        "videoSrc_bytes": 8650338,
+        "previewSrc_exists": true,
+        "previewSrc_bytes": 689471,
+        "homePreviewSrc_exists": true,
+        "homePreviewSrc_bytes": 220507
+      },
+      {
+        "slug": "flum-pebble-x",
+        "title": "Flum Pebble X",
+        "type": "video",
+        "poster": "./assets/hero-video/flum-pebble-x-poster.webp",
+        "videoSrc": "./assets/hero-video/flum-pebble-x.mp4",
+        "previewSrc": "./assets/hero-video/flum-pebble-x-preview.mp4",
+        "homePreviewSrc": "./assets/hero-video/flum-pebble-x-home-360p.mp4",
+        "poster_exists": true,
+        "poster_bytes": 77546,
+        "videoSrc_exists": true,
+        "videoSrc_bytes": 8022563,
+        "previewSrc_exists": true,
+        "previewSrc_bytes": 680343,
+        "homePreviewSrc_exists": true,
+        "homePreviewSrc_bytes": 223092
+      },
+      {
+        "slug": "lophthy",
+        "title": "LOPHTY 品牌视觉",
+        "type": "image",
+        "id": "hero-image-lophthy",
+        "cover": "./assets/home-projects/lophthy-cover.webp",
+        "cover_exists": true,
+        "cover_bytes": 20116,
+        "slides": [
+          {
+            "src": "./assets/home-projects/lophthy-01.webp",
+            "exists": true,
+            "bytes": 70492
+          },
+          {
+            "src": "./assets/home-projects/lophthy-02.webp",
+            "exists": true,
+            "bytes": 90802
+          },
+          {
+            "src": "./assets/home-projects/lophthy-03.webp",
+            "exists": true,
+            "bytes": 50816
+          },
+          {
+            "src": "./assets/home-projects/lophthy-04.webp",
+            "exists": true,
+            "bytes": 97418
+          },
+          {
+            "src": "./assets/home-projects/lophthy-05.webp",
+            "exists": true,
+            "bytes": 130506
+          }
+        ]
+      },
+      {
+        "slug": "vapes-bars",
+        "title": "Vapes Bars 品牌视觉",
+        "type": "image",
+        "id": "hero-image-vapes-bars",
+        "cover": "./assets/home-projects/vapes-bars-cover.webp",
+        "cover_exists": true,
+        "cover_bytes": 11830,
+        "slides": [
+          {
+            "src": "./assets/home-projects/vapes-bars-01.webp",
+            "exists": true,
+            "bytes": 37294
+          },
+          {
+            "src": "./assets/home-projects/vapes-bars-02.webp",
+            "exists": true,
+            "bytes": 179126
+          },
+          {
+            "src": "./assets/home-projects/vapes-bars-03.webp",
+            "exists": true,
+            "bytes": 271432
+          },
+          {
+            "src": "./assets/home-projects/vapes-bars-04.webp",
+            "exists": true,
+            "bytes": 286878
+          },
+          {
+            "src": "./assets/home-projects/vapes-bars-05.webp",
+            "exists": true,
+            "bytes": 373522
+          }
+        ]
+      },
+      {
+        "slug": "vapx",
+        "title": "VapX 品牌视觉",
+        "type": "image",
+        "id": "hero-image-vapx",
+        "cover": "./assets/home-projects/vapx-cover.webp",
+        "cover_exists": true,
+        "cover_bytes": 30740,
+        "slides": [
+          {
+            "src": "./assets/home-projects/vapx-01.webp",
+            "exists": true,
+            "bytes": 105220
+          },
+          {
+            "src": "./assets/home-projects/vapx-02.webp",
+            "exists": true,
+            "bytes": 109016
+          },
+          {
+            "src": "./assets/home-projects/vapx-03.webp",
+            "exists": true,
+            "bytes": 222446
+          },
+          {
+            "src": "./assets/home-projects/vapx-04.webp",
+            "exists": true,
+            "bytes": 146776
+          },
+          {
+            "src": "./assets/home-projects/vapx-05.webp",
+            "exists": true,
+            "bytes": 36512
+          }
+        ]
+      }
+    ],
+    "visualSlugs": [
+      "lophthy-visual",
+      "vapes-bars",
+      "vapx",
+      "volantique",
+      "creative-ip",
+      "daily",
+      "summo",
+      "lophthy-graphic"
+    ],
+    "aboutCollageCount": 10,
+    "aboutCollageSrcs": [
+      "./assets/reference-collage/project-04.webp",
+      "./assets/about-white/lophthy-visual.webp",
+      "./assets/about-white/daily-mark.webp",
+      "./assets/about-white/summo-character.webp",
+      "./assets/orbit/vapes-dog.webp",
+      "./assets/home-projects/lophthy-01.webp",
+      "./assets/work-visual/lophthy-graphic-blue.webp",
+      "./assets/reference-collage/project-02.webp",
+      "./assets/work-covers/film-blue-152.webp",
+      "./assets/work-covers/culture-lophty-152.webp"
+    ],
+    "filmProjectsModule": "dist/film-projects.js filters heroProjects with videoSrc",
+    "workDetailOverridesEmpty": true,
+    "workReelComposition": {
+      "formula": "filmProjects + visualProjects + direction(web) + direction(culture)",
+      "visualCount": 8,
+      "filmCount": 5,
+      "directionExtras": [
+        "web",
+        "culture"
+      ],
+      "expectedReelCount": 15
+    },
+    "portalWall": {
+      "generatedCount": 60,
+      "overrideIds": [
+        "wall-03",
+        "wall-08",
+        "wall-12",
+        "wall-16",
+        "wall-25",
+        "wall-31",
+        "wall-38",
+        "wall-49"
+      ],
+      "source": "dist/wall-cards.js wallCards Array.from length 60"
+    },
+    "awards": [
+      {
+        "image": "award-aigc.webp",
+        "alt": "全球 AIGC 艾菲奖，GLOBAL AIGC EFFIE AWARD"
+      },
+      {
+        "image": "award-reddot.webp",
+        "alt": "设计红点奖，RED DOT AWARD"
+      },
+      {
+        "image": "award-partner.webp",
+        "alt": "新片场官方合作伙伴，OFFICIAL PARTNER OF NEW STUDIOS MEDIA"
+      }
+    ],
+    "hashRouting": {
+      "workSection": "#work",
+      "caseDetail": "#case/{id}",
+      "gallery": "#view/{id}",
+      "projectShortcut": "#project-{id}",
+      "hasPathRouter": false
+    }
+  },
+  "cms": {
+    "versionHint": "5.52.1",
+    "apis": [
+      {
+        "api": "about",
+        "kind": "singleType",
+        "displayName": "About",
+        "collectionName": "abouts",
+        "draftAndPublish": false,
+        "attrCount": 2,
+        "attributes": [
+          "title",
+          "blocks"
+        ]
+      },
+      {
+        "api": "article",
+        "kind": "collectionType",
+        "displayName": "Article",
+        "collectionName": "articles",
+        "draftAndPublish": true,
+        "attrCount": 7,
+        "attributes": [
+          "title",
+          "description",
+          "slug",
+          "cover",
+          "author",
+          "category",
+          "blocks"
+        ]
+      },
+      {
+        "api": "author",
+        "kind": "collectionType",
+        "displayName": "Author",
+        "collectionName": "authors",
+        "draftAndPublish": false,
+        "attrCount": 4,
+        "attributes": [
+          "name",
+          "avatar",
+          "email",
+          "articles"
+        ]
+      },
+      {
+        "api": "category",
+        "kind": "collectionType",
+        "displayName": "Category",
+        "collectionName": "categories",
+        "draftAndPublish": false,
+        "attrCount": 4,
+        "attributes": [
+          "name",
+          "slug",
+          "articles",
+          "description"
+        ]
+      },
+      {
+        "api": "certification",
+        "kind": "collectionType",
+        "displayName": "Certification",
+        "collectionName": "certifications",
+        "draftAndPublish": false,
+        "attrCount": 6,
+        "attributes": [
+          "codeKey",
+          "name",
+          "code",
+          "description",
+          "verifiedBy",
+          "sortOrder"
+        ]
+      },
+      {
+        "api": "faq",
+        "kind": "collectionType",
+        "displayName": "FAQ",
+        "collectionName": "faqs",
+        "draftAndPublish": false,
+        "attrCount": 4,
+        "attributes": [
+          "question",
+          "answer",
+          "category",
+          "sortOrder"
+        ]
+      },
+      {
+        "api": "global",
+        "kind": "singleType",
+        "displayName": "Global",
+        "collectionName": "globals",
+        "draftAndPublish": false,
+        "attrCount": 27,
+        "attributes": [
+          "siteName",
+          "favicon",
+          "siteDescription",
+          "defaultSeo",
+          "tagline",
+          "subTagline",
+          "location",
+          "address",
+          "email",
+          "phone",
+          "whatsapp",
+          "wechat",
+          "facilitySize",
+          "annualCapacity",
+          "activeLines",
+          "sampleTurnaround",
+          "productionLeadTime",
+          "moq",
+          "heroVideoUrl",
+          "cleanroom",
+          "yourBrandConcept",
+          "phoenixFacilityAerial",
+          "phoenixLogistics",
+          "phoenixEcosystem",
+          "phoenixTalent",
+          "processHeroBanner",
+          "whyChooseUs"
+        ]
+      },
+      {
+        "api": "page-seo",
+        "kind": "collectionType",
+        "displayName": "Page SEO",
+        "collectionName": "page_seos",
+        "draftAndPublish": false,
+        "attrCount": 10,
+        "attributes": [
+          "pageId",
+          "path",
+          "metaTitle",
+          "metaDescription",
+          "ogTitle",
+          "ogDescription",
+          "keywords",
+          "robots",
+          "shareImage",
+          "sortOrder"
+        ]
+      },
+      {
+        "api": "process-step",
+        "kind": "collectionType",
+        "displayName": "Process Step",
+        "collectionName": "process_steps",
+        "draftAndPublish": false,
+        "attrCount": 9,
+        "attributes": [
+          "stepNumber",
+          "title",
+          "cnTitle",
+          "subtitle",
+          "description",
+          "details",
+          "qcCheckpoint",
+          "iconName",
+          "image"
+        ]
+      },
+      {
+        "api": "product-line",
+        "kind": "collectionType",
+        "displayName": "Product Line",
+        "collectionName": "product_lines",
+        "draftAndPublish": true,
+        "attrCount": 18,
+        "attributes": [
+          "category",
+          "pageId",
+          "title",
+          "subtitle",
+          "overview",
+          "complianceNotice",
+          "marketTrends",
+          "keyAdvantages",
+          "specs",
+          "packagingCustomization",
+          "sortOrder",
+          "heroImage",
+          "canImage",
+          "openCanImage",
+          "heroBanner",
+          "categoryImage",
+          "packagingImage",
+          "seo"
+        ]
+      },
+      {
+        "api": "quote-request",
+        "kind": "collectionType",
+        "displayName": "Quote Request",
+        "collectionName": "quote_requests",
+        "draftAndPublish": false,
+        "attrCount": 15,
+        "attributes": [
+          "referenceNo",
+          "fullName",
+          "companyName",
+          "email",
+          "phone",
+          "productLines",
+          "estimatedVolume",
+          "nicotineStrength",
+          "caffeineDosage",
+          "nootropicFocus",
+          "flavorPreference",
+          "pouchType",
+          "targetLaunchDate",
+          "message",
+          "status"
+        ]
+      },
+      {
+        "api": "service-model",
+        "kind": "collectionType",
+        "displayName": "Service Model",
+        "collectionName": "service_models",
+        "draftAndPublish": false,
+        "attrCount": 5,
+        "attributes": [
+          "title",
+          "subtitle",
+          "bestFor",
+          "features",
+          "sortOrder"
+        ]
+      }
+    ],
+    "i18nInPackageJson": false
+  },
+  "urlHitsSample": [
+    {
+      "file": "index.html",
+      "ref": "#000000",
+      "kind": "hash"
+    },
+    {
+      "file": "index.html",
+      "ref": "#services",
+      "kind": "hash"
+    },
+    {
+      "file": "app.js",
+      "ref": "#app",
+      "kind": "hash"
+    },
+    {
+      "file": "app.js",
+      "ref": "#awards",
+      "kind": "hash"
+    },
+    {
+      "file": "app.js",
+      "ref": "#work",
+      "kind": "hash"
+    },
+    {
+      "file": "app.js",
+      "ref": "#project-",
+      "kind": "hash"
+    },
+    {
+      "file": "app.js",
+      "ref": "#project-",
+      "kind": "hash"
+    },
+    {
+      "file": "app.js",
+      "ref": "#view/",
+      "kind": "hash"
+    },
+    {
+      "file": "app.js",
+      "ref": "#case/",
+      "kind": "hash"
+    },
+    {
+      "file": "app.js",
+      "ref": "location.hash",
+      "kind": "history-api"
+    },
+    {
+      "file": "app.js",
+      "ref": "location.hash",
+      "kind": "history-api"
+    },
+    {
+      "file": "app.js",
+      "ref": "popstate",
+      "kind": "history-api"
+    },
+    {
+      "file": "app.js",
+      "ref": "location.hash",
+      "kind": "history-api"
+    },
+    {
+      "file": "app.js",
+      "ref": "location.hash",
+      "kind": "history-api"
+    },
+    {
+      "file": "app.js",
+      "ref": "location.hash",
+      "kind": "history-api"
+    },
+    {
+      "file": "app.js",
+      "ref": "location.hash",
+      "kind": "history-api"
+    },
+    {
+      "file": "app.js",
+      "ref": "location.hash",
+      "kind": "history-api"
+    },
+    {
+      "file": "work-navigation.js",
+      "ref": "#work-overview",
+      "kind": "hash"
+    },
+    {
+      "file": "index.html",
+      "ref": "./assets/favicon.svg",
+      "kind": "href"
+    },
+    {
+      "file": "index.html",
+      "ref": "./assets/orbit/lophthy-pop.webp",
+      "kind": "href"
+    },
+    {
+      "file": "index.html",
+      "ref": "./styles.css",
+      "kind": "href"
+    },
+    {
+      "file": "index.html",
+      "ref": "./layout.css",
+      "kind": "href"
+    },
+    {
+      "file": "index.html",
+      "ref": "./interactions.css",
+      "kind": "href"
+    },
+    {
+      "file": "index.html",
+      "ref": "./hero/orbit.css?v=hero-sequence-176",
+      "kind": "href"
+    },
+    {
+      "file": "index.html",
+      "ref": "./project-gallery.css?v=home-slides-127",
+      "kind": "href"
+    },
+    {
+      "file": "index.html",
+      "ref": "./services/experience.css?v=service-matched-motion-181",
+      "kind": "href"
+    },
+    {
+      "file": "index.html",
+      "ref": "./about/reference.css",
+      "kind": "href"
+    },
+    {
+      "file": "index.html",
+      "ref": "./explore-scene.css?v=explore-entry-171",
+      "kind": "href"
+    },
+    {
+      "file": "index.html",
+      "ref": "./portal-wall.css?v=wall-tone-161",
+      "kind": "href"
+    },
+    {
+      "file": "index.html",
+      "ref": "./fonts.css?v=menu-grotesk-141",
+      "kind": "href"
+    },
+    {
+      "file": "index.html",
+      "ref": "./work-interactions.css?v=work-white-182",
+      "kind": "href"
+    },
+    {
+      "file": "index.html",
+      "ref": "./work-reel.css?v=work-reel-white-183",
+      "kind": "href"
+    },
+    {
+      "file": "index.html",
+      "ref": "./vendor/photoswipe/photoswipe.css",
+      "kind": "href"
+    },
+    {
+      "file": "index.html",
+      "ref": "./work-detail.css",
+      "kind": "href"
+    },
+    {
+      "file": "index.html",
+      "ref": "./navigation/menu.css?v=menu-heading-153",
+      "kind": "href"
+    },
+    {
+      "file": "index.html",
+      "ref": "./award-effects.css?v=cn-half-153",
+      "kind": "href"
+    },
+    {
+      "file": "index.html",
+      "ref": "./contact-layout.css?v=contact-service-motion-169",
+      "kind": "href"
+    },
+    {
+      "file": "index.html",
+      "ref": "#services",
+      "kind": "href"
+    }
+  ],
+  "urlHitCount": 38,
+  "baselines": {
+    "websiteTests": "93 pass (pnpm test)",
+    "cmsStrapi": "5.52.1",
+    "dbFileApprox": "1.6MB",
+    "uploadsApprox": "20MB"
+  }
+}

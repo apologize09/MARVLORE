@@ -144,3 +144,13 @@ build/
 types/generated/.cache
 .strapi-updater.json
 .strapi-cloud.json
+############################
+# Local CMS backups
+############################
+.backups/
+.tmp/data.db.pre-work-models.bak
+.tmp/*.bak
+.tmp/validate-*
+.tmp/blank-*
+admin-credentials.txt
+

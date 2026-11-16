@@ -1,0 +1,17 @@
+file,ref,kind,notes,v11_target_url,redirect_rule
+dist/index.html,#services,href,skip-link to services section,keep hash,#services unchanged
+dist/components.js,#work,href,work category cards and section anchors,keep #work for overview,none until shareable routes approved
+dist/app.js,#project-,hash+history,openProject via hashchange/popstate; format #project-{id},keep during V1.1,map later if needed
+dist/app.js,#view/,hash,project gallery owned history (marvloreGallery),keep,none
+dist/app.js,#case/,hash,work detail owned history (marvloreCase) via work-detail.js,keep as primary detail URL,do NOT force /work/:slug yet
+dist/app.js,#home,hash,gallery returnHash fallback,keep,none
+dist/work-detail.js,#case/{id},history push/replace,encodeURIComponent(id); back restores returnHash usually #work,keep,Phase 6 only after audit sign-off
+dist/project-gallery.js,#view/{id},history push/replace,gallery overlay routes,keep,none
+dist/explore-scene.js,#marvlore-go,replaceState,explore CTA to portal section,keep,none
+dist/work-reel.js,#work,click handler,non-group links reset to overview,keep,none
+src/work-navigation.js,(in-page),DOM state,category buttons data-work-category; no path router,keep in-page UX,optional query sync later
+server.mjs,/,static file server,no SPA path fallback for /work/*,must keep hash routing working,do not add /work path without inventory
+V1.1 recommended,/work,proposed,NOT present in source as real route,deferred,blocked until product confirms
+V1.1 recommended,/work/:categorySlug,proposed,NOT present,deferred,blocked
+V1.1 recommended,/work/:categorySlug/:subcategorySlug,proposed,NOT present,deferred,blocked
+V1.1 recommended,/work/:categorySlug/:subcategorySlug/:projectSlug,proposed,NOT present,deferred,blocked
