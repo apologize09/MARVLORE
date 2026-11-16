@@ -60,10 +60,12 @@ export const heroProjects=[
 ].map(item=>({
  id:'hero-video-'+item.slug,title:item.title,alt:item.title+' 品牌影片',
  src:'./assets/hero-video/'+item.slug+'-poster.webp',
+ // Tiers: home-360p (card loop) → preview (teaser) → mp4 720p (default detail) → 1080p (HD)
  videoSrc:'./assets/hero-video/'+item.slug+'.mp4',
+ videoSrcHd:'./assets/hero-video/'+item.slug+'-1080p.mp4',
  previewSrc:'./assets/hero-video/'+item.slug+'-preview.mp4',
  homePreviewSrc:'./assets/hero-video/'+item.slug+'-home-360p.mp4',
- width:1920,height:1080,
+ width:1280,height:720,
 })).concat([
  {id:'hero-image-lophthy',slug:'lophthy',title:'LOPHTY 品牌视觉'},
  {id:'hero-image-vapes-bars',slug:'vapes-bars',title:'Vapes Bars 品牌视觉'},

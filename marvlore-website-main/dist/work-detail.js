@@ -23,7 +23,10 @@ export function mountWorkDetails(){
  function announce(open){window.dispatchEvent(new CustomEvent('marvlore:gallery-state',{detail:{open}}));}
  function mediaMarkup(item,index,{cover=false}={}){
   if(!item?.src)return '';
-  if(item.type==='video')return '<figure class="case-media case-reveal"><video controls playsinline preload="metadata"'+(item.poster?' poster="'+esc(item.poster)+'"':'')+' data-card-shape src="'+esc(item.src)+'" aria-label="'+esc(item.alt??'项目视频')+'"></video>'+(item.alt?'<figcaption>'+esc(item.alt)+'</figcaption>':'')+'</figure>';
+  if(item.type==='video'){
+   const sources=(item.srcHd?`<source src="${esc(item.srcHd)}" type="video/mp4" data-quality="1080p">`:'')+`<source src="${esc(item.src)}" type="video/mp4" data-quality="720p">`;
+   return '<figure class="case-media case-reveal"><video controls playsinline preload="metadata"'+(item.poster?' poster="'+esc(item.poster)+'"':'')+' data-card-shape aria-label="'+esc(item.alt??'项目视频')+'">'+sources+'</video>'+(item.alt?'<figcaption>'+esc(item.alt)+'</figcaption>':'')+'</figure>';
+  }
   return '<figure class="case-media '+(cover?'case-cover':'case-reveal')+'"><a href="'+esc(item.src)+'" data-case-zoom data-pswp-width="'+item.width+'" data-pswp-height="'+item.height+'" data-card-shape aria-label="放大查看：'+esc(item.alt)+'"><img src="'+esc(item.src)+'" alt="'+esc(item.alt)+'" width="'+item.width+'" height="'+item.height+'" loading="'+(cover?'eager':'lazy')+'" decoding="async"><span class="case-zoom-mark" aria-hidden="true">＋</span></a><figcaption><span>'+String(index+1).padStart(2,'0')+' / '+esc(item.alt)+'</span><span>点击查看细节 ↗</span></figcaption></figure>';
  }
  function initZoom(){

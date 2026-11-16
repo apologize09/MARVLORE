@@ -21,7 +21,7 @@ pnpm dev
 
 | 内容 | 文件或目录 |
 | --- | --- |
-| 首屏封面、项目图片及视频 | `src/hero/images.js`、`dist/assets/` |
+| 首屏封面、项目图片及视频 | `src/hero/images.js`、`dist/assets/`（视频档位：home-360p / preview / 720p / 1080p；重建 `pnpm compress:videos`） |
 | 首屏卡片入场和旋转 | `src/hero/direct-cylinder-entrance.js`、`src/hero/CircularCarousel.jsx` |
 | 首屏标题及版式 | `src/hero/hero-entry.jsx`、`src/hero/hero.css` |
 | 创意服务内容和交互 | `src/services/items.js`、`src/services/experience.jsx`、`src/services/experience.css` |

@@ -34,7 +34,7 @@ const reelCases=workReelItems.map((p,index)=>{
 const filmCases=filmProjects.map((p,index)=>({
  id:p.id,category:p.category,title:p.title.split(' · ')[0],subtitle:'品牌影片',
  eyebrow:'Film & Animation',summary:'影视动画',intro:p.title,tags:['影视动画'],
- cover:{type:'video',src:p.videoSrc,poster:p.src,alt:p.alt,width:p.width,height:p.height},media:[],
+ cover:{type:'video',src:p.videoSrc,srcHd:p.videoSrcHd,poster:p.src,alt:p.alt,width:p.width,height:p.height},media:[],
  index:index+1,total:filmProjects.length,nextId:filmProjects[(index+1)%filmProjects.length].id,
 }));
 const visualCases=visualProjects.map((p,index)=>({
