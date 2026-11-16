@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "service_models",
+  "info": {
+    "singularName": "service-model",
+    "pluralName": "service-models",
+    "displayName": "Service Model",
+    "description": "OEM / contract / white-label service models"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "bestFor": {
+      "type": "text"
+    },
+    "features": {
+      "type": "json"
+    },
+    "sortOrder": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

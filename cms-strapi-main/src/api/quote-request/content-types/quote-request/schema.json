@@ -1,0 +1,67 @@
+{
+  "kind": "collectionType",
+  "collectionName": "quote_requests",
+  "info": {
+    "singularName": "quote-request",
+    "pluralName": "quote-requests",
+    "displayName": "Quote Request",
+    "description": "B2B RFQ submissions, decoupled from marketing content"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "referenceNo": {
+      "type": "string",
+      "unique": true
+    },
+    "fullName": {
+      "type": "string",
+      "required": true
+    },
+    "companyName": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "phone": {
+      "type": "string"
+    },
+    "productLines": {
+      "type": "json"
+    },
+    "estimatedVolume": {
+      "type": "string"
+    },
+    "nicotineStrength": {
+      "type": "string"
+    },
+    "caffeineDosage": {
+      "type": "string"
+    },
+    "nootropicFocus": {
+      "type": "string"
+    },
+    "flavorPreference": {
+      "type": "string"
+    },
+    "pouchType": {
+      "type": "string"
+    },
+    "targetLaunchDate": {
+      "type": "string"
+    },
+    "message": {
+      "type": "text"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["new", "contacted", "quoted", "closed"],
+      "default": "new"
+    }
+  }
+}

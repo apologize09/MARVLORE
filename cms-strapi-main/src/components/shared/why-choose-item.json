@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_shared_why_choose_items",
+  "info": {
+    "displayName": "Why Choose Item",
+    "icon": "star"
+  },
+  "options": {},
+  "attributes": {
+    "titleLine1": {
+      "type": "string"
+    },
+    "titleLine2": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "icon": {
+      "type": "string"
+    }
+  }
+}

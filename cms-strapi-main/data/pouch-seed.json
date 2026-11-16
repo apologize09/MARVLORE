@@ -1,0 +1,565 @@
+{
+  "global": {
+    "siteName": "Phoenix Pouch Co.",
+    "siteDescription": "US Contract Manufacturer & Private Label OEM for Nicotine, Nootropic, and Caffeine Pouches in Phoenix, Arizona.",
+    "tagline": "Precision Pouches, Made in Phoenix, USA",
+    "subTagline": "One-Stop Contract Manufacturing for Private Label Nicotine, Nootropic & Caffeine Pouches",
+    "location": "Phoenix, Arizona, USA",
+    "address": "2450 W Broadway Rd, Phoenix, AZ 85041",
+    "email": "sales@phoenixpouch.com",
+    "phone": "+1 (602) 555-0199",
+    "whatsapp": "+1 (602) 555-0199",
+    "wechat": "PhoenixPouch_OEM",
+    "facilitySize": "cGMP Cleanroom Facility",
+    "annualCapacity": "High-Speed Automated Capacity",
+    "activeLines": "10 Automated Packaging Lines",
+    "sampleTurnaround": "5-7 Business Days",
+    "productionLeadTime": "2-3 Weeks",
+    "moq": "10,000 Cans per Flavor/Strength",
+    "heroVideoUrl": "https://assets.mixkit.co/videos/preview/mixkit-working-in-a-pharmaceutical-laboratory-40901-large.mp4",
+    "images": {
+      "favicon": "logo-black.png",
+      "shareImage": "cleanroom_manufacturing_1785921691074.jpg",
+      "cleanroom": "cleanroom_manufacturing_1785921691074.jpg",
+      "yourBrandConcept": "your_brand_factory_1786346857393.jpg",
+      "phoenixFacilityAerial": "phoenix_facility_aerial_1786343049883.jpg",
+      "phoenixLogistics": "phoenix_logistics_hub_1786343060957.jpg",
+      "phoenixEcosystem": "phoenix_business_eco_1786343073807.jpg",
+      "phoenixTalent": "phoenix_skilled_talent_1786343084573.jpg",
+      "processHeroBanner": "process_hero_banner_1786343560650.jpg"
+    },
+    "defaultSeo": {
+      "metaTitle": "Phoenix Pouch Co. | US Pouch Contract Manufacturing",
+      "metaDescription": "Private label OEM for nicotine, nootropic, and caffeine pouches. cGMP facility in Phoenix, Arizona. Samples in 5-7 days.",
+      "shareImage": "cleanroom_manufacturing_1785921691074.jpg"
+    },
+    "whyChooseUs": [
+      {
+        "titleLine1": "100% US Made &",
+        "titleLine2": "cGMP Quality Guarantee",
+        "title": "100% US Made & cGMP Quality Guarantee",
+        "description": "Manufactured in Phoenix, Arizona under strict cGMP and ISO standards. Eliminates overseas shipping delays and customs risks, with every production lot backed by independent laboratory Certificate of Analysis (COA) testing.",
+        "icon": "ShieldCheck"
+      },
+      {
+        "titleLine1": "Custom Formulations",
+        "titleLine2": "& Flavors",
+        "title": "Custom Formulations & Flavors",
+        "description": "Our in-house R&D lab crafts custom flavors, active ingredient ratios, and moisture profiles tailored precisely to your brand positioning.",
+        "icon": "Sparkles"
+      },
+      {
+        "titleLine1": "Flexible MOQs &",
+        "titleLine2": "Rapid Production",
+        "title": "Flexible MOQs & Rapid Production",
+        "description": "Whether you need a 10,000-can pilot batch or high-volume commercial scaling, our automated lines deliver with fast 5-7 day sample turnaround and 2-3 week production lead times.",
+        "icon": "TrendingUp"
+      }
+    ]
+  },
+  "about": {
+    "title": "About Phoenix Pouch Co.",
+    "blocks": [
+      {
+        "__component": "shared.quote",
+        "title": "Made in Phoenix",
+        "body": "Precision pouches, manufactured in a cGMP cleanroom facility in Phoenix, Arizona for private-label and OEM brand owners."
+      },
+      {
+        "__component": "shared.rich-text",
+        "body": "## Contract manufacturing for oral pouches\n\nPhoenix Pouch Co. is a US B2B manufacturer specializing in nicotine pouches, nootropic pouches, and caffeine pouches. We support private label, full contract manufacturing, and white-label programs with HPLC-backed COA on every batch."
+      }
+    ]
+  },
+  "categories": [
+    { "name": "OEM Manufacturing", "slug": "oem-manufacturing" },
+    { "name": "Compliance", "slug": "compliance" },
+    { "name": "Formulation", "slug": "formulation" }
+  ],
+  "authors": [
+    {
+      "name": "Phoenix Editorial",
+      "email": "editorial@phoenixpouch.com",
+      "avatar": "logo-black.png"
+    }
+  ],
+  "articles": [
+    {
+      "title": "What US Brands Should Know Before Launching Nicotine Pouches",
+      "slug": "us-nicotine-pouch-oem-launch",
+      "description": "MOQ, sampling, and cGMP notes for 21+ pouch brands.",
+      "category": "oem-manufacturing",
+      "cover": "nicotine_hero_banner_1786348806376.jpg",
+      "blocks": [
+        {
+          "__component": "shared.rich-text",
+          "body": "Phoenix Pouch Co. manufactures tobacco-leaf-free nicotine pouches in Phoenix, AZ. Typical private-label MOQ starts at 10,000 cans per flavor/strength, with 5-7 day samples on stock formulas."
+        }
+      ]
+    },
+    {
+      "title": "cGMP and COA: How We Release Every Pouch Batch",
+      "slug": "cgmp-coa-pouch-release",
+      "description": "Incoming QC, HPLC, and outgoing COA for pouch lots.",
+      "category": "compliance",
+      "cover": "final_qc_inspection_1786344746429.jpg",
+      "blocks": [
+        {
+          "__component": "shared.rich-text",
+          "body": "Every lot is quarantined at intake, verified by HPLC, and released with a Certificate of Analysis. Retention samples are held for 24 months."
+        }
+      ]
+    }
+  ],
+  "certifications": [
+    {
+      "codeKey": "cgmp",
+      "name": "cGMP Compliant",
+      "code": "21 CFR Part 111 & 117",
+      "description": "Current Good Manufacturing Practice certified for dietary supplements & pouch formulations.",
+      "verifiedBy": "FDA Compliant Audit Protocols",
+      "sortOrder": 1
+    },
+    {
+      "codeKey": "iso9001",
+      "name": "ISO 9001:2015 Quality System",
+      "code": "ISO-9001-USA",
+      "description": "Standardized quality control from raw material receipt to final batch packaging.",
+      "verifiedBy": "Global ISO Registrar",
+      "sortOrder": 2
+    },
+    {
+      "codeKey": "fda_registered",
+      "name": "FDA Registered Facility",
+      "code": "FDA Reg. #18492048",
+      "description": "Registered US food & supplement manufacturing establishment in Phoenix, Arizona.",
+      "verifiedBy": "US Food & Drug Administration",
+      "sortOrder": 3
+    },
+    {
+      "codeKey": "third_party_lab",
+      "name": "Third-Party Lab Tested",
+      "code": "HPLC & GC-MS Verified",
+      "description": "Every production batch comes with accredited Certificate of Analysis (COA) for purity & dose accuracy.",
+      "verifiedBy": "Independent ISO 17025 Labs",
+      "sortOrder": 4
+    }
+  ],
+  "faqs": [
+    {
+      "question": "What is your Minimum Order Quantity (MOQ)?",
+      "answer": "Our standard MOQ starts at 10,000 cans per flavor/strength combination for Private Label projects. For custom R&D contract manufacturing formulations, MOQs may vary based on ingredient sourcing.",
+      "category": "moq",
+      "sortOrder": 1
+    },
+    {
+      "question": "How long does it take to get product samples?",
+      "answer": "For standard private label stock flavors, sample pucks are dispatched within 5-7 business days. Custom formula R&D samples typically take 10-14 business days.",
+      "category": "lead-time",
+      "sortOrder": 2
+    },
+    {
+      "question": "What is your typical mass production lead time?",
+      "answer": "Once artwork and initial samples are approved, our standard production lead time is 2 to 3 weeks for domestic dispatch from our Phoenix plant.",
+      "category": "lead-time",
+      "sortOrder": 3
+    },
+    {
+      "question": "Can we supply our own active ingredients or flavors?",
+      "answer": "Yes! We accommodate client-supplied materials (Customer Furnished Materials) subject to our Incoming Quality Control (IQC) testing and COA verification.",
+      "category": "formulation",
+      "sortOrder": 4
+    },
+    {
+      "question": "Do you offer full custom label design and packaging?",
+      "answer": "Yes. Our design team can provide exact print templates for cans, catch-lids, shrink bands, and counter displays, or assist in finalizing your brand artwork.",
+      "category": "packaging",
+      "sortOrder": 5
+    },
+    {
+      "question": "Are your manufacturing facilities FDA registered?",
+      "answer": "Yes. Phoenix Pouch Co. operates an FDA registered facility in Phoenix, Arizona, adhering to cGMP standards under 21 CFR Part 111 & Part 117.",
+      "category": "compliance",
+      "sortOrder": 6
+    }
+  ],
+  "serviceModels": [
+    {
+      "title": "Private Label / OEM",
+      "subtitle": "Custom Brand on Factory-Proven Bases",
+      "bestFor": "Startups & E-Commerce Brands looking for fast market launch",
+      "features": [
+        "Choose from 25+ market-tested pouch flavors",
+        "Select standard dosages (Nicotine 3-12mg, Caffeine 50-150mg)",
+        "Custom can color & branded label printing",
+        "Low starting MOQ (10,000 cans)",
+        "5-7 day fast sample turnaround"
+      ],
+      "sortOrder": 1
+    },
+    {
+      "title": "Full Contract Manufacturing",
+      "subtitle": "Bespoke R&D & Proprietary Formulations",
+      "bestFor": "Established Brands, Pharma, & Global Distributors",
+      "features": [
+        "Custom active ingredient formulation (client IP ownership)",
+        "Custom pouch dimensions, moisture & grammage development",
+        "Bespoke flavor development by senior flavorists",
+        "Dedicated high-speed cleanroom production runs",
+        "Full regulatory submission dossier assistance"
+      ],
+      "sortOrder": 2
+    },
+    {
+      "title": "White Label Ready-to-Ship",
+      "subtitle": "Turnkey Stock Solutions",
+      "bestFor": "Distributors & Retail Chains needing rapid replenishment",
+      "features": [
+        "Pre-formulated stock pouches ready for immediate labeling",
+        "Shortest lead time (5-7 business days)",
+        "Flexible un-labeled black/white can stock",
+        "Standard COA documentation included",
+        "Ideal for market testing and pilot campaigns"
+      ],
+      "sortOrder": 3
+    }
+  ],
+  "processSteps": [
+    {
+      "stepNumber": 1,
+      "title": "Raw Material Inspection",
+      "cnTitle": "原料检验",
+      "subtitle": "Incoming Quality Control (IQC)",
+      "description": "Every ingredient—nicotine, active nootropics, natural flavors, and food-grade non-woven pouch material—is quarantined upon arrival. Independent HPLC testing verifies 99%+ active ingredient purity before release.",
+      "details": [
+        "FTIR spectroscopy identity verification",
+        "Microbiological screening & heavy metal assay",
+        "Accredited raw material COA compliance check"
+      ],
+      "qcCheckpoint": "IQC Release Approved",
+      "iconName": "ShieldCheck",
+      "image": "raw_material_inspection_1786344732256.jpg"
+    },
+    {
+      "stepNumber": 2,
+      "title": "Formulation & Blending",
+      "cnTitle": "配料与混合",
+      "subtitle": "High-Shear Homogenization",
+      "description": "Ingredients are precisely weighed in cleanroom environments and homogenized using high-shear stainless steel industrial mixers to guarantee uniform active dose distribution across every micro-gram.",
+      "details": [
+        "Dust-free closed mixing vessels",
+        "Calibrated moisture target (10% to 35%)",
+        "Flavor stability & micro-particle distribution"
+      ],
+      "qcCheckpoint": "Batch Uniformity Verified",
+      "iconName": "FlaskConical",
+      "image": "hplc_testing_suite_1786344919960.jpg"
+    },
+    {
+      "stepNumber": 3,
+      "title": "Pouch Forming & Dosing",
+      "cnTitle": "制袋灌装",
+      "subtitle": "Automated Ultrasonic Pouching",
+      "description": "State-of-the-art automated pouching lines form, dose, and ultrasonically seal food-grade non-woven pouches at speeds up to 1,200 pouches per minute with +/- 0.01g weight precision.",
+      "details": [
+        "Non-contact ultrasonic seam sealing",
+        "In-line optical vision inspection",
+        "Real-time continuous weight feedback"
+      ],
+      "qcCheckpoint": "Zero-Leak Seam Guarantee",
+      "iconName": "Cpu",
+      "image": "cleanroom_manufacturing_1785921691074.jpg"
+    },
+    {
+      "stepNumber": 4,
+      "title": "Can Filling & Sealing",
+      "cnTitle": "罐装与封装",
+      "subtitle": "Puck Assembly & Catch-Lid Press",
+      "description": "Pouches are automatically counted (15, 20, or custom counts) and loaded into polypropylene cans. Top lids and catch-lid waste compartments are mechanically pressed and hermetically sealed.",
+      "details": [
+        "Precision optical pouch counters",
+        "Cleanroom puck transfer conveyor",
+        "Hermetic freshness press sealing"
+      ],
+      "qcCheckpoint": "Exact Count & Seal Verified",
+      "iconName": "PackageCheck",
+      "image": "nicotine_custom_brand_can_1786350796909.jpg"
+    },
+    {
+      "stepNumber": 5,
+      "title": "Labeling & Packaging",
+      "cnTitle": "贴标与包装",
+      "subtitle": "360° Branding & Shrink Banding",
+      "description": "High-speed wrap-around labeling machinery applies pressure-sensitive or metallic foil labels to cans. Laser inkjet encoders apply lot codes, and tamper-evident shrink bands are heat-sealed.",
+      "details": [
+        "360-degree high-accuracy label positioning",
+        "Laser batch code & expiration printing",
+        "Tamper-evident heat shrink safety band"
+      ],
+      "qcCheckpoint": "Visual & Code Verification",
+      "iconName": "QrCode",
+      "image": "your_brand_factory_1786346857393.jpg"
+    },
+    {
+      "stepNumber": 6,
+      "title": "Final QC",
+      "cnTitle": "出厂质检",
+      "subtitle": "Outgoing Quality Control & Retention",
+      "description": "QA inspectors pull finished samples from every master lot for final weight, label accuracy, microbial purity, and active dosage testing. Official Certificate of Analysis (COA) is issued for each batch.",
+      "details": [
+        "Final batch COA certificate issuance",
+        "24-month sample vault retention",
+        "Complete chain-of-custody batch records"
+      ],
+      "qcCheckpoint": "COA Release Certificate Issued",
+      "iconName": "FileCheck",
+      "image": "final_qc_inspection_1786344746429.jpg"
+    },
+    {
+      "stepNumber": 7,
+      "title": "Shipping",
+      "cnTitle": "发货",
+      "subtitle": "Climate-Controlled Dispatch",
+      "description": "Finished goods are stored in climate-controlled warehousing in Phoenix, Arizona (65-72°F) ready for palletized freight shipping, express delivery, or international container export.",
+      "details": [
+        "Temperature-controlled warehouse storage",
+        "US domestic freight & export customs docs",
+        "Custom drop-shipping to brand distribution hubs"
+      ],
+      "qcCheckpoint": "Freight Dispatch Ready",
+      "iconName": "Truck",
+      "image": "phoenix_logistics_hub_1786343060957.jpg"
+    }
+  ],
+  "productLines": [
+    {
+      "category": "nicotine",
+      "pageId": "nicotine-pouches",
+      "title": "Nicotine Pouches",
+      "subtitle": "Synthetic & Tobacco-Derived Nicotine Private Label Manufacturing",
+      "overview": "We manufacture premium 100% tobacco-leaf free nicotine pouches engineered for fast nicotine release, smooth feel, and long-lasting flavor stability. Available in both pharmaceutical-grade Synthetic Nicotine (99.9% purity) and Tobacco-Derived Nicotine formulations for 21+ adult brands.",
+      "marketTrends": [
+        "Rapid shift from traditional tobacco to smoke-free, discreet oral pouches",
+        "High demand for clean synthetic nicotine with zero tobacco aroma",
+        "Preference for slim, ergonomic pouches with moisture-lock technology",
+        "Skyrocketing demand in US, EU, and global distribution channels"
+      ],
+      "keyAdvantages": [
+        "99.9% Pure Pharmaceutical-Grade Nicotine Options",
+        "Precision Moisture Control (Dry 12% vs. Semi-Moist 35%)",
+        "Zero Tobacco Leaf Material, Non-Staining Tooth Formulation",
+        "Rapid 30-Second Nicotine Onset with Controlled Release Curve"
+      ],
+      "specs": {
+        "dosagesOrStrengths": ["3 mg", "6 mg", "9 mg", "12 mg", "15 mg", "Custom Dosage"],
+        "flavors": ["Spearmint Freeze", "Wintergreen Chill", "Arctic Peppermint", "Mango Freeze", "Citrus Surge", "Espresso Mocha", "Berry Chill", "Cinnamon Flame"],
+        "pouchWeights": ["Slim 0.45g", "Standard 0.60g", "Large 0.75g"],
+        "canPuckOptions": ["20-Pouch Standard Puck", "15-Pouch Slim Puck", "Catch-Lid Dual Chamber Can"]
+      },
+      "packagingCustomization": {
+        "canColors": ["Matte White", "Gloss Black", "Clear Frosted", "Metallic Silver", "Custom Pantone"],
+        "labelFinishes": ["Soft-Touch Matte", "High-Gloss UV", "Embossed Foil", "Holographic Metallic"],
+        "specialCrafts": ["Child-Resistant Lock Can", "Tamper-Evident Shrink Band", "Printed Master Cartons"]
+      },
+      "complianceNotice": "Notice: Contract manufacturing services for nicotine pouches are exclusively provided to 21+ adult brand owners. All clients must comply with applicable FDA, TTB, and regional state regulations. Phoenix Pouch Co. maintains cGMP & FDA registered facility standards.",
+      "sortOrder": 1,
+      "heroImage": "cleanroom_manufacturing_1785921691074.jpg",
+      "canImage": "nicotine_can_transparent.png",
+      "openCanImage": "nicotine_open_can_1786418063205.jpg",
+      "heroBanner": "nicotine_hero_banner_1786348806376.jpg",
+      "categoryImage": "nicotine_can_category_1786006821337.jpg",
+      "packagingImage": "nicotine_custom_brand_can_1786350796909.jpg",
+      "seo": {
+        "metaTitle": "Nicotine Pouch OEM Manufacturing | Phoenix Pouch Co.",
+        "metaDescription": "Private label nicotine pouches made in Phoenix, AZ. 3–15mg, synthetic or tobacco-derived, 5-7 day samples."
+      }
+    },
+    {
+      "category": "nootropic",
+      "pageId": "nootropic-pouches",
+      "title": "Nootropic Pouches",
+      "subtitle": "Cognitive Focus & Brain Health Sublingual Pouches",
+      "overview": "Formulated for biohackers, executives, gamers, and students seeking mental clarity without nicotine or crash. Our sublingual nootropic pouches utilize bioavailable ingredients like L-Theanine, Alpha-GPC, and Caffeine combinations for rapid mucosal absorption.",
+      "marketTrends": [
+        "Explosive growth in the brain health & cognitive enhancement supplement industry",
+        "Shift away from energy drinks towards clean, zero-sugar pouch delivery",
+        "Synergistic pairing of natural caffeine with L-Theanine for smooth focus",
+        "High margin potential for lifestyle & wellness supplement brands"
+      ],
+      "keyAdvantages": [
+        "Direct Sublingual Absorption (Bypasses First-Pass Liver Metabolism)",
+        "Zero Sugar, Zero Calories, Zero Tobacco or Nicotine",
+        "Custom Active Blends (Alpha-GPC, Lion's Mane, L-Theanine, B-Complex)",
+        "Instant Refreshment & Clean Executive Energy"
+      ],
+      "specs": {
+        "dosagesOrStrengths": [
+          "Focus Matrix (50mg L-Theanine + 40mg Natural Caffeine)",
+          "Cognitive Max (100mg L-Theanine + Alpha-GPC)",
+          "Caffeine-Free Focus (100mg L-Theanine + B12)",
+          "Custom Blend"
+        ],
+        "flavors": ["Crisp Mint", "Citrus Clarity", "Matcha Green Tea", "Wild Blueberry", "Lemon Ginger"],
+        "pouchWeights": ["Slim 0.50g", "Standard 0.65g"],
+        "canPuckOptions": ["15-Pouch Pocket Puck", "20-Pouch Standard Can"]
+      },
+      "packagingCustomization": {
+        "canColors": ["Titanium Dark Grey", "Matte Black", "Cobalt Blue", "Eco Natural Slate"],
+        "labelFinishes": ["Metallic Foil Stamping", "Matte Texture", "Spot UV Gloss"],
+        "specialCrafts": ["Custom Die-Cut Labels", "Retail Counter Display Boxes"]
+      },
+      "complianceNotice": "Notice: Nootropic pouches are manufactured as dietary supplement pouches under 21 CFR Part 111 cGMP standards. Label claims must align with FDA structure/function guidance.",
+      "sortOrder": 2,
+      "heroImage": "cleanroom_manufacturing_1785921691074.jpg",
+      "canImage": "nootropic_can_transparent.png",
+      "openCanImage": "nootropic_open_can_1786418073496.jpg",
+      "heroBanner": "nootropic_hero_banner_1786348817231.jpg",
+      "categoryImage": "nootropic_can_category_1786006832814.jpg",
+      "packagingImage": "nootropic_custom_brand_can_1786350813488.jpg",
+      "seo": {
+        "metaTitle": "Nootropic Pouch Manufacturing | Phoenix Pouch Co.",
+        "metaDescription": "cGMP nootropic pouches with L-Theanine, Alpha-GPC, and custom blends. Made in Phoenix, AZ."
+      }
+    },
+    {
+      "category": "caffeine",
+      "pageId": "caffeine-pouches",
+      "title": "Caffeine Pouches",
+      "subtitle": "Tobacco-Free Energy & Stamina Oral Pouches",
+      "overview": "High-octane oral energy pouches designed for athletes, night-shift workers, long-distance drivers, and active professionals. Delivering fast-acting caffeine directly through buccal absorption, providing instant alertness without liquid volume or teeth staining.",
+      "marketTrends": [
+        "Rising consumer demand for portable, liquid-free energy solutions",
+        "Popular alternative for individuals quitting tobacco/nicotine habits",
+        "High adoption in fitness, gaming, trucking, and outdoor recreation sectors",
+        "Strong repeat purchase rate and compact retail footprint"
+      ],
+      "keyAdvantages": [
+        "Fast-Acting Buccal Absorption in 60 Seconds",
+        "Zero Sugar, Zero Nicotine, Zero Tobacco",
+        "Fortified with Taurine, Electrolytes & Vitamin B-Complex",
+        "High Temperature & Humidity Stability for Pocket Convenience"
+      ],
+      "specs": {
+        "dosagesOrStrengths": ["50 mg Caffeine", "80 mg Caffeine", "100 mg Caffeine", "150 mg Maximum Energy"],
+        "flavors": ["Energy Surge (Red Citrus)", "Cool Peppermint", "Iced Cold Brew", "Tropical Mango", "Cinnamon Blast"],
+        "pouchWeights": ["Standard 0.60g", "Max 0.80g"],
+        "canPuckOptions": ["20-Pouch Standard Can", "15-Pouch Slim Can"]
+      },
+      "packagingCustomization": {
+        "canColors": ["Electric Orange", "Jet Black", "Neon Yellow", "Brushed Aluminum"],
+        "labelFinishes": ["High-Gloss UV", "Textured Grip Finish", "Metallic Accents"],
+        "specialCrafts": ["Multi-Pack Bundle Sleeves", "Point-of-Sale Merchandising Packaging"]
+      },
+      "complianceNotice": "Notice: Caffeine pouches are manufactured under cGMP guidelines. Responsible labeling including caffeine content and adult consumption recommendations is standard.",
+      "sortOrder": 3,
+      "heroImage": "cleanroom_manufacturing_1785921691074.jpg",
+      "canImage": "caffeine_can_transparent.png",
+      "openCanImage": "caffeine_open_can_1786418081983.jpg",
+      "heroBanner": "caffeine_hero_banner_1786348827183.jpg",
+      "categoryImage": "caffeine_can_category_1786006844709.jpg",
+      "packagingImage": "caffeine_custom_brand_can_1786350824662.jpg",
+      "seo": {
+        "metaTitle": "Caffeine Pouch OEM | Phoenix Pouch Co.",
+        "metaDescription": "Tobacco-free caffeine pouches 50–150mg, made in Phoenix, AZ. Private label and contract manufacturing."
+      }
+    }
+  ],
+  "pageSeos": [
+    {
+      "pageId": "home",
+      "path": "/",
+      "metaTitle": "Phoenix Pouch Co. | US Pouch Contract Manufacturing",
+      "metaDescription": "Private label OEM for nicotine, nootropic, and caffeine pouches. cGMP cleanroom in Phoenix, Arizona. 5–7 day samples, 2–3 week production.",
+      "ogTitle": "Precision Pouches, Made in Phoenix, USA",
+      "ogDescription": "One-stop US contract manufacturing for private label nicotine, nootropic, and caffeine pouches. FDA-registered cGMP facility.",
+      "keywords": "pouch contract manufacturing, private label nicotine pouches, nootropic pouches OEM, caffeine pouches, Phoenix Arizona cGMP, US pouch manufacturer",
+      "robots": "index,follow",
+      "shareImage": "cleanroom_manufacturing_1785921691074.jpg",
+      "sortOrder": 0
+    },
+    {
+      "pageId": "nicotine-pouches",
+      "path": "/nicotine-pouches",
+      "metaTitle": "Nicotine Pouch OEM Manufacturing | Phoenix Pouch Co.",
+      "metaDescription": "Tobacco-free nicotine pouches, 3–15mg, synthetic or tobacco-derived. Phoenix cGMP OEM with 25+ flavors and 5–7 day samples.",
+      "ogTitle": "Nicotine Pouch Private Label Manufacturing",
+      "ogDescription": "99.9% pharmaceutical-grade synthetic or tobacco-derived nicotine pouches. Slim 0.45g to 0.75g, moisture-controlled, made in Phoenix, AZ.",
+      "keywords": "nicotine pouch OEM, private label nicotine pouches, synthetic nicotine pouches, tobacco-derived nicotine, 6mg nicotine pouch manufacturer, Phoenix AZ",
+      "robots": "index,follow",
+      "shareImage": "nicotine_hero_banner_1786348806376.jpg",
+      "sortOrder": 1
+    },
+    {
+      "pageId": "nootropic-pouches",
+      "path": "/nootropic-pouches",
+      "metaTitle": "Nootropic Pouch Manufacturing | Phoenix Pouch Co.",
+      "metaDescription": "cGMP nootropic pouches with L-Theanine, Alpha-GPC, and custom blends. Nicotine-free sublingual focus pouches made in Phoenix, AZ.",
+      "ogTitle": "Nootropic & Focus Pouch OEM",
+      "ogDescription": "Sublingual brain-health pouches: L-Theanine, Alpha-GPC, caffeine, B-Complex. Zero sugar, zero nicotine. Manufactured in Phoenix.",
+      "keywords": "nootropic pouches, L-Theanine pouches, Alpha-GPC pouch manufacturer, cognitive pouch OEM, nicotine-free pouches, Phoenix AZ",
+      "robots": "index,follow",
+      "shareImage": "nootropic_hero_banner_1786348817231.jpg",
+      "sortOrder": 2
+    },
+    {
+      "pageId": "caffeine-pouches",
+      "path": "/caffeine-pouches",
+      "metaTitle": "Caffeine Pouch OEM | Phoenix Pouch Co.",
+      "metaDescription": "Tobacco-free caffeine pouches 50–150mg with taurine and electrolytes. Private label energy pouches made in Phoenix, AZ.",
+      "ogTitle": "Caffeine Energy Pouch Contract Manufacturing",
+      "ogDescription": "Fast buccal caffeine pouches for athletes and shift workers. 50–150mg, zero sugar, zero nicotine. US cGMP manufacturing.",
+      "keywords": "caffeine pouches, energy pouch OEM, tobacco-free caffeine pouch, 80mg caffeine pouch manufacturer, private label energy pouches",
+      "robots": "index,follow",
+      "shareImage": "caffeine_hero_banner_1786348827183.jpg",
+      "sortOrder": 3
+    },
+    {
+      "pageId": "service",
+      "path": "/service",
+      "metaTitle": "OEM & Contract Manufacturing Services | Phoenix Pouch Co.",
+      "metaDescription": "Private label, full contract manufacturing, and white-label pouch programs. MOQ 10,000 cans. Phoenix cGMP plant, 2–3 week production.",
+      "ogTitle": "Pouch OEM, Contract Manufacturing & White Label",
+      "ogDescription": "Choose private label, full contract, or white-label pouch programs. Formulation, packaging, and COA from our Phoenix facility.",
+      "keywords": "pouch OEM services, private label pouches, white label nicotine pouches, contract manufacturing pouches, pouch MOQ",
+      "robots": "index,follow",
+      "shareImage": "your_brand_factory_1786346857393.jpg",
+      "sortOrder": 4
+    },
+    {
+      "pageId": "production-process",
+      "path": "/production-process",
+      "metaTitle": "Pouch Production Process | Phoenix Pouch Co.",
+      "metaDescription": "Seven-step cGMP pouch manufacturing: IQC, blending, pouching, filling, labeling, final QC, and shipping. HPLC COA on every batch.",
+      "ogTitle": "Seven-Step cGMP Pouch Manufacturing",
+      "ogDescription": "From raw-material IQC to final QC and logistics. Automated pouching lines in Phoenix, Arizona with batch-level COA.",
+      "keywords": "pouch manufacturing process, cGMP pouch production, IQC pouch factory, HPLC pouch testing, Phoenix pouch plant",
+      "robots": "index,follow",
+      "shareImage": "process_hero_banner_1786343560650.jpg",
+      "sortOrder": 5
+    },
+    {
+      "pageId": "about-us",
+      "path": "/about-us",
+      "metaTitle": "About Phoenix Pouch Co. | Phoenix, Arizona",
+      "metaDescription": "US pouch manufacturer in Phoenix, AZ. FDA-registered cGMP facility, HPLC testing, COA on every batch for nicotine, nootropic, and caffeine pouches.",
+      "ogTitle": "About Phoenix Pouch Co.",
+      "ogDescription": "Precision pouches made in Phoenix. FDA-registered cGMP cleanroom, US talent, and logistics for private-label brand owners.",
+      "keywords": "Phoenix Pouch Co, pouch manufacturer Arizona, FDA registered pouch facility, US made pouches, cGMP pouch factory",
+      "robots": "index,follow",
+      "shareImage": "phoenix_facility_aerial_1786343049883.jpg",
+      "sortOrder": 6
+    },
+    {
+      "pageId": "contact-us",
+      "path": "/contact-us",
+      "metaTitle": "Request a Quote | Phoenix Pouch Co.",
+      "metaDescription": "Submit OEM pouch specifications for nicotine, nootropic, or caffeine. Phoenix sales team responds within 24 business hours.",
+      "ogTitle": "Request a Pouch Manufacturing Quote",
+      "ogDescription": "Tell us your product line, strength, flavor, and volume. A Phoenix OEM specialist replies within 24 business hours.",
+      "keywords": "pouch manufacturing quote, OEM pouch RFQ, nicotine pouch manufacturer contact, Phoenix pouch sales",
+      "robots": "index,follow",
+      "shareImage": "phoenix_logistics_hub_1786343060957.jpg",
+      "sortOrder": 7
+    }
+  ]
+}

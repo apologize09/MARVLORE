@@ -1,0 +1,17 @@
+---
+description: CMS 配置、SQLite 与 uploads 可以提交；构建产物禁止推送
+alwaysApply: true
+---
+
+# CMS：配置和内容可推送，构建不推送
+
+操作 `strapi_admin/company-cms` 的 git 时：
+
+- **可以**提交：`.env`、`config/**`、`.tmp/data.db`、`public/uploads/`
+- **不要**提交：`node_modules/`、`dist/`、`build/`、`.strapi/`、`.cache/`
+- 提交数据库前先停掉本地 `strapi develop`，避免 SQLite 不完整
+
+```text
+❌ BAD  git add dist node_modules .strapi
+✅ GOOD git add .env .tmp/data.db public/uploads
+```

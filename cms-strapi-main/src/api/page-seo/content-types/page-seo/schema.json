@@ -1,0 +1,68 @@
+{
+  "kind": "collectionType",
+  "collectionName": "page_seos",
+  "info": {
+    "singularName": "page-seo",
+    "pluralName": "page-seos",
+    "displayName": "Page SEO",
+    "description": "Per-route SEO for the Phoenix Pouch website"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "pageId": {
+      "type": "enumeration",
+      "enum": [
+        "home",
+        "nicotine-pouches",
+        "nootropic-pouches",
+        "caffeine-pouches",
+        "service",
+        "production-process",
+        "about-us",
+        "contact-us"
+      ],
+      "required": true,
+      "unique": true
+    },
+    "path": {
+      "type": "string",
+      "required": true
+    },
+    "metaTitle": {
+      "type": "string",
+      "required": true,
+      "maxLength": 80
+    },
+    "metaDescription": {
+      "type": "text",
+      "required": true,
+      "maxLength": 200
+    },
+    "ogTitle": {
+      "type": "string"
+    },
+    "ogDescription": {
+      "type": "text"
+    },
+    "keywords": {
+      "type": "text"
+    },
+    "robots": {
+      "type": "string",
+      "default": "index,follow"
+    },
+    "shareImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "sortOrder": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

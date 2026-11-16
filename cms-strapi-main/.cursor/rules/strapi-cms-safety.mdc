@@ -1,0 +1,40 @@
+---
+description: Strapi CMS 安全约束：先分析结构，不改库、不改 .env、不删 API、不碰生产库
+alwaysApply: true
+---
+
+# Strapi CMS 安全规则
+
+本仓库是 Strapi 5 项目。任何改动前，先读现有结构再动手。
+
+## 修改前先分析
+
+先核对，不要凭假设改：
+
+1. `src/api/**/content-types/**/schema.json` 字段、relation、draftAndPublish
+2. `src/api/*/routes`、`controllers`、`services`
+3. `config/database.ts`、`config/api.ts`、现有 `.env.example`
+4. 前端或其它调用方是否已依赖该 API
+
+## 禁止
+
+- **不要随意改数据库结构**：不改已有 `schema.json` 的字段类型/必填/删除列，不做 destructive migration，不改生产库连接配置。用户明确要求除外。
+- **不要修改 `.env`**：密钥、数据库账号、端口一律不动。新变量只加到 `.env.example`，由用户自己写入 `.env`。
+- **不要删除已有 API**：保留已有 `src/api/*` 的 content-type、route、controller、service；不删、不改名、不关闭已有 endpoint。
+- **不要直接操作生产数据库**：不对生产执行 SQL / migrate / seed / reset，不连生产库跑 `strapi console`。
+
+```text
+❌ BAD  删 src/api/article 或把 title 改成必填并清数据
+✅ GOOD 新增 src/api/product-line，保留 article/category/author 不动
+```
+
+```text
+❌ BAD  直接改 .env 里的 DATABASE_* / APP_KEYS
+✅ GOOD 只更新 .env.example，说明需要用户本地补齐
+```
+
+## 允许
+
+- 用户明确要求时：新增 API、新增非破坏字段
+- 改本地业务代码、`.env.example`、文档
+- 本地 SQLite 开发库的只读查看（不重置、不灌生产数据）

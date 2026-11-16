@@ -1,0 +1,34 @@
+#!/bin/sh
+# Reject push if local build artifacts are in commits being pushed.
+# Config, SQLite (.tmp/data.db) and public/uploads are allowed.
+
+blocked='(^|/)node_modules/|(^|/)dist/|(^|/)build/|(^|/)\.strapi/|(^|/)\.cache/|(^|/)\.vite/'
+
+z40=0000000000000000000000000000000000000000
+blocked_found=
+
+while read local_ref local_sha remote_ref remote_sha
+do
+  if [ "$local_sha" = "$z40" ]; then
+    continue
+  fi
+  if [ "$remote_sha" = "$z40" ]; then
+    range="$local_sha"
+  else
+    range="$remote_sha..$local_sha"
+  fi
+  files=$(git diff --name-only --diff-filter=ACMR "$range" 2>/dev/null)
+  hits=$(printf '%s\n' "$files" | grep -E "$blocked" || true)
+  if [ -n "$hits" ]; then
+    blocked_found=1
+    echo "pre-push: blocked local build files:" >&2
+    printf '%s\n' "$hits" >&2
+  fi
+done
+
+if [ -n "$blocked_found" ]; then
+  echo "pre-push: refuse to push. Keep node_modules, dist, build, .strapi, .cache, .vite out of git." >&2
+  exit 1
+fi
+
+exit 0
