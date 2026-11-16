@@ -9,13 +9,19 @@ import { directCylinderClock, directCylinderDuration, directCylinderPose, direct
 
 function VideoPreview({item,style,paused,delay=0}){
  const ref=useRef(null);
+ const src=item.homePreviewSrc||item.previewSrc;
  useEffect(()=>{
-  const video=ref.current;if(!video)return;
-  if(paused){video.pause();return;}
+  const video=ref.current;if(!video||!src)return;
+  if(paused){
+   video.pause();
+   if(video.getAttribute('src')){video.removeAttribute('src');video.load();}
+   return;
+  }
+  if(video.getAttribute('src')!==src){video.src=src;video.load();}
   const timer=setTimeout(()=>video.play().catch(()=>{}),delay);
   return ()=>{clearTimeout(timer);video.pause();};
- },[paused,item.homePreviewSrc,item.previewSrc,delay]);
- return <video ref={ref} className="circular-carousel__photo" src={item.homePreviewSrc||item.previewSrc}
+ },[paused,src,delay]);
+ return <video ref={ref} className="circular-carousel__photo"
   poster={item.src} muted playsInline loop preload="none" aria-hidden="true"
   draggable={false} style={style}/>;
 }

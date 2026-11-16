@@ -1,4 +1,4 @@
-import {heroProjects} from './hero/images.js?v=e3a01fefe9';
+import {heroProjects} from './hero/images.js?v=809fa52db4';
 
 // Share the supplied films with home, keeping each case independently addressable.
 export const filmProjects=heroProjects.filter(project=>project.videoSrc).map(project=>({
