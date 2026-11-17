@@ -2,6 +2,17 @@
 
 Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/dev-docs/cli) (CLI) which lets you scaffold and manage your project in seconds.
 
+## 本地重新初始化
+
+清空本地 SQLite、重建管理员并重新灌入 `data/pouch-seed.json`（不改 `.env`，仅 SQLite）：
+
+```sh
+ADMIN_EMAIL=you@example.com ADMIN_PASSWORD='ComplexPass1!' npm run reinit:local
+npm run develop
+```
+
+凭据会写入 `.tmp/admin-credentials.txt`（已被 gitignore）。旧库备份在 `.tmp/backup/`。
+
 ### `develop`
 
 Start your Strapi application with autoReload enabled. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-develop)
