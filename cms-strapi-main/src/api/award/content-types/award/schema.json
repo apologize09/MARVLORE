@@ -4,7 +4,7 @@
   "info": {
     "singularName": "award",
     "pluralName": "awards",
-    "displayName": "Award",
+    "displayName": "Awards",
     "description": "Awards carousel items (V1.0). Image paths reference static dist assets by default."
   },
   "options": {

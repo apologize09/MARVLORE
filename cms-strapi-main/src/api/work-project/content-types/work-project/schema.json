@@ -4,7 +4,7 @@
   "info": {
     "singularName": "work-project",
     "pluralName": "work-projects",
-    "displayName": "Work Project",
+    "displayName": "作品",
     "description": "Work portfolio project (hash URL #case/{legacyId|documentId})"
   },
   "options": {

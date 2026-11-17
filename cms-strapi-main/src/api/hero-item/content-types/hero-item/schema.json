@@ -4,7 +4,7 @@
   "info": {
     "singularName": "hero-item",
     "pluralName": "hero-items",
-    "displayName": "Hero Item",
+    "displayName": "Hero",
     "description": "V1.0 Hero carousel/orbit media. URL strings reference static dist assets; physics/layout stay in frontend."
   },
   "options": {

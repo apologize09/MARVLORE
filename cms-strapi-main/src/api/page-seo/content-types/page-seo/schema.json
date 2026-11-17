@@ -4,7 +4,7 @@
   "info": {
     "singularName": "page-seo",
     "pluralName": "page-seos",
-    "displayName": "Page SEO",
+    "displayName": "SEO",
     "description": "Legacy per-route SEO (unused by Marvlore; retained empty)"
   },
   "options": {
