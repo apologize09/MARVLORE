@@ -1,0 +1,31 @@
+.cms-locale-switch{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:40;
+  display:flex;
+  gap:4px;
+  padding:4px;
+  border:1px solid #ffffff14;
+  border-radius:999px;
+  background:#121214e6;
+  backdrop-filter:blur(10px);
+}
+.cms-locale-switch button{
+  min-width:44px;
+  min-height:36px;
+  padding:6px 12px;
+  border-radius:999px;
+  background:transparent;
+  color:#a7a7ad;
+  font-size:12px;
+  letter-spacing:.04em;
+}
+.cms-locale-switch button[aria-pressed="true"]{
+  background:#363639;
+  color:#f7f7f5;
+}
+.cms-locale-switch button:hover{color:#fff;}
+@media(max-width:720px){
+  .cms-locale-switch{right:12px;bottom:12px;}
+}

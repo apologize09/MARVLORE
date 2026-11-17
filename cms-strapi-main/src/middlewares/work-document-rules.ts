@@ -1,4 +1,5 @@
 import type { Core } from '@strapi/strapi';
+import { bumpWorkCacheVersion } from '../utils/work-cache-version';
 import {
   WORK_UIDS,
   assertCategoryDeletable,
@@ -10,6 +11,7 @@ import {
 } from '../utils/work-rules';
 
 const WRITE_ACTIONS = new Set(['create', 'update', 'delete', 'publish', 'unpublish', 'discardDraft']);
+const WORK_UID_SET = new Set<string>(Object.values(WORK_UIDS));
 
 export function registerWorkDocumentRules(strapi: Core.Strapi) {
   strapi.documents.use(async (ctx, next) => {
@@ -87,6 +89,14 @@ export function registerWorkDocumentRules(strapi: Core.Strapi) {
       }
     }
 
-    return next();
+    const result = await next();
+
+    // Publish / unpublish / edits invalidate public Work caches.
+    if (WORK_UID_SET.has(uid)) {
+      const bumped = bumpWorkCacheVersion(`${uid}:${action}`);
+      strapi.log.info(`[work-cache] bumped version=${bumped.version} via ${bumped.reason}`);
+    }
+
+    return result;
   });
 }

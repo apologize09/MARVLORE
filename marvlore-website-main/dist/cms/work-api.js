@@ -44,5 +44,6 @@ export function createWorkApi(config) {
         query.page,
         query.pageSize,
       ]),
+    getCacheVersion: () => get('/work-cache-version', {}, ['cache-version']),
   };
 }

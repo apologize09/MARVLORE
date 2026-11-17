@@ -43,7 +43,14 @@ export async function resolveWorkBundle() {
 
   try {
     const api = createWorkApi(config);
-    const next = { ...fallback, source: `cms:${config.stage}` };
+    const next = { ...fallback, source: `cms:${config.stage}`, locale: config.locale };
+
+    try {
+      const pageRes = await api.getWorkPage();
+      next.workPage = pageRes?.data || null;
+    } catch {
+      next.workPage = null;
+    }
 
     if (config.useCategories) {
       const categoriesRes = await api.getCategories();

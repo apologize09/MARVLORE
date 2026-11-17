@@ -13,6 +13,8 @@ export function buildStaticBundle() {
     workDetailCases,
     detailById,
     awards,
+    workPage: null,
+    locale: 'zh-CN',
   };
 }
 

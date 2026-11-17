@@ -27,6 +27,14 @@ export function getAwards() {
   return bundle.awards;
 }
 
+export function getWorkPage() {
+  return bundle.workPage || null;
+}
+
+export function getBundleLocale() {
+  return bundle.locale || 'zh-CN';
+}
+
 export function installWorkBundle(next) {
   bundle = next;
   try {

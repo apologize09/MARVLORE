@@ -3,6 +3,7 @@
  */
 import { factories } from '@strapi/strapi';
 import { createWorkPublicService } from '../../../services/work-public';
+import { getWorkCacheVersion } from '../../../utils/work-cache-version';
 import { toProjectDetailDto } from '../../../utils/work-dto';
 import { projectDetailPopulate, resolveLocale } from '../../../utils/work-query';
 import { mergeActiveCategoryFilter } from '../../../utils/work-rules';
@@ -57,6 +58,15 @@ export default factories.createCoreController('api::work-project.work-project', 
 
     async search(ctx) {
       return work.search(ctx);
+    },
+
+    async cacheVersion(ctx) {
+      ctx.body = {
+        data: {
+          version: getWorkCacheVersion(),
+          generatedAt: new Date(getWorkCacheVersion()).toISOString(),
+        },
+      };
     },
 
     async findRaw(ctx) {
