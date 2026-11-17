@@ -19,6 +19,7 @@ const PUBLIC_ACTIONS: Record<string, string[]> = {
   // V1.0 Contact / Awards (editorial read only)
   'global-setting': ['find'],
   award: ['find', 'findOne'],
+  'service-item': ['find', 'findOne'],
 };
 
 const REQUIRED_LOCALES: Array<{ code: string; name: string }> = [

@@ -18,6 +18,21 @@ export function toAwardDto(row: Record<string, unknown>) {
   };
 }
 
+export function toServiceItemDto(row: Record<string, unknown>) {
+  return {
+    documentId: row.documentId,
+    id: row.legacyId || row.slug,
+    legacyId: row.legacyId ?? null,
+    slug: row.slug,
+    en: row.titleEn ?? '',
+    cn: row.titleCn ?? '',
+    description: row.description ?? '',
+    image: row.imageUrl ?? '',
+    typeScale: row.typeScale == null || row.typeScale === '' ? undefined : Number(row.typeScale),
+    sortOrder: row.sortOrder ?? 0,
+  };
+}
+
 export function toGlobalSettingDto(row: Record<string, unknown> | null) {
   if (!row) return null;
   return {

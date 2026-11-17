@@ -1,6 +1,7 @@
 import { projects as staticProjects, awards } from '../data.js?v=work-covers-153';
 import { workReelItems as staticReelItems, workReelOptions } from '../work-reel-data.js?v=cover-crops-125';
 import { workDetailCases as staticDetailCases } from '../work-detail-data.js?v=cover-crops-125';
+import { serviceItems as staticServiceItems } from '../services/items.js';
 
 export const STATIC_CONTACT = {
   siteName: 'MARVLORE',
@@ -30,6 +31,7 @@ export function buildStaticBundle() {
     detailById,
     awards: awards.slice(),
     contact: { ...STATIC_CONTACT },
+    services: staticServiceItems.slice(),
     workPage: null,
     locale: 'zh-CN',
   };

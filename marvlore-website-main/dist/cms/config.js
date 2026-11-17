@@ -5,12 +5,12 @@
  *   ?cmsWork=categories|list|detail|all
  *   localStorage.marvlore.cmsWork = same
  *   ?cmsFilter=1          (or on with cmsWork=list|detail|all)
- *   ?cmsSite=contact|awards|all   (V1.0 Contact / Awards; independent of Work)
+ *   ?cmsSite=contact|awards|services|all   (V1.0 site modules; independent of Work)
  *   ?cmsBase=http://127.0.0.1:1337
  *   localStorage.marvlore.cmsBase
  */
 const STAGES = new Set(['off', 'categories', 'list', 'detail', 'all']);
-const SITE_STAGES = new Set(['off', 'contact', 'awards', 'all']);
+const SITE_STAGES = new Set(['off', 'contact', 'awards', 'services', 'all']);
 
 function readParam(name) {
   try {
@@ -55,6 +55,7 @@ export function getCmsConfig() {
     useList;
   const useContact = siteStage === 'contact' || siteStage === 'all';
   const useAwards = siteStage === 'awards' || siteStage === 'all';
+  const useServices = siteStage === 'services' || siteStage === 'all';
 
   return {
     stage,
@@ -69,5 +70,6 @@ export function getCmsConfig() {
     useFilter,
     useContact,
     useAwards,
+    useServices,
   };
 }

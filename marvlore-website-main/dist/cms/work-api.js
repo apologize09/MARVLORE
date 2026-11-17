@@ -46,6 +46,7 @@ export function createWorkApi(config) {
       ]),
     getCacheVersion: () => get('/work-cache-version', {}, ['cache-version']),
     getAwards: () => get('/awards', { sort: 'sortOrder:asc' }, ['awards']),
+    getServices: () => get('/service-items', { sort: 'sortOrder:asc' }, ['services']),
     // single type — not localized; avoid forcing locale query
     getGlobalSetting: async () => {
       const full = url(baseUrl, '/global-setting', {});

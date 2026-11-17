@@ -123,6 +123,30 @@ export async function resolveWorkBundle() {
       }
     }
 
+    if (config.useServices) {
+      try {
+        const servicesRes = await api.getServices();
+        const rows = servicesRes?.data || [];
+        if (rows.length) {
+          next.services = rows.map((row) => {
+            const item = {
+              id: row.id || row.slug,
+              en: row.en,
+              cn: row.cn,
+              image: row.image,
+              description: row.description || '',
+            };
+            if (row.typeScale != null && Number.isFinite(Number(row.typeScale))) {
+              item.typeScale = Number(row.typeScale);
+            }
+            return item;
+          });
+        }
+      } catch (err) {
+        console.warn('[cms] services fallback:', err?.message || err);
+      }
+    }
+
     return next;
   } catch (err) {
     console.warn('[cms] falling back to static Work data:', err?.message || err);
