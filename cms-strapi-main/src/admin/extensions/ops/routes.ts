@@ -3,13 +3,20 @@
  * Kept modular (Website / Work / Media / System) to mirror site build-*.mjs boundaries.
  */
 
+export type ContentKind = 'collection' | 'single';
+
 export type ContentLink = {
-  /** Operator label (zh) */
+  /** URL segment under /ops/website or /ops/work */
+  slug: string;
+  /** Operator label */
   label: string;
   /** Short helper for editors */
   hint: string;
-  /** Content-Manager deep link (admin-relative) */
-  to: string;
+  /** Strapi content-type UID */
+  uid: string;
+  kind: ContentKind;
+  /** Content-Manager deep link (advanced editor fallback) */
+  cmTo: string;
   /** Optional module tag matching frontend build scripts */
   module?: 'hero' | 'about' | 'services' | 'contact' | 'work' | 'seo' | 'faq';
 };
@@ -17,86 +24,122 @@ export type ContentLink = {
 const cmCollection = (uid: string) => `/content-manager/collection-types/${uid}`;
 const cmSingle = (uid: string) => `/content-manager/single-types/${uid}`;
 
-/** Website Management — homepage sections */
+/** Website Management — homepage sections (in-hub paths: /ops/website/:slug) */
 export const WEBSITE_LINKS: ContentLink[] = [
   {
+    slug: 'hero',
     label: 'Hero',
     hint: '首页轮播 / 轨道媒体',
-    to: cmCollection('api::hero-item.hero-item'),
+    uid: 'api::hero-item.hero-item',
+    kind: 'collection',
+    cmTo: cmCollection('api::hero-item.hero-item'),
     module: 'hero',
   },
   {
+    slug: 'about',
     label: 'About',
     hint: '关于页文案与拼贴图',
-    to: cmSingle('api::about-page.about-page'),
+    uid: 'api::about-page.about-page',
+    kind: 'single',
+    cmTo: cmSingle('api::about-page.about-page'),
     module: 'about',
   },
   {
+    slug: 'services',
     label: 'Services',
     hint: '服务目录条目',
-    to: cmCollection('api::service-item.service-item'),
+    uid: 'api::service-item.service-item',
+    kind: 'collection',
+    cmTo: cmCollection('api::service-item.service-item'),
     module: 'services',
   },
   {
+    slug: 'awards',
     label: 'Awards',
     hint: '奖项轮播',
-    to: cmCollection('api::award.award'),
+    uid: 'api::award.award',
+    kind: 'collection',
+    cmTo: cmCollection('api::award.award'),
   },
   {
+    slug: 'contact',
     label: 'Contact',
     hint: '联络与全局站点信息',
-    to: cmSingle('api::global-setting.global-setting'),
+    uid: 'api::global-setting.global-setting',
+    kind: 'single',
+    cmTo: cmSingle('api::global-setting.global-setting'),
     module: 'contact',
   },
   {
+    slug: 'faq',
     label: 'FAQ',
     hint: '常见问题',
-    to: cmCollection('api::faq.faq'),
+    uid: 'api::faq.faq',
+    kind: 'collection',
+    cmTo: cmCollection('api::faq.faq'),
     module: 'faq',
   },
   {
+    slug: 'seo',
     label: 'SEO',
     hint: '页面 SEO 条目',
-    to: cmCollection('api::page-seo.page-seo'),
+    uid: 'api::page-seo.page-seo',
+    kind: 'collection',
+    cmTo: cmCollection('api::page-seo.page-seo'),
     module: 'seo',
   },
 ];
 
-/** Work Studio — portfolio pipeline */
+/** Work Studio — portfolio pipeline (in-hub paths: /ops/work/:slug) */
 export const WORK_LINKS: ContentLink[] = [
   {
+    slug: 'overview',
     label: '作品总览',
     hint: 'Work 频道页标题与 SEO',
-    to: cmSingle('api::work-page.work-page'),
+    uid: 'api::work-page.work-page',
+    kind: 'single',
+    cmTo: cmSingle('api::work-page.work-page'),
     module: 'work',
   },
   {
+    slug: 'categories',
     label: '分类',
     hint: '作品一级 / 二级分类',
-    to: cmCollection('api::work-category.work-category'),
+    uid: 'api::work-category.work-category',
+    kind: 'collection',
+    cmTo: cmCollection('api::work-category.work-category'),
     module: 'work',
   },
   {
+    slug: 'tags',
     label: '标签',
     hint: '作品筛选标签',
-    to: cmCollection('api::work-tag.work-tag'),
+    uid: 'api::work-tag.work-tag',
+    kind: 'collection',
+    cmTo: cmCollection('api::work-tag.work-tag'),
     module: 'work',
   },
   {
+    slug: 'projects',
     label: '作品',
     hint: '作品条目与封面媒体',
-    to: cmCollection('api::work-project.work-project'),
+    uid: 'api::work-project.work-project',
+    kind: 'collection',
+    cmTo: cmCollection('api::work-project.work-project'),
     module: 'work',
   },
   {
+    slug: 'media',
     label: '详情媒体',
     hint: '作品详情页媒体块',
-    to: cmCollection('api::work-project-media.work-project-media'),
+    uid: 'api::work-project-media.work-project-media',
+    kind: 'collection',
+    cmTo: cmCollection('api::work-project-media.work-project-media'),
     module: 'work',
   },
 ];
 
-export const MEDIA_LINKS: ContentLink[] = [
+export const MEDIA_LINKS: Array<{ label: string; hint: string; to: string }> = [
   {
     label: '媒体库',
     hint: '上传、预览、替换图片与视频',
@@ -104,7 +147,7 @@ export const MEDIA_LINKS: ContentLink[] = [
   },
 ];
 
-export const SYSTEM_LINKS: ContentLink[] = [
+export const SYSTEM_LINKS: Array<{ label: string; hint: string; to: string }> = [
   { label: '用户', hint: '后台登录账号', to: '/settings/users' },
   { label: '角色与权限', hint: '管理员角色', to: '/settings/roles' },
   { label: '语言', hint: '内容语言（i18n）', to: '/settings/internationalization' },
