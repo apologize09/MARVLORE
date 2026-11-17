@@ -4,6 +4,7 @@ import {
   installMarvloreDocumentTitle,
   marvloreBrandTranslations,
 } from './extensions/marvlore-brand';
+import MarvloreMark from './extensions/marvlore-mark.svg';
 
 const ADMIN_UI_LOCALE = 'zh-Hans';
 const STORAGE_KEY = 'strapi-admin-language';
@@ -13,6 +14,9 @@ export default {
     // Admin panel UI languages (content locales zh-CN + en stay on the i18n plugin)
     locales: [ADMIN_UI_LOCALE, 'en'],
     translations: marvloreBrandTranslations,
+    auth: { logo: MarvloreMark },
+    menu: { logo: MarvloreMark },
+    head: { favicon: MarvloreMark },
   },
   bootstrap(_app: StrapiApp) {
     installMarvloreDocumentTitle();
