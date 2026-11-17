@@ -30,3 +30,7 @@ CMS_BASE=http://127.0.0.1:1337 node server.mjs
 - `npm run seed:example` 已拒绝执行（`About`/`Global` CT 已删除）；不要对迈络库跑 Phoenix seed
 - 迈络内容种子：`migrate:work` / `seed:site` / `seed:services` / `seed:about` / `seed:hero`
 - 后台界面：默认简体中文；可见品牌文案为 **MARVLORE**（`src/admin/extensions/marvlore-brand.ts`）
+- 运营菜单（按工作习惯，而非纯 API 名）：`Dashboard` / `Website Management` / `Work Studio` / `Media Library` / `System`  
+  实现：`cms-strapi-main/src/admin/extensions/ops/`（模块拆分，对齐官网 `build-hero|about|services|contact|work.mjs` 边界；不要把各模块编辑逻辑塞进单一控制器）
+- 本地后台登录：`cms-strapi-main/.tmp/admin-credentials.txt`（gitignored）。勿在 `strapi develop` 运行中 `git checkout` 覆盖 `.tmp/data.db`，否则 SQLite 会变成只读，登录写入 `strapi_sessions` 失败（HTTP 500），随后触发限流（429）。开发环境登录限流已放宽（见 `config/admin.ts`）。
+- 后台卡顿：默认 `npm run develop` 使用 `--no-watch-admin`（预构建 Admin，避免 Vite HMR 拖慢）。改 Admin 扩展时用 `npm run develop:watch-admin`。

@@ -4,7 +4,7 @@
   "info": {
     "singularName": "service-item",
     "pluralName": "service-items",
-    "displayName": "Service Item",
+    "displayName": "Services",
     "description": "Services directory rows (V1.0). Maps to src/services/items.js contract."
   },
   "options": {

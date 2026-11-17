@@ -4,7 +4,7 @@
   "info": {
     "singularName": "work-category",
     "pluralName": "work-categories",
-    "displayName": "Work Category",
+    "displayName": "分类",
     "description": "Two-level Work taxonomy (V1.1). Does not replace api::category."
   },
   "options": {

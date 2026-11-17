@@ -25,8 +25,10 @@ export function registerWorkDocumentRules(strapi: Core.Strapi) {
     const params = (ctx.params || {}) as {
       documentId?: string;
       data?: Record<string, unknown>;
+      locale?: string;
     };
     const data = params.data || {};
+    const locale = params.locale;
 
     if (uid === WORK_UIDS.category) {
       if (action === 'create') {
@@ -65,6 +67,7 @@ export function registerWorkDocumentRules(strapi: Core.Strapi) {
         const existing = await strapi.documents(WORK_UIDS.project).findOne({
           documentId: params.documentId,
           status: 'draft',
+          ...(locale ? { locale } : {}),
           fields: ['documentId'],
           populate: {
             category: { fields: ['documentId', 'level', 'isActive'] },
