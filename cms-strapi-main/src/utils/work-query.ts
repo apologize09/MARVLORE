@@ -101,7 +101,7 @@ export function parseWorkListQuery(query: Record<string, unknown>): WorkListQuer
   };
 }
 
-export function sortParams(sort: WorkSort): string[] {
+export function sortParams(sort: WorkSort): any {
   switch (sort) {
     case 'featured':
       return ['isFeatured:desc', 'sortOrder:asc', 'publishedAt:desc'];
@@ -115,13 +115,14 @@ export function sortParams(sort: WorkSort): string[] {
   }
 }
 
-export function mediaPopulate() {
+export function mediaPopulate(): any {
   return {
     fields: ['url', 'alternativeText', 'width', 'height', 'mime', 'name'],
   };
 }
 
-export function projectListPopulate() {
+/** Populate trees cast as any — Strapi Document Service field unions reject plain string[]. */
+export function projectListPopulate(): any {
   return {
     category: {
       fields: ['documentId', 'name', 'slug', 'level', 'isActive'],
@@ -136,7 +137,7 @@ export function projectListPopulate() {
   };
 }
 
-export function projectDetailPopulate() {
+export function projectDetailPopulate(): any {
   return {
     ...projectListPopulate(),
     mediaItems: {
