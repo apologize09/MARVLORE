@@ -33,7 +33,7 @@ pnpm dev
 | 荣誉 | `dist/data.js`、`dist/award-effects.css`、`dist/motion.js` |
 | 联系页 | `src/contact/` |
 | 导航 | `src/navigation/` |
-| 全站字体 | `dist/fonts.css`、`dist/assets/fonts/` |
+| 全站字体 | `dist/fonts.css`、`dist/assets/fonts/`（中文为 OPPO Sans 子集 WOFF2；重建：`pnpm subset:font`） |
 
 部分模块直接维护在 `dist/`，不要把整个目录删除后重建。`src/` 内组件会通过构建脚本生成对应文件，优先修改其源文件。
 

@@ -5,12 +5,18 @@ Copyright belongs to OPPO Guangdong Mobile Telecommunications Corp., Ltd.
 Official font information and usage terms:
 https://www.coloros.com/article/A00000074/
 
-This website uses the user's installed OPPO Sans 4.0 font file, unchanged.
-File version: 1.700. Variable weight axis: 100–700.
-SHA-256: 6c7d5864c661516e1f400d9f21e4297f2e2a0719909691e29607cc4ef484a9f4
+This website embeds a **glyph-subset WOFF2** (`OPPOSans4.0-subset.woff2`) built
+from the official OPPO Sans 4.0 variable font (weight axis 100–700). The subset
+covers characters used by the MARVLORE site copy, plus basic punctuation.
 
-The font is embedded for this website's typography. No font download UI is provided.
-Obtain the font separately from the official OPPO / ColorOS download above.
+- Published file: `OPPOSans4.0-subset.woff2`
+- Rebuild: place the full official TTF at `design/fonts/OPPOSans4.0.ttf`, then run
+  `python3 scripts/subset-oppo-font.py` (requires `fonttools[woff]` + `brotli`).
+- The full TTF is kept only as a local rebuild source under `design/fonts/` and is
+  not referenced by the published `dist/` CSS.
+
+No font download UI is provided. Obtain the full font from the official OPPO /
+ColorOS page above when regenerating the subset.
 
 ## English preview typography
 

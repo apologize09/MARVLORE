@@ -26,6 +26,7 @@
     "build:work": "node scripts/build-work.mjs",
     "build:menu": "node scripts/build-menu.mjs",
     "build:contact": "node scripts/build-contact.mjs",
-    "compress:videos": "bash scripts/compress-hero-videos.sh"
+    "compress:videos": "bash scripts/compress-hero-videos.sh",
+    "subset:font": "python3 scripts/subset-oppo-font.py"
   }
 }
