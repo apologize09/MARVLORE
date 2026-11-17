@@ -115,7 +115,7 @@ export function ContentPanel({
       try {
         if (kind === 'collection') {
           const res = await get(`/content-manager/collection-types/${uid}`, {
-            params: { page: 1, pageSize: 50, locale: 'zh-CN' },
+            params: { page: 1, pageSize: 25, locale: 'zh-CN' },
           });
           const body = (res as { data?: unknown })?.data ?? res;
           const results = ((body as { results?: Row[] })?.results ?? []) as Row[];
@@ -155,7 +155,9 @@ export function ContentPanel({
     return () => {
       cancelled = true;
     };
-  }, [get, uid, kind]);
+    // `get` omitted — unstable identity would refetch every render and stall the admin UI
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uid, kind]);
 
   const selected = useMemo(
     () =>

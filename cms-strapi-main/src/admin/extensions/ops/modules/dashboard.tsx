@@ -60,7 +60,9 @@ const DashboardPage = () => {
     return () => {
       cancelled = true;
     };
-  }, [get]);
+    // intentionally once on mount — `get` identity can change every render
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <OpsPage
