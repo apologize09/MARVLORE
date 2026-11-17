@@ -51,3 +51,7 @@ http://127.0.0.1:5173/?cmsWork=all&cmsBase=http://127.0.0.1:1337#work
 http://127.0.0.1:5173/?cmsWork=all&cmsLocale=en&cmsBase=http://127.0.0.1:1337#work
 http://127.0.0.1:5173/sitemap-work.xml
 ```
+
+## 下一阶段
+
+Phase 8（回归 / 部署交接文档，不自动生产发布）见 [`../cms-phase8/README.md`](../cms-phase8/README.md)。
