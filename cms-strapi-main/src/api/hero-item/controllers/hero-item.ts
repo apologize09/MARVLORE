@@ -19,6 +19,13 @@ export default factories.createCoreController('api::hero-item.hero-item', ({ str
       filters,
       sort: ['sortOrder:asc'],
       limit: 50,
+      populate: {
+        image: true,
+        video: true,
+        videoHd: true,
+        preview: true,
+        homePreview: true,
+      },
     });
     const data = (rows || []).map((row) => toHeroItemDto(row as Record<string, unknown>));
     ctx.body = {

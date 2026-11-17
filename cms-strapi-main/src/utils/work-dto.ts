@@ -1,9 +1,25 @@
 type AnyRecord = Record<string, any>;
 
+/** Prefer sync-site-media caption (`/assets/...`) so site keeps static asset paths. */
+function siteUrlFromMedia(media: AnyRecord | null | undefined, fallbackUrl?: string | null) {
+  if (media && typeof media === 'object') {
+    const caption = typeof media.caption === 'string' ? media.caption.trim() : '';
+    if (caption) {
+      let path = caption.replace(/^\.\//, '');
+      if (path.startsWith('assets/')) path = `/${path}`;
+      if (path.startsWith('/assets/')) return `.${path}`;
+    }
+    if (media.url) return String(media.url);
+  }
+  if (fallbackUrl) return String(fallbackUrl);
+  return null;
+}
+
 function pickMedia(media: AnyRecord | null | undefined, fallbackUrl?: string | null) {
+  const url = siteUrlFromMedia(media, fallbackUrl);
   if (media && typeof media === 'object') {
     return {
-      url: media.url || null,
+      url,
       alternativeText: media.alternativeText || null,
       width: media.width ?? null,
       height: media.height ?? null,
@@ -11,9 +27,9 @@ function pickMedia(media: AnyRecord | null | undefined, fallbackUrl?: string | n
       name: media.name || null,
     };
   }
-  if (fallbackUrl) {
+  if (url) {
     return {
-      url: fallbackUrl,
+      url,
       alternativeText: null,
       width: null,
       height: null,
@@ -89,13 +105,19 @@ export function toProjectCardDto(project: AnyRecord | null | undefined) {
     focusX: project.focusX ?? null,
     focusY: project.focusY ?? null,
     cover: pickMedia(project.cover, project.coverUrl),
-    coverUrl: project.coverUrl ?? null,
+    coverUrl: siteUrlFromMedia(project.cover, project.coverUrl),
     thumbnail: pickMedia(project.thumbnail, project.thumbnailUrl),
+    thumbnailUrl: siteUrlFromMedia(project.thumbnail, project.thumbnailUrl),
     heroMedia: pickMedia(project.heroMedia, project.heroMediaUrl),
-    videoUrl: project.videoUrl ?? null,
-    posterUrl: project.posterUrl ?? null,
-    previewVideoUrl: project.previewVideoUrl ?? null,
-    homePreviewVideoUrl: project.homePreviewVideoUrl ?? null,
+    heroMediaUrl: siteUrlFromMedia(project.heroMedia, project.heroMediaUrl),
+    video: pickMedia(project.video, project.videoUrl),
+    videoUrl: siteUrlFromMedia(project.video, project.videoUrl),
+    poster: pickMedia(project.poster, project.posterUrl),
+    posterUrl: siteUrlFromMedia(project.poster, project.posterUrl),
+    previewVideo: pickMedia(project.previewVideo, project.previewVideoUrl),
+    previewVideoUrl: siteUrlFromMedia(project.previewVideo, project.previewVideoUrl),
+    homePreviewVideo: pickMedia(project.homePreviewVideo, project.homePreviewVideoUrl),
+    homePreviewVideoUrl: siteUrlFromMedia(project.homePreviewVideo, project.homePreviewVideoUrl),
     category: category
       ? {
           documentId: category.documentId,

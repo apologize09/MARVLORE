@@ -16,7 +16,7 @@ const require = createRequire(import.meta.url);
 
 const LOCALES = ['zh-CN', 'en'];
 
-/** @type {Array<{ uid: string; pairs: Array<{ urlField: string; mediaField: string }> }>} */
+/** @type {Array<{ uid: string; pairs: Array<{ urlField: string; mediaField: string }>; single?: boolean; componentField?: string }>} */
 const LINK_TARGETS = [
   {
     uid: 'api::work-project.work-project',
@@ -24,6 +24,10 @@ const LINK_TARGETS = [
       { urlField: 'coverUrl', mediaField: 'cover' },
       { urlField: 'thumbnailUrl', mediaField: 'thumbnail' },
       { urlField: 'heroMediaUrl', mediaField: 'heroMedia' },
+      { urlField: 'videoUrl', mediaField: 'video' },
+      { urlField: 'posterUrl', mediaField: 'poster' },
+      { urlField: 'previewVideoUrl', mediaField: 'previewVideo' },
+      { urlField: 'homePreviewVideoUrl', mediaField: 'homePreviewVideo' },
     ],
   },
   {
@@ -37,6 +41,30 @@ const LINK_TARGETS = [
   {
     uid: 'api::work-category.work-category',
     pairs: [{ urlField: 'coverUrl', mediaField: 'cover' }],
+  },
+  {
+    uid: 'api::hero-item.hero-item',
+    pairs: [
+      { urlField: 'imageUrl', mediaField: 'image' },
+      { urlField: 'videoUrl', mediaField: 'video' },
+      { urlField: 'videoUrlHd', mediaField: 'videoHd' },
+      { urlField: 'previewUrl', mediaField: 'preview' },
+      { urlField: 'homePreviewUrl', mediaField: 'homePreview' },
+    ],
+  },
+  {
+    uid: 'api::award.award',
+    pairs: [{ urlField: 'imageUrl', mediaField: 'image' }],
+  },
+  {
+    uid: 'api::service-item.service-item',
+    pairs: [{ urlField: 'imageUrl', mediaField: 'image' }],
+  },
+  {
+    uid: 'api::about-page.about-page',
+    single: true,
+    componentField: 'collageImages',
+    pairs: [{ urlField: 'imageUrl', mediaField: 'image' }],
   },
 ];
 
@@ -157,6 +185,160 @@ async function linkEntity(app, { uid, doc, locale, pairs, byCaption, execute }) 
   };
 }
 
+/**
+ * Link media inside a repeatable component collection (e.g. About collageImages).
+ * Updates each component row via db.query — Document Service component replace
+ * rejects re-sent ids across locales ("not related to the entity").
+ */
+async function linkComponentCollection(app, { uid, doc, locale, componentField, pairs, byCaption, execute }) {
+  const items = Array.isArray(doc[componentField]) ? doc[componentField] : [];
+  const planned = [];
+  const missing = [];
+  const updates = [];
+
+  // Component UID mirrors schema: shared.about-collage-image
+  const componentUid =
+    componentField === 'collageImages' ? 'shared.about-collage-image' : null;
+  if (!componentUid) {
+    return {
+      planned: [],
+      missing: [{ error: `Unsupported componentField ${componentField}` }],
+      action: 'error',
+    };
+  }
+
+  for (const item of items) {
+    if (item?.id == null) continue;
+    const data = {};
+
+    for (const { urlField, mediaField } of pairs) {
+      const rawUrl = item[urlField];
+      const sitePath = normalizeSitePath(rawUrl);
+      if (!sitePath) continue;
+
+      const file = byCaption.get(sitePath);
+      if (!file) {
+        missing.push({
+          urlField,
+          mediaField,
+          sitePath,
+          slotIndex: item.slotIndex,
+        });
+        continue;
+      }
+
+      const currentId = mediaId(item[mediaField]);
+      if (currentId === file.id) {
+        planned.push({
+          action: 'already-linked',
+          mediaField,
+          fileId: file.id,
+          sitePath,
+          slotIndex: item.slotIndex,
+        });
+        continue;
+      }
+
+      data[mediaField] = file.id;
+      planned.push({
+        action: currentId ? 'would-relink' : 'would-link',
+        mediaField,
+        fileId: file.id,
+        previousId: currentId,
+        sitePath,
+        libraryUrl: file.url,
+        slotIndex: item.slotIndex,
+        componentId: item.id,
+      });
+    }
+
+    if (Object.keys(data).length) {
+      updates.push({ id: item.id, data });
+    }
+  }
+
+  if (!updates.length) {
+    return {
+      planned,
+      missing,
+      action: planned.length ? 'noop' : missing.length ? 'missing-files' : 'no-urls',
+    };
+  }
+
+  if (!execute) {
+    return { planned, missing, action: 'dry-run' };
+  }
+
+  for (const { id, data } of updates) {
+    await app.db.query(componentUid).update({
+      where: { id },
+      data,
+    });
+  }
+
+  return {
+    planned: planned.map((p) => ({ ...p, action: p.action.replace('would-', '') })),
+    missing,
+    action: 'updated',
+  };
+}
+
+function recordResult(report, target, doc, locale, result) {
+  for (const p of result.planned) {
+    if (p.action === 'already-linked') report.already += 1;
+    else if (p.action.startsWith('would-') || p.action === 'link' || p.action === 'relink') {
+      report.linked += 1;
+      report.byUid[target.uid].linkedFields += 1;
+    }
+  }
+  report.missing += result.missing.length;
+  report.byUid[target.uid].missingFields += result.missing.length;
+
+  if (result.action === 'updated' || result.action === 'dry-run') {
+    if (result.action === 'updated') {
+      report.updatedDocs += 1;
+      report.byUid[target.uid].updated += 1;
+    }
+    if (report.samples.length < 12 && result.planned.some((p) => p.action !== 'already-linked')) {
+      report.samples.push({
+        uid: target.uid,
+        locale,
+        documentId: doc.documentId,
+        title: doc.title || doc.name || doc.slug || doc.brandName || null,
+        ...result,
+      });
+    }
+  }
+}
+
+async function loadDocs(app, target, locale) {
+  const mediaPopulate = target.componentField
+    ? {
+        [target.componentField]: {
+          populate: Object.fromEntries(target.pairs.map((p) => [p.mediaField, true])),
+        },
+      }
+    : Object.fromEntries(target.pairs.map((p) => [p.mediaField, true]));
+
+  if (target.single) {
+    const row = await app.documents(target.uid).findFirst({
+      locale,
+      status: 'published',
+      populate: mediaPopulate,
+    });
+    return row ? [row] : [];
+  }
+
+  return (
+    (await app.documents(target.uid).findMany({
+      locale,
+      status: 'published',
+      limit: 500,
+      populate: mediaPopulate,
+    })) || []
+  );
+}
+
 async function main() {
   const opts = parseArgs(process.argv.slice(2));
   if (opts.database) process.env.DATABASE_FILENAME = opts.database;
@@ -182,49 +364,45 @@ async function main() {
       report.byUid[target.uid] = { docs: 0, linkedFields: 0, missingFields: 0, updated: 0 };
 
       for (const locale of LOCALES) {
-        const docs = await app.documents(target.uid).findMany({
-          locale,
-          status: 'published',
-          limit: 500,
-          populate: Object.fromEntries(target.pairs.map((p) => [p.mediaField, true])),
-        });
+        const docs = await loadDocs(app, target, locale);
 
-        for (const doc of docs || []) {
+        for (const doc of docs) {
           report.byUid[target.uid].docs += 1;
-          const result = await linkEntity(app, {
-            uid: target.uid,
-            doc,
-            locale,
-            pairs: target.pairs,
-            byCaption,
-            execute: opts.execute,
-          });
-
-          for (const p of result.planned) {
-            if (p.action === 'already-linked') report.already += 1;
-            else if (p.action.startsWith('would-') || p.action === 'link' || p.action === 'relink') {
-              report.linked += 1;
-              report.byUid[target.uid].linkedFields += 1;
-            }
+          let result;
+          try {
+            result = target.componentField
+              ? await linkComponentCollection(app, {
+                  uid: target.uid,
+                  doc,
+                  locale,
+                  componentField: target.componentField,
+                  pairs: target.pairs,
+                  byCaption,
+                  execute: opts.execute,
+                })
+              : await linkEntity(app, {
+                  uid: target.uid,
+                  doc,
+                  locale,
+                  pairs: target.pairs,
+                  byCaption,
+                  execute: opts.execute,
+                });
+          } catch (err) {
+            result = {
+              planned: [],
+              missing: [{ error: err.message || String(err) }],
+              action: 'error',
+            };
+            report.samples.push({
+              uid: target.uid,
+              locale,
+              documentId: doc.documentId,
+              error: err.message || String(err),
+            });
           }
-          report.missing += result.missing.length;
-          report.byUid[target.uid].missingFields += result.missing.length;
 
-          if (result.action === 'updated' || result.action === 'dry-run') {
-            if (result.action === 'updated') {
-              report.updatedDocs += 1;
-              report.byUid[target.uid].updated += 1;
-            }
-            if (report.samples.length < 12 && result.planned.some((p) => p.action !== 'already-linked')) {
-              report.samples.push({
-                uid: target.uid,
-                locale,
-                documentId: doc.documentId,
-                title: doc.title || doc.name || doc.slug || null,
-                ...result,
-              });
-            }
-          }
+          recordResult(report, target, doc, locale, result);
         }
       }
     }

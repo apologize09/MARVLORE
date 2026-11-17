@@ -639,8 +639,13 @@ export interface ApiAwardAward extends Struct.CollectionTypeSchema {
           localized: false;
         };
       }>;
+    image: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
     imageUrl: Schema.Attribute.String &
-      Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: false;
@@ -869,14 +874,25 @@ export interface ApiHeroItemHeroItem extends Struct.CollectionTypeSchema {
           localized: false;
         };
       }>;
+    homePreview: Schema.Attribute.Media<'videos' | 'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
     homePreviewUrl: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: false;
         };
       }>;
+    image: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
     imageUrl: Schema.Attribute.String &
-      Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: false;
@@ -909,6 +925,12 @@ export interface ApiHeroItemHeroItem extends Struct.CollectionTypeSchema {
         };
       }> &
       Schema.Attribute.DefaultTo<'image'>;
+    preview: Schema.Attribute.Media<'videos' | 'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
     previewUrl: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -954,6 +976,18 @@ export interface ApiHeroItemHeroItem extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    video: Schema.Attribute.Media<'videos'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    videoHd: Schema.Attribute.Media<'videos'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
     videoUrl: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -1061,8 +1095,13 @@ export interface ApiServiceItemServiceItem extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
+    image: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
     imageUrl: Schema.Attribute.String &
-      Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: false;
@@ -1549,6 +1588,12 @@ export interface ApiWorkProjectWorkProject extends Struct.CollectionTypeSchema {
           localized: false;
         };
       }>;
+    homePreviewVideo: Schema.Attribute.Media<'videos'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     homePreviewVideoUrl: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -1578,10 +1623,22 @@ export interface ApiWorkProjectWorkProject extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::work-project-media.work-project-media'
     >;
+    poster: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     posterUrl: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: false;
+        };
+      }>;
+    previewVideo: Schema.Attribute.Media<'videos'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
         };
       }>;
     previewVideoUrl: Schema.Attribute.String &
@@ -1675,6 +1732,12 @@ export interface ApiWorkProjectWorkProject extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    video: Schema.Attribute.Media<'videos'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     videoUrl: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
