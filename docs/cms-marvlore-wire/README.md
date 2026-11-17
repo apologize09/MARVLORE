@@ -29,3 +29,4 @@ CMS_BASE=http://127.0.0.1:1337 node server.mjs
 
 - `npm run seed:example` 已拒绝执行（`About`/`Global` CT 已删除）；不要对迈络库跑 Phoenix seed
 - 迈络内容种子：`migrate:work` / `seed:site` / `seed:services` / `seed:about` / `seed:hero`
+- 后台界面：默认简体中文；可见品牌文案为 **MARVLORE**（`src/admin/extensions/marvlore-brand.ts`）
