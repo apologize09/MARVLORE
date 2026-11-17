@@ -11,3 +11,4 @@ node_modules/
 .tmp/
 # Video masters for local recompress only
 design/videos/hero-source/*.mp4
+scripts/.optimize-images-report.json

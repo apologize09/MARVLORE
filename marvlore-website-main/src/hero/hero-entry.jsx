@@ -6,7 +6,7 @@ import SplitText from './SplitText.jsx';
 import { heroProjects as staticHeroProjects } from './images.js';
 import { cardCornerRadius } from '../../dist/card-shape.js';
 import './hero.css';
-const haloSrc='./assets/orbit/hero-orbit-light.png';
+const haloSrc='./assets/orbit/hero-orbit-light.webp';
 
 function resolveHeroProjects(){
  try{
