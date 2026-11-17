@@ -4,6 +4,7 @@
  * Enable via:
  *   ?cmsWork=categories|list|detail|all
  *   localStorage.marvlore.cmsWork = same
+ *   ?cmsFilter=1          (or on with cmsWork=list|detail|all)
  *   ?cmsBase=http://127.0.0.1:1337
  *   localStorage.marvlore.cmsBase
  */
@@ -36,6 +37,13 @@ export function getCmsConfig() {
   ).replace(/\/$/, '');
   const locale = readParam('cmsLocale') || readStorage('marvlore.cmsLocale') || 'zh-CN';
   const timeoutMs = Number(readParam('cmsTimeout') || readStorage('marvlore.cmsTimeout') || 6000);
+  const filterRaw = (readParam('cmsFilter') || readStorage('marvlore.cmsFilter') || '').toLowerCase();
+  const useList = stage === 'list' || stage === 'detail' || stage === 'all';
+  const useFilter =
+    filterRaw === '1' ||
+    filterRaw === 'true' ||
+    filterRaw === 'on' ||
+    useList;
 
   return {
     stage,
@@ -44,7 +52,8 @@ export function getCmsConfig() {
     timeoutMs: Number.isFinite(timeoutMs) ? timeoutMs : 6000,
     enabled: stage !== 'off',
     useCategories: stage === 'categories' || stage === 'list' || stage === 'detail' || stage === 'all',
-    useList: stage === 'list' || stage === 'detail' || stage === 'all',
+    useList,
     useDetail: stage === 'detail' || stage === 'all',
+    useFilter,
   };
 }

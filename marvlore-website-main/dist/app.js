@@ -7,6 +7,7 @@ import {mountWorkEntrance} from './work-entrance.js';
 import {mountWorkReel} from './work-reel.js?v=cms-adapter-190';
 import { Hero,Services,About,Work,Explore,Portal,Awards,Contact } from './components.js?v=cms-adapter-190';
 import { bootWorkBundle,getProjects,getWorkReelItems,getAwards } from './cms/work-runtime.js';
+import { mountWorkFilters } from './cms/work-filter-mount.js';
 import { Spring,reducedMotion,createAwardsCarousel } from './motion.js';
 import { mountHeroOrbit } from './hero/orbit.js?v=hero-soft-entry-187';
 import { observeCardCorners } from './card-shape.js';
@@ -52,6 +53,7 @@ async function start(){
  mountWorkInteractions();
  mountWorkEntrance();
  mountWorkReel();
+ mountWorkFilters();
  mountSiteNavigation();
  window.addEventListener('marvlore:work-mode',()=>workTextReveal.refresh());
 
