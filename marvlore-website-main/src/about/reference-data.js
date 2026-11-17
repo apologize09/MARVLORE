@@ -38,3 +38,40 @@ export const aboutCopy={
   {number:'60',lines:['Brand Cases','Pop-worthy visuals for 60+ brands','赋能 60+ 品牌打造出圈视觉']},
  ],
 };
+
+/** CMS may replace copy + collage src/alt/focus only; geometry stays from referenceCards. */
+export function resolveAboutCopy(){
+ try{
+  const cms=typeof window!=='undefined'?window.__MARVLORE_ABOUT__:null;
+  if(cms?.copy){
+   return {
+    name:cms.copy.name||aboutCopy.name,
+    chineseName:cms.copy.chineseName||aboutCopy.chineseName,
+    partner:cms.copy.partner||aboutCopy.partner,
+    partnerChinese:cms.copy.partnerChinese||aboutCopy.partnerChinese,
+    stats:Array.isArray(cms.copy.stats)&&cms.copy.stats.length?cms.copy.stats:aboutCopy.stats,
+   };
+  }
+ }catch{}
+ return aboutCopy;
+}
+
+export function resolveReferenceCards(){
+ let collage=[];
+ try{
+  const cms=typeof window!=='undefined'?window.__MARVLORE_ABOUT__:null;
+  if(Array.isArray(cms?.collage))collage=cms.collage;
+ }catch{}
+ if(!collage.length)return referenceCards;
+ const bySlot=new Map(collage.map(item=>[Number(item.slotIndex),item]));
+ return referenceCards.map((card,index)=>{
+  const hit=bySlot.get(index);
+  if(!hit)return card;
+  return {
+   ...card,
+   src:hit.src||card.src,
+   alt:hit.alt||card.alt,
+   focus:hit.focus||card.focus,
+  };
+ });
+}

@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_shared_about_collage_images",
+  "info": {
+    "displayName": "About Collage Image",
+    "icon": "picture",
+    "description": "Replaces artwork src/alt/focus only; geometry stays in frontend."
+  },
+  "options": {},
+  "attributes": {
+    "slotIndex": {
+      "type": "integer",
+      "required": true,
+      "min": 0,
+      "max": 9
+    },
+    "imageUrl": {
+      "type": "string",
+      "required": true
+    },
+    "alt": {
+      "type": "string",
+      "required": true
+    },
+    "focus": {
+      "type": "string"
+    }
+  }
+}

@@ -147,6 +147,15 @@ export async function resolveWorkBundle() {
       }
     }
 
+    if (config.useAbout) {
+      try {
+        const aboutRes = await api.getAboutPage();
+        if (aboutRes?.data) next.about = aboutRes.data;
+      } catch (err) {
+        console.warn('[cms] about fallback:', err?.message || err);
+      }
+    }
+
     return next;
   } catch (err) {
     console.warn('[cms] falling back to static Work data:', err?.message || err);

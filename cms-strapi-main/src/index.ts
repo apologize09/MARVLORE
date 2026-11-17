@@ -20,6 +20,7 @@ const PUBLIC_ACTIONS: Record<string, string[]> = {
   'global-setting': ['find'],
   award: ['find', 'findOne'],
   'service-item': ['find', 'findOne'],
+  'about-page': ['find'],
 };
 
 const REQUIRED_LOCALES: Array<{ code: string; name: string }> = [

@@ -22,7 +22,9 @@
     "seed:site": "node ./scripts/site-seed-contact-awards.mjs",
     "seed:site:execute": "node ./scripts/site-seed-contact-awards.mjs --execute",
     "seed:services": "node ./scripts/site-seed-services.mjs",
-    "seed:services:execute": "node ./scripts/site-seed-services.mjs --execute"
+    "seed:services:execute": "node ./scripts/site-seed-services.mjs --execute",
+    "seed:about": "node ./scripts/site-seed-about.mjs",
+    "seed:about:execute": "node ./scripts/site-seed-about.mjs --execute"
   },
   "dependencies": {
     "@strapi/database": "5.52.1",

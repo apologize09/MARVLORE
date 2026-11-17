@@ -32,6 +32,7 @@ export function buildStaticBundle() {
     awards: awards.slice(),
     contact: { ...STATIC_CONTACT },
     services: staticServiceItems.slice(),
+    about: null,
     workPage: null,
     locale: 'zh-CN',
   };

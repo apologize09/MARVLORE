@@ -35,6 +35,10 @@ export function getServices() {
   return bundle.services || [];
 }
 
+export function getAbout() {
+  return bundle.about || null;
+}
+
 export function getWorkPage() {
   return bundle.workPage || null;
 }
@@ -62,6 +66,7 @@ export function installWorkBundle(next) {
         ? next.source.slice(4)
         : next.source;
       window.__MARVLORE_SERVICE_ITEMS__ = Array.isArray(next.services) ? next.services : [];
+      window.__MARVLORE_ABOUT__ = next.about || null;
     }
   } catch {
     // non-DOM test env

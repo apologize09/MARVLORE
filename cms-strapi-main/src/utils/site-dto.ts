@@ -18,6 +18,37 @@ export function toAwardDto(row: Record<string, unknown>) {
   };
 }
 
+export function toAboutPageDto(row: Record<string, unknown> | null) {
+  if (!row) return null;
+  const stats = Array.isArray(row.stats)
+    ? [...row.stats]
+        .sort((a: any, b: any) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
+        .map((stat: any) => ({
+          number: String(stat.number ?? ''),
+          lines: Array.isArray(stat.lines) ? stat.lines.map(String) : [],
+        }))
+    : [];
+  const collage = Array.isArray(row.collageImages)
+    ? row.collageImages.map((item: any) => ({
+        slotIndex: Number(item.slotIndex),
+        src: String(item.imageUrl || ''),
+        alt: String(item.alt || ''),
+        focus: item.focus ? String(item.focus) : undefined,
+      }))
+    : [];
+  return {
+    copy: {
+      name: row.brandName ?? 'Marvlore',
+      chineseName: row.brandNameCn ?? '（迈络）',
+      partner: row.partnerLine ?? '',
+      partnerChinese: row.partnerLineCn ?? '',
+      stats,
+    },
+    collage,
+    seo: row.seo ?? null,
+  };
+}
+
 export function toServiceItemDto(row: Record<string, unknown>) {
   return {
     documentId: row.documentId,
