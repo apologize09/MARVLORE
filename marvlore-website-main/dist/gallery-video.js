@@ -45,13 +45,15 @@ export function createGalleryVideo(dialog){
   if(!src)return;
   const time=video.currentTime||0;
   const wasPlaying=!video.paused;
-  video.src=src;video.preload='metadata';
+  video.preload='none';
+  video.src=src;
   const resume=()=>{
    if(time>0.2){try{video.currentTime=time;}catch{}}
    if(wasPlaying)start();
    video.removeEventListener('loadedmetadata',resume);
   };
   video.addEventListener('loadedmetadata',resume);
+  video.preload='metadata';
   updateControls();
  }
  function clear(){
@@ -63,7 +65,7 @@ export function createGalleryVideo(dialog){
   if(current===item.id)return;
   pause();current=item.id;itemRef=item;hd=false;video.hidden=false;controls.hidden=false;dialog.dataset.video='true';
   video.setAttribute('aria-label',item.title+' 完整影片');video.poster=item.src;
-  video.muted=false;video.preload='metadata';applySource();start();
+  video.muted=false;video.preload='none';applySource();start();
  }
  play.addEventListener('click',start);
  playback.addEventListener('click',()=>{if(video.paused)start();else video.pause();});

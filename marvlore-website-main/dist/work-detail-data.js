@@ -1,8 +1,8 @@
 import {projects} from './data.js?v=178a4e2f6c';
-import {heroImages} from './hero/images.js?v=e3a01fefe9';
-import {workReelItems} from './work-reel-data.js?v=b852b2dc58';
-import {visualProjects} from './visual-projects.js?v=af6a11505e';
-import {filmProjects} from './film-projects.js?v=ea4af0b2ae';
+import {heroImages} from './hero/images.js?v=809fa52db4';
+import {workReelItems} from './work-reel-data.js?v=f80cf439f9';
+import {visualProjects} from './visual-projects.js?v=39d9e54d6f';
+import {filmProjects} from './film-projects.js?v=8720f5569a';
 
 // Work-page case studies. All content is independent from the home carousel.
 // Add images / videos to media; only supplied material is rendered on the page.

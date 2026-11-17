@@ -1,6 +1,6 @@
 import {projects} from './data.js?v=178a4e2f6c';
-import {visualProjects} from './visual-projects.js?v=af6a11505e';
-import {filmProjects} from './film-projects.js?v=ea4af0b2ae';
+import {visualProjects} from './visual-projects.js?v=39d9e54d6f';
+import {filmProjects} from './film-projects.js?v=8720f5569a';
 
 // Each slice is independently editable. Keep the source image's own proportions
 // when opened; focusX chooses the crop shown while it is a narrow slice.

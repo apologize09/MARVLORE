@@ -21,10 +21,19 @@ export function mountWorkReel(){
  const collapse=root.querySelector('.work-reel-collapse');
  const previous=root.querySelector('.work-reel-prev'),next=root.querySelector('.work-reel-next'),range=root.querySelector('.work-reel-range');
  const videos=[...track.querySelectorAll('video')];let mediaVisible=false,detailVisible=false;
+ function attachPreview(video){
+  const src=video.dataset.src;if(!src)return;
+  if(video.getAttribute('src')!==src){video.src=src;video.load();}
+ }
+ function detachPreview(video){
+  if(!video.getAttribute('src')&&!video.src)return;
+  video.pause();video.removeAttribute('src');video.load();
+ }
  function syncVideos(){
   videos.forEach(video=>{
-   if(mediaVisible&&!detailVisible&&!video.closest('button').hidden&&!document.hidden&&!reducedMotion.matches)video.play().catch(()=>{});
-   else video.pause();
+   const active=mediaVisible&&!detailVisible&&!video.closest('button').hidden&&!document.hidden&&!reducedMotion.matches;
+   if(active){attachPreview(video);video.play().catch(()=>{});}
+   else{video.pause();if(!mediaVisible||detailVisible||document.hidden)detachPreview(video);}
   });
  }
  const mediaObserver=new IntersectionObserver(([entry])=>{mediaVisible=entry.isIntersecting;syncVideos();},{threshold:.1});

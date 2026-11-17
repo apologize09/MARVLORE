@@ -24,8 +24,8 @@ export function mountWorkDetails(){
  function mediaMarkup(item,index,{cover=false}={}){
   if(!item?.src)return '';
   if(item.type==='video'){
-   const sources=(item.srcHd?`<source src="${esc(item.srcHd)}" type="video/mp4" data-quality="1080p">`:'')+`<source src="${esc(item.src)}" type="video/mp4" data-quality="720p">`;
-   return '<figure class="case-media case-reveal"><video controls playsinline preload="metadata"'+(item.poster?' poster="'+esc(item.poster)+'"':'')+' data-card-shape aria-label="'+esc(item.alt??'项目视频')+'">'+sources+'</video>'+(item.alt?'<figcaption>'+esc(item.alt)+'</figcaption>':'')+'</figure>';
+   // Sources are attached only after open via hydrateVideos(); keep markup src-free for deferred load.
+   return '<figure class="case-media case-reveal"><video controls playsinline preload="none"'+(item.poster?' poster="'+esc(item.poster)+'"':'')+' data-card-shape data-video-src="'+esc(item.src)+'"'+(item.srcHd?' data-video-src-hd="'+esc(item.srcHd)+'"':'')+' aria-label="'+esc(item.alt??'项目视频')+'"></video>'+(item.alt?'<figcaption>'+esc(item.alt)+'</figcaption>':'')+'</figure>';
   }
   return '<figure class="case-media '+(cover?'case-cover':'case-reveal')+'"><a href="'+esc(item.src)+'" data-case-zoom data-pswp-width="'+item.width+'" data-pswp-height="'+item.height+'" data-card-shape aria-label="放大查看：'+esc(item.alt)+'"><img src="'+esc(item.src)+'" alt="'+esc(item.alt)+'" width="'+item.width+'" height="'+item.height+'" loading="'+(cover?'eager':'lazy')+'" decoding="async"><span class="case-zoom-mark" aria-hidden="true">＋</span></a><figcaption><span>'+String(index+1).padStart(2,'0')+' / '+esc(item.alt)+'</span><span>点击查看细节 ↗</span></figcaption></figure>';
  }
@@ -51,23 +51,36 @@ export function mountWorkDetails(){
   }),{root:scroller,threshold:.07});
   content.querySelectorAll('.case-reveal').forEach(el=>observer.observe(el));
  }
+ function unloadVideos(){
+  content.querySelectorAll('video').forEach(video=>{
+   video.pause();video.removeAttribute('src');
+   video.querySelectorAll('source').forEach(node=>node.remove());
+   video.load();
+  });
+ }
+ function hydrateVideos(){
+  content.querySelectorAll('video[data-video-src]').forEach(video=>{
+   const src=video.dataset.videoSrc;if(!src)return;
+   // Detail pages stream the 720p default only; HD remains available via gallery toggle.
+   video.src=src;video.preload='metadata';
+   video.play().catch(()=>{video.muted=true;video.play().catch(()=>{});});
+  });
+ }
  function render(item){
-  content.querySelectorAll('video').forEach(video=>video.pause());
+  unloadVideos();
   const next=getWorkDetail(item.nextId),media=item.media??[];
   root.querySelector('.case-count').textContent=String(item.index).padStart(2,'0')+' / '+String(item.total).padStart(2,'0');
   content.innerHTML='<article class="case-article"><header class="case-heading"><div class="case-kicker"><i></i>'+esc(item.eyebrow)+'</div><div class="case-title-row"><div><h1 id="case-title">'+esc(titleCase(item.title))+'</h1><p class="case-subtitle">'+esc(item.subtitle)+'</p></div><p class="case-summary">'+esc(item.summary)+'</p></div></header>'+mediaMarkup(item.cover,0,{cover:true})+'<section class="case-overview case-reveal" aria-labelledby="case-overview-title"><div class="case-section-label">01 / 项目介绍</div><div class="case-intro"><h2 id="case-overview-title">'+esc(titleCase(item.intro))+'</h2><div class="case-services"><span>服务领域</span><ul>'+item.tags.map(tag=>'<li>'+esc(tag)+'</li>').join('')+'</ul></div></div></section>'+(media.length?'<section class="case-visuals" aria-labelledby="case-visuals-title"><div class="case-section-header case-reveal"><h2 id="case-visuals-title">视觉展示<span>Selected Visuals</span></h2><span>'+String(media.length).padStart(2,'0')+' 张素材</span></div><div class="case-media-grid">'+media.map((asset,i)=>mediaMarkup(asset,i+1)).join('')+'</div></section>':'')+(next?'<footer class="case-footer case-reveal"><span class="case-section-label">继续探索</span><a href="#case/'+esc(next.id)+'" data-case-next="'+esc(next.id)+'" class="case-next"><div><span>下一个项目</span><h2>'+esc(titleCase(next.title))+'</h2><p>'+esc(next.subtitle)+'</p></div><span class="case-next-arrow" aria-hidden="true">↗</span></a><button class="case-return" type="button" data-case-return>← 返回全部作品</button></footer>':'')+'</article>';
   scroller.scrollTop=0;root.querySelector('.case-progress i').style.transform='scaleX(0)';
   document.title=item.title+' · MARVLORE 迈络';
-  initZoom();revealContent();
-  content.querySelectorAll('video').forEach(video=>{
-   video.play().catch(()=>{video.muted=true;video.play().catch(()=>{});});
-  });
+  initZoom();revealContent();hydrateVideos();
  }
  function lock(){
   main.inert=true;if(nav)nav.inert=true;
   document.documentElement.classList.add('work-detail-open','project-gallery-open');announce(true);
  }
  function finishClose(){
+  unloadVideos();
   opened=false;closing=false;root.hidden=true;
   main.inert=false;if(nav)nav.inert=false;
   document.documentElement.classList.remove('work-detail-open');
@@ -96,7 +109,7 @@ export function mountWorkDetails(){
    if(ownedHistory&&history.state?.marvloreCase){history.back();return;}
    history.replaceState(null,'',returnHash);
   }
-  closing=true;content.querySelectorAll('video').forEach(video=>video.pause());lightbox?.pswp?.close();progress.to(0);
+  closing=true;unloadVideos();lightbox?.pswp?.close();progress.to(0);
  }
  function syncRoute(){
   if(location.hash.startsWith('#case/')){

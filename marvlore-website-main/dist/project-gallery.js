@@ -2,7 +2,7 @@ import {titleCase} from './typography.js?v=bff0b2cf2f';
 import {Spring,reducedMotion,releaseVelocity,projectSnap,clamp} from './motion.js?v=53e5c054f1';
 import {cardCornerRadius} from './card-shape.js?v=dc5814bef2';
 import {modulo,mix,screenQuad,blendQuad,quadMatrix,quadArea} from './gallery-geometry.js?v=5fcd7ed916';
-import {createGalleryVideo} from './gallery-video.js?v=7ceddd8f4a';
+import {createGalleryVideo} from './gallery-video.js?v=e90750e741';
 import {createGallerySlideshow} from './gallery-slideshow.js?v=3359fe5d40';
 
 // Measure the projected corners, including the carousel camera and back face.
