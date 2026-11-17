@@ -132,12 +132,13 @@ test('static fallback bundle matches Work ViewModel shape', async () => {
   assert.ok(detail.id && detail.cover && Array.isArray(detail.tags));
 });
 
-test('getCmsConfig defaults to off and stages progressively', async () => {
+test('getCmsConfig defaults to all and stages progressively', async () => {
   stubBrowser({ search: '' });
   const { getCmsConfig } = await import(`${cms('config.js')}?t=${Date.now()}-1`);
-  const off = getCmsConfig();
-  assert.equal(off.stage, 'off');
-  assert.equal(off.enabled, false);
+  const defaults = getCmsConfig();
+  assert.equal(defaults.stage, 'all');
+  assert.equal(defaults.siteStage, 'all');
+  assert.equal(defaults.enabled, true);
 
   stubBrowser({ search: '?cmsWork=categories&cmsBase=http://cms.test:1337' });
   const { getCmsConfig: get2 } = await import(`${cms('config.js')}?t=${Date.now()}-2`);
@@ -148,15 +149,15 @@ test('getCmsConfig defaults to off and stages progressively', async () => {
   assert.equal(cats.useDetail, false);
   assert.equal(cats.baseUrl, 'http://cms.test:1337');
 
-  stubBrowser({ storage: { 'marvlore.cmsWork': 'all' } });
+  stubBrowser({ search: '?cmsWork=off&cmsSite=off' });
   const { getCmsConfig: get3 } = await import(`${cms('config.js')}?t=${Date.now()}-3`);
-  const all = get3();
-  assert.equal(all.stage, 'all');
-  assert.equal(all.useDetail, true);
+  const off = get3();
+  assert.equal(off.stage, 'off');
+  assert.equal(off.enabled, false);
 });
 
 test('resolveWorkBundle stays on static when flag is off', async () => {
-  stubBrowser({ search: '' });
+  stubBrowser({ search: '?cmsWork=off&cmsSite=off' });
   const { resolveWorkBundle } = await import(`${cms('work-loader.js')}?t=${Date.now()}-off`);
   const bundle = await resolveWorkBundle();
   assert.equal(bundle.source, 'static');
@@ -228,7 +229,7 @@ test('resolveWorkBundle falls back to static when CMS request fails', async () =
 });
 
 test('bootWorkBundle installs runtime getters used by Work consumers', async () => {
-  stubBrowser({ search: '' });
+  stubBrowser({ search: '?cmsWork=off&cmsSite=off' });
   const runtime = await import(`${cms('work-runtime.js')}?t=${Date.now()}-boot`);
   const installed = await runtime.bootWorkBundle();
   assert.equal(installed.source, 'static');

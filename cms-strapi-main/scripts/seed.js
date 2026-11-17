@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * LEGACY Phoenix Pouch Co. seed — DO NOT run against the Marvlore production DB.
+ * Marvlore content uses: migrate:work / seed:site / seed:services / seed:about / seed:hero.
+ * To remove Phoenix leftovers: npm run purge:phoenix:execute
+ */
 const fs = require('fs');
 const path = require('path');
 const seed = require('../data/pouch-seed.json');

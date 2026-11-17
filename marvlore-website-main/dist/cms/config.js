@@ -1,13 +1,12 @@
 /**
  * Public CMS config only — never put admin tokens here.
  *
- * Enable via:
- *   ?cmsWork=categories|list|detail|all
- *   localStorage.marvlore.cmsWork = same
- *   ?cmsFilter=1          (or on with cmsWork=list|detail|all)
- *   ?cmsSite=contact|awards|services|all   (V1.0 site modules; independent of Work)
+ * Defaults: cmsWork=all + cmsSite=all (Marvlore CMS wired). Override with:
+ *   ?cmsWork=off|categories|list|detail|all
+ *   ?cmsSite=off|contact|awards|services|about|hero|all
  *   ?cmsBase=http://127.0.0.1:1337
- *   localStorage.marvlore.cmsBase
+ *   localStorage.marvlore.cmsWork / cmsSite / cmsBase
+ * Static fallback still applies when the API is unreachable.
  */
 const STAGES = new Set(['off', 'categories', 'list', 'detail', 'all']);
 const SITE_STAGES = new Set(['off', 'contact', 'awards', 'services', 'about', 'hero', 'all']);
@@ -29,9 +28,9 @@ function readStorage(name) {
 }
 
 export function getCmsConfig() {
-  const stageRaw = (readParam('cmsWork') || readStorage('marvlore.cmsWork') || 'off').toLowerCase();
-  const stage = STAGES.has(stageRaw) ? stageRaw : 'off';
-  const siteRaw = (readParam('cmsSite') || readStorage('marvlore.cmsSite') || 'off').toLowerCase();
+  const stageRaw = (readParam('cmsWork') || readStorage('marvlore.cmsWork') || 'all').toLowerCase();
+  const stage = STAGES.has(stageRaw) ? stageRaw : 'all';
+  const siteRaw = (readParam('cmsSite') || readStorage('marvlore.cmsSite') || 'all').toLowerCase();
   // cmsWork=all also unlocks site modules for convenience
   const siteStage = SITE_STAGES.has(siteRaw)
     ? siteRaw

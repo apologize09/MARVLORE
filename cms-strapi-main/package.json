@@ -26,7 +26,9 @@
     "seed:about": "node ./scripts/site-seed-about.mjs",
     "seed:about:execute": "node ./scripts/site-seed-about.mjs --execute",
     "seed:hero": "node ./scripts/site-seed-hero.mjs",
-    "seed:hero:execute": "node ./scripts/site-seed-hero.mjs --execute"
+    "seed:hero:execute": "node ./scripts/site-seed-hero.mjs --execute",
+    "purge:phoenix": "node ./scripts/purge-phoenix-legacy.mjs",
+    "purge:phoenix:execute": "node ./scripts/purge-phoenix-legacy.mjs --execute"
   },
   "dependencies": {
     "@strapi/database": "5.52.1",
