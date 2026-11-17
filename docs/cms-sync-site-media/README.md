@@ -28,6 +28,17 @@ npm run sync:site-media:execute -- --limit=20
 上传后素材落在媒体库文件夹：`marvlore-site/<top-level>/`（如 `hero-video`、`orbit`）。  
 `caption` = `/assets/...` 官网路径；`name` = 路径用 `__` 连接，避免重名。
 
+## 关联到内容字段（后台编辑区显示）
+
+素材入库后，还需把 `coverUrl` / `imageUrl` 等字符串匹配到 media 关系字段（`cover` / `image` / …），Content Manager 才会显示缩略图：
+
+```bash
+npm run link:site-media                 # dry-run
+npm run link:site-media:execute         # 写入 cover/thumbnail/heroMedia/image/video/poster
+```
+
+覆盖：`work-project`、`work-project-media`、`work-category`。
+
 ## 规模（当前 dist）
 
 约 144 个媒体文件（~124 图 + 20 视频），不含 `fonts/`。
