@@ -4,8 +4,9 @@
  * Defaults: cmsWork=all + cmsSite=all (Marvlore CMS wired). Override with:
  *   ?cmsWork=off|categories|list|detail|all
  *   ?cmsSite=off|contact|awards|services|about|hero|all
+ *   ?cmsFilter=on|off   (Work search/tag/sort bar; default off on homepage)
  *   ?cmsBase=http://127.0.0.1:1337
- *   localStorage.marvlore.cmsWork / cmsSite / cmsBase
+ *   localStorage.marvlore.cmsWork / cmsSite / cmsBase / cmsFilter
  * Static fallback still applies when the API is unreachable.
  */
 const STAGES = new Set(['off', 'categories', 'list', 'detail', 'all']);
@@ -45,13 +46,14 @@ export function getCmsConfig() {
   ).replace(/\/$/, '');
   const locale = readParam('cmsLocale') || readStorage('marvlore.cmsLocale') || 'zh-CN';
   const timeoutMs = Number(readParam('cmsTimeout') || readStorage('marvlore.cmsTimeout') || 6000);
-  const filterRaw = (readParam('cmsFilter') || readStorage('marvlore.cmsFilter') || '').toLowerCase();
+  // Work search/tag/sort bar: off on homepage by default. Keep module for later pages;
+  // opt in with ?cmsFilter=on (or localStorage marvlore.cmsFilter=on).
+  const filterRaw = (readParam('cmsFilter') || readStorage('marvlore.cmsFilter') || 'off').toLowerCase();
   const useList = stage === 'list' || stage === 'detail' || stage === 'all';
   const useFilter =
     filterRaw === '1' ||
     filterRaw === 'true' ||
-    filterRaw === 'on' ||
-    useList;
+    filterRaw === 'on';
   const useContact = siteStage === 'contact' || siteStage === 'all';
   const useAwards = siteStage === 'awards' || siteStage === 'all';
   const useServices = siteStage === 'services' || siteStage === 'all';
