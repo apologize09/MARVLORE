@@ -38,6 +38,8 @@ const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Plugin =>
   },
   upload: {
     config: {
+      // Site hero mp4s are ~5–9MB; keep headroom for future master cuts
+      sizeLimit: 50 * 1024 * 1024,
       security: {
         allowedTypes: allowedMediaTypes,
         deniedTypes: deniedExecutableTypes,
