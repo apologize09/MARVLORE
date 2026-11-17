@@ -28,7 +28,11 @@
     "seed:hero": "node ./scripts/site-seed-hero.mjs",
     "seed:hero:execute": "node ./scripts/site-seed-hero.mjs --execute",
     "purge:phoenix": "node ./scripts/purge-phoenix-legacy.mjs",
-    "purge:phoenix:execute": "node ./scripts/purge-phoenix-legacy.mjs --execute"
+    "purge:phoenix:execute": "node ./scripts/purge-phoenix-legacy.mjs --execute",
+    "sync:site-media": "node ./scripts/sync-site-media.mjs",
+    "sync:site-media:execute": "node ./scripts/sync-site-media.mjs --execute",
+    "link:site-media": "node ./scripts/link-site-media.mjs",
+    "link:site-media:execute": "node ./scripts/link-site-media.mjs --execute"
   },
   "dependencies": {
     "@strapi/database": "5.52.1",
