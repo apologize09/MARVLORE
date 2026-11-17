@@ -76,11 +76,7 @@ const DashboardPage = () => {
             key={stat.key}
             label={stat.label}
             value={loading ? '…' : (counts[stat.key] ?? '—')}
-            to={
-              stat.key === 'work'
-                ? '/ops/work/projects'
-                : `/ops/website/${stat.key === 'services' ? 'services' : stat.key}`
-            }
+            to={`/content-manager/collection-types/${stat.uid}`}
           />
         ))}
         <StatCard label="媒体库文件" value={loading ? '…' : mediaCount} to="/plugins/upload" />
