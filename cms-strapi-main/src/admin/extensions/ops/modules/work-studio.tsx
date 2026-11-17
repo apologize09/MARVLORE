@@ -54,7 +54,7 @@ function WorkHub() {
   return (
     <OpsPage
       title="Work Studio"
-      lead="作品内容生命周期。点击卡片后在本页查看对应内容（不跳转 Content Manager），对齐 build-work.mjs。"
+      lead="作品内容生命周期。本页浏览条目；点「编辑 / 打开编辑器」进入 Content Manager 修改。对齐 build-work.mjs。"
     >
       <LinkGrid>
         {WORK_LINKS.map((link) => (

@@ -55,7 +55,7 @@ function WebsiteHub() {
   return (
     <OpsPage
       title="Website Management"
-      lead="官网前台模块内容。点击卡片后在本页查看对应内容（不跳转 Content Manager）。每个入口对齐独立前端构建脚本（build-hero / build-about / build-services / build-contact）。"
+      lead="官网前台模块内容。点击卡片后在本页浏览条目；点「编辑 / 打开编辑器」进入 Content Manager 修改字段。每个入口对齐 build-hero / about / services / contact。"
     >
       <LinkGrid>
         {WEBSITE_LINKS.map((link) => (

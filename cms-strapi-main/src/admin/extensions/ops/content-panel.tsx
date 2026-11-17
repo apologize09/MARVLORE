@@ -1,7 +1,8 @@
 /**
- * In-hub content browser — lists / shows CM documents without leaving ops modules.
+ * In-hub content browser — list/preview in ops modules; edit opens Content Manager.
  */
 import React, { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useFetchClient } from '@strapi/strapi/admin';
 import type { ContentKind } from './routes';
 
@@ -52,6 +53,30 @@ const tdStyle: React.CSSProperties = {
 
 const muted: React.CSSProperties = { color: '#666687', fontSize: 13 };
 
+const primaryBtn: React.CSSProperties = {
+  display: 'inline-block',
+  padding: '8px 14px',
+  borderRadius: 8,
+  background: '#4945ff',
+  color: '#fff',
+  fontSize: 13,
+  fontWeight: 600,
+  textDecoration: 'none',
+  border: 'none',
+};
+
+const secondaryBtn: React.CSSProperties = {
+  display: 'inline-block',
+  padding: '8px 14px',
+  borderRadius: 8,
+  background: '#fff',
+  color: '#271fe0',
+  fontSize: 13,
+  fontWeight: 600,
+  textDecoration: 'none',
+  border: '1px solid #d9d8ff',
+};
+
 function pickTitle(row: Row): string {
   for (const key of TITLE_KEYS) {
     const value = row[key];
@@ -90,6 +115,21 @@ function flattenFields(row: Row): Array<[string, string]> {
     .filter(([key, value]) => !skip.has(key) && value != null && typeof value !== 'object')
     .slice(0, 24)
     .map(([key, value]) => [key, String(value)]);
+}
+
+function editPath(uid: string, kind: ContentKind, row?: Row | null): string {
+  if (kind === 'single') {
+    return `/content-manager/single-types/${uid}`;
+  }
+  const documentId = row?.documentId;
+  if (documentId) {
+    return `/content-manager/collection-types/${uid}/${documentId}`;
+  }
+  return `/content-manager/collection-types/${uid}`;
+}
+
+function createPath(uid: string): string {
+  return `/content-manager/collection-types/${uid}/create`;
 }
 
 export function ContentPanel({
@@ -132,7 +172,6 @@ export function ContentPanel({
             params: { locale: 'zh-CN' },
           });
           const body = ((res as { data?: unknown })?.data ?? res) as Row;
-          // CM single may nest under data
           const doc = (body?.documentId ? body : (body as { data?: Row })?.data) ?? body;
           if (!cancelled) {
             setRows(doc && (doc.documentId || doc.id) ? [doc as Row] : []);
@@ -155,7 +194,6 @@ export function ContentPanel({
     return () => {
       cancelled = true;
     };
-    // `get` omitted — unstable identity would refetch every render and stall the admin UI
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uid, kind]);
 
@@ -165,6 +203,8 @@ export function ContentPanel({
     [rows, selectedId],
   );
 
+  const selectedEditTo = editPath(uid, kind, selected);
+
   return (
     <div style={panelStyle}>
       <div
@@ -172,14 +212,28 @@ export function ContentPanel({
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
+          gap: 12,
           padding: '12px 16px',
           borderBottom: '1px solid #eaeaef',
+          flexWrap: 'wrap',
         }}
       >
         <span style={{ fontWeight: 600, fontSize: 14 }}>
           {kind === 'collection' ? '条目列表' : '单页内容'}
+          <span style={{ ...muted, marginLeft: 10, fontWeight: 400 }}>
+            {loading ? '加载中…' : `共 ${total} 条`}
+          </span>
         </span>
-        <span style={muted}>{loading ? '加载中…' : `共 ${total} 条`}</span>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          {kind === 'collection' ? (
+            <Link to={createPath(uid)} style={secondaryBtn}>
+              + 新建
+            </Link>
+          ) : null}
+          <Link to={selectedEditTo} style={primaryBtn}>
+            {kind === 'single' ? '编辑此页' : '编辑选中条目'}
+          </Link>
+        </div>
       </div>
 
       {error ? (
@@ -187,7 +241,18 @@ export function ContentPanel({
       ) : null}
 
       {!loading && !error && rows.length === 0 ? (
-        <p style={{ ...muted, padding: 16 }}>暂无内容。可稍后在高级编辑器中创建。</p>
+        <div style={{ padding: 16 }}>
+          <p style={{ ...muted, marginTop: 0 }}>暂无内容。</p>
+          {kind === 'collection' ? (
+            <Link to={createPath(uid)} style={primaryBtn}>
+              + 创建第一条
+            </Link>
+          ) : (
+            <Link to={editPath(uid, 'single')} style={primaryBtn}>
+              打开编辑器创建
+            </Link>
+          )}
+        </div>
       ) : null}
 
       {rows.length > 0 ? (
@@ -205,13 +270,14 @@ export function ContentPanel({
                   <tr>
                     <th style={thStyle}>标题</th>
                     <th style={thStyle}>状态</th>
-                    <th style={thStyle}>语言</th>
+                    <th style={thStyle}>操作</th>
                   </tr>
                 </thead>
                 <tbody>
                   {rows.map((row) => {
                     const key = (row.documentId ?? row.id) as string | number;
                     const active = key === selectedId;
+                    const rowEdit = editPath(uid, 'collection', row);
                     return (
                       <tr
                         key={String(key)}
@@ -223,7 +289,15 @@ export function ContentPanel({
                       >
                         <td style={tdStyle}>{pickTitle(row)}</td>
                         <td style={tdStyle}>{statusLabel(row)}</td>
-                        <td style={tdStyle}>{row.locale || '—'}</td>
+                        <td style={tdStyle}>
+                          <Link
+                            to={rowEdit}
+                            onClick={(event) => event.stopPropagation()}
+                            style={{ color: '#4945ff', fontWeight: 600, textDecoration: 'none' }}
+                          >
+                            编辑
+                          </Link>
+                        </td>
                       </tr>
                     );
                   })}
@@ -235,10 +309,31 @@ export function ContentPanel({
           <div style={{ padding: 16, maxHeight: 480, overflow: 'auto' }}>
             {selected ? (
               <>
-                <p style={{ margin: '0 0 4px', fontSize: 16, fontWeight: 600 }}>{pickTitle(selected)}</p>
-                <p style={{ ...muted, margin: '0 0 14px' }}>
-                  {statusLabel(selected)} · {selected.locale || '—'} · 更新于{' '}
-                  {formatWhen(selected.updatedAt)}
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    gap: 12,
+                    alignItems: 'flex-start',
+                    marginBottom: 12,
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  <div>
+                    <p style={{ margin: '0 0 4px', fontSize: 16, fontWeight: 600 }}>
+                      {pickTitle(selected)}
+                    </p>
+                    <p style={{ ...muted, margin: 0 }}>
+                      {statusLabel(selected)} · {selected.locale || '—'} · 更新于{' '}
+                      {formatWhen(selected.updatedAt)}
+                    </p>
+                  </div>
+                  <Link to={selectedEditTo} style={primaryBtn}>
+                    打开编辑器
+                  </Link>
+                </div>
+                <p style={{ ...muted, margin: '0 0 12px' }}>
+                  下方为只读预览；修改字段请点「打开编辑器 / 编辑」。
                 </p>
                 <dl style={{ margin: 0, display: 'grid', gap: 10 }}>
                   {flattenFields(selected).map(([key, value]) => (
