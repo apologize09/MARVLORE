@@ -23,6 +23,11 @@ const deniedExecutableTypes = [
 ];
 
 const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Plugin => ({
+  // Strapi 5.52 ships `@strapi/i18n` (same major/minor). Locales zh-CN + en are
+  // ensured at bootstrap in `src/index.ts`.
+  i18n: {
+    enabled: true,
+  },
   'users-permissions': {
     config: {
       jwtManagement: 'refresh',

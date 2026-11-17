@@ -5,7 +5,7 @@
     "singularName": "page-seo",
     "pluralName": "page-seos",
     "displayName": "Page SEO",
-    "description": "Per-route SEO for the Phoenix Pouch website"
+    "description": "Legacy per-route SEO (unused by Marvlore; retained empty)"
   },
   "options": {
     "draftAndPublish": false

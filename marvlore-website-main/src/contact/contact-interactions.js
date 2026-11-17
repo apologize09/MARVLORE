@@ -36,15 +36,17 @@ export function mountContactInteractions(root=document.querySelector('#contact')
  }
  button?.addEventListener('click',async()=>{
   if(busy)return;
+  const emailLink=root.querySelector('a.contact-value-link[href^="mailto:"]');
+  const email=(emailLink?.getAttribute('href')||'').replace(/^mailto:/i,'')||'contact@marvlore.com';
   busy=true;button.setAttribute('aria-busy','true');clearTimeout(copyTimer);
   try{
-   await navigator.clipboard.writeText('contact@marvlore.com');
+   await navigator.clipboard.writeText(email);
    if(!live)return;
-   button.classList.add('is-copied');button.setAttribute('aria-label','邮箱已复制：contact@marvlore.com');
-   label.textContent='Copied';hint.textContent='邮箱已复制';status.textContent='邮箱已复制：contact@marvlore.com';
+   button.classList.add('is-copied');button.setAttribute('aria-label',`邮箱已复制：${email}`);
+   label.textContent='Copied';hint.textContent='邮箱已复制';status.textContent=`邮箱已复制：${email}`;
   }catch{
    if(!live)return;
-   label.textContent='Copy Email';hint.textContent='请手动复制';status.textContent='请手动复制邮箱：contact@marvlore.com';
+   label.textContent='Copy Email';hint.textContent='请手动复制';status.textContent=`请手动复制邮箱：${email}`;
   }finally{
    busy=false;button.removeAttribute('aria-busy');
   }

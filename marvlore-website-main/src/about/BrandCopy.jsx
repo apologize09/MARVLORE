@@ -1,10 +1,11 @@
 import {useEffect,useMemo,useRef,useState} from 'react';
 import {ScrollTrigger} from 'gsap/ScrollTrigger';
 import ScrollReveal from './ScrollReveal.jsx';
-import {aboutCopy} from './reference-data.js';
+import {resolveAboutCopy} from './reference-data.js';
 import {copyRevealRange} from './copy-reveal-range.js';
 
 export default function BrandCopy({started}){
+ const aboutCopy=useMemo(()=>resolveAboutCopy(),[]);
  const copy=useRef(null);
  const [riseDistance,setRiseDistance]=useState(()=>Math.max(120,Math.min(240,innerHeight*.22)));
  const count=3+aboutCopy.stats.reduce((total,stat)=>total+1+stat.lines.length,0);

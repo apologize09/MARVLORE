@@ -3,15 +3,21 @@ import { createRoot } from 'react-dom/client';
 import { createPortal } from 'react-dom';
 import CircularCarousel from './CircularCarousel.jsx';
 import SplitText from './SplitText.jsx';
-import { heroProjects } from './images.js';
+import { heroProjects as staticHeroProjects } from './images.js';
 import { cardCornerRadius } from '../../dist/card-shape.js';
 import './hero.css';
 const haloSrc='./assets/orbit/hero-orbit-light.png';
-// Use all existing landscape cards to match the reference's denser back row.
-const visibleImages=heroProjects;
-const carouselItems=heroProjects;
 
-function HeroCarousel({titleTarget}){
+function resolveHeroProjects(){
+ try{
+  const fromCms=typeof window!=='undefined'?window.__MARVLORE_HERO_PROJECTS__:null;
+  if(Array.isArray(fromCms)&&fromCms.length)return fromCms;
+ }catch{}
+ return staticHeroProjects;
+}
+
+function HeroCarousel({titleTarget,items}){
+ const carouselItems=items;
  const [paused,setPaused]=useState(false),[reduced,setReduced]=useState(false);
  const [galleryOpen,setGalleryOpen]=useState(()=>document.documentElement.classList.contains('project-gallery-open'));
  const [ready,setReady]=useState(false),[replayKey,setReplayKey]=useState(0);
@@ -36,12 +42,12 @@ function HeroCarousel({titleTarget}){
  },[]);
  useEffect(()=>{
   let alive=true;
-  const media=[...visibleImages.map(item=>item.src),haloSrc].map(src=>{
+  const media=[...carouselItems.map(item=>item.src),haloSrc].map(src=>{
    const image=new Image();image.src=src;return image.decode().catch(()=>{});
   });
   Promise.all([...media,document.fonts?.ready]).then(()=>{if(alive)setReady(true);});
   return ()=>{alive=false;};
- },[]);
+ },[carouselItems]);
  useEffect(()=>{
   const target=document.querySelector('#home');
   if(!target||typeof IntersectionObserver==='undefined'){setInView(true);return;}
@@ -115,8 +121,9 @@ function HeroCarousel({titleTarget}){
 export function mountHeroOrbit(){
  const title=document.querySelector('#hero-title');
  const target=document.querySelector('#hero-orbit');
+ const items=resolveHeroProjects();
  if(target){
   if(title){title.replaceChildren();title.setAttribute('aria-label','Ideas Make Brands POP');}
-  createRoot(target).render(<HeroCarousel titleTarget={title}/>);
+  createRoot(target).render(<HeroCarousel titleTarget={title} items={items}/>);
  }
 }

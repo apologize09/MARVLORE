@@ -2,12 +2,14 @@ import {titleCase} from './typography.js';
 import {createWorkNavigation} from './work-navigation.js';
 import {stepSpring,reducedMotion,clamp} from './motion.js';
 import {cardCornerRadius} from './card-shape.js';
-import {workReelItems as items,workReelOptions as options} from './work-reel-data.js?v=cover-crops-125';
+import {getWorkReelItems,getWorkReelOptions} from './cms/work-runtime.js';
 
 // Independent photo-reel implementation. Pointer-distance magnification follows
 // the open-source Dock pattern: https://github.com/ibelick/motion-primitives
 // No React Bits Pro source or private registry dependency is included.
 export function mountWorkReel(){
+ const items=getWorkReelItems();
+ const options=getWorkReelOptions();
  const root=document.querySelector('#work'),stage=root?.querySelector('.elastic-reel-stage');
  if(!stage)return;
  const overview=root.querySelector('#work-overview'),reel=root.querySelector('.elastic-reel');
@@ -227,7 +229,40 @@ export function mountWorkReel(){
  document.querySelectorAll('a[href="#work"]:not(.work-reel-detail):not([data-work-group])').forEach(link=>link.addEventListener('click',showOverview));
  detail.addEventListener('click',event=>{event.preventDefault();showProject();});
  collapse.addEventListener('click',close);
+ function applyFilterDetail(detail){
+  if(!detail)return;
+  const state=detail.state||{};
+  const active=Boolean(state.q||state.category||state.subcategory||(state.tags&&state.tags.length)||state.year||state.projectType||(state.sort&&state.sort!=='manual')||(state.page&&state.page>1));
+  if(detail.empty){
+   const viewportTop=root.getBoundingClientRect().top;
+   stop();opened=-1;hovered=-1;focused=-1;drag=null;
+   pool=[];start=0;updateWindow();caption(-1);
+   overview.hidden=true;reel.hidden=true;root.classList.remove('work-reel');root.dataset.workMode='empty';
+   refreshMode(viewportTop);return;
+  }
+  if(!active){showOverview();return;}
+  if(detail.ids==null){
+   if(state.subcategory)showCategory(state.subcategory);
+   else if(!state.q&&!(state.tags&&state.tags.length))showOverview();
+   return;
+  }
+  const idSet=new Set(detail.ids);
+  let next=items.map((item,index)=>idSet.has(item.id)?index:-1).filter(index=>index>=0);
+  if(!next.length&&state.subcategory){showCategory(state.subcategory);return;}
+  if(!next.length){
+   applyFilterDetail({...detail,empty:true});
+   return;
+  }
+  const viewportTop=root.getBoundingClientRect().top;
+  overview.hidden=true;reel.hidden=false;root.classList.add('work-reel');root.dataset.workMode='filter';
+  opened=-1;hovered=-1;focused=-1;drag=null;
+  pool=next;start=0;updateWindow();
+  if(state.subcategory)setCategory(state.subcategory);else setCategory('all');
+  caption(-1);measure();refreshMode(viewportTop);navigation.reveal();
+ }
+ const onWorkFilter=event=>applyFilterDetail(event.detail);
+ window.addEventListener('marvlore:work-filter',onWorkFilter);
  const observer=new ResizeObserver(measure);observer.observe(stage);measure();caption(-1);
  reducedMotion.addEventListener('change',()=>{layout(null,true);syncVideos();});
- return {open,close,shift,showOverview,showCategory,destroy(){stop();observer.disconnect();mediaObserver.disconnect();videos.forEach(video=>video.pause());window.removeEventListener('marvlore:gallery-state',onGallery);document.removeEventListener('visibilitychange',syncVideos);}};
+ return {open,close,shift,showOverview,showCategory,destroy(){stop();observer.disconnect();mediaObserver.disconnect();videos.forEach(video=>video.pause());window.removeEventListener('marvlore:gallery-state',onGallery);window.removeEventListener('marvlore:work-filter',onWorkFilter);document.removeEventListener('visibilitychange',syncVideos);}};
 }

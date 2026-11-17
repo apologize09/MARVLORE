@@ -1,7 +1,7 @@
 import {useEffect,useRef,useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {motion,useReducedMotion} from 'motion/react';
-import {referenceCards,referenceEntryDelay} from './reference-data.js';
+import {resolveReferenceCards,referenceEntryDelay} from './reference-data.js';
 import {coverImageScale} from '../../dist/cover-framing.js';
 import BrandCopy from './BrandCopy.jsx';
 import {shouldShowEntry} from './entry-visibility.js';
@@ -16,6 +16,7 @@ const CARD_END={opacity:1,x:0,y:0,scale:1,rotate:0};
 
 function ReferenceCollage(){
  const root=useRef(null),reduced=useReducedMotion();
+ const referenceCards=resolveReferenceCards();
  const [ready,setReady]=useState(false),[spread,setSpread]=useState(false),[focused,setFocused]=useState(null);
  const [entry,setEntry]=useState({active:false,run:0}),[complete,setComplete]=useState(false);
  const started=(entry.active&&ready)||Boolean(reduced);
@@ -23,7 +24,7 @@ function ReferenceCollage(){
   let live=true;
   Promise.all(referenceCards.map(card=>{const image=new Image();image.src=card.src;return image.decode().catch(()=>{});})).then(()=>{if(live)setReady(true);});
   return ()=>{live=false;};
- },[]);
+ },[referenceCards]);
  useEffect(()=>{
   let frame=0;
   function update(){

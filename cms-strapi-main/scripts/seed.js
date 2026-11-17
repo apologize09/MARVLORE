@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * LEGACY Phoenix Pouch Co. seed — DO NOT run against the Marvlore production DB.
+ * Marvlore content uses: migrate:work / seed:site / seed:services / seed:about / seed:hero.
+ * To remove Phoenix leftovers: npm run purge:phoenix:execute
+ */
 const fs = require('fs');
 const path = require('path');
 const seed = require('../data/pouch-seed.json');
@@ -267,21 +272,11 @@ async function importSeedData() {
 }
 
 async function main() {
-  const { createStrapi, compileStrapi } = require('@strapi/strapi');
-  const appContext = await compileStrapi();
-  const app = await createStrapi(appContext).load();
-  app.log.level = 'error';
-  try {
-    console.log('Seeding Phoenix Pouch Co. CMS data...');
-    await importSeedData();
-    console.log('Seed complete.');
-  } catch (error) {
-    console.error('Seed failed', error);
-    await app.destroy();
-    process.exit(1);
-  }
-  await app.destroy();
-  process.exit(0);
+  console.error(
+    'REFUSED: seed:example targets removed Phoenix CTs (api::about / api::global).\n' +
+      'Use migrate:work / seed:site / seed:services / seed:about / seed:hero for Marvlore.'
+  );
+  process.exit(1);
 }
 
 main().catch((error) => {

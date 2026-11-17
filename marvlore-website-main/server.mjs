@@ -53,6 +53,45 @@ function corsHeaders(ext){
   };
 }
 
+async function buildWorkSitemap(origin){
+  const cmsBase=(process.env.CMS_BASE||'http://127.0.0.1:1337').replace(/\/$/,'');
+  const locales=['zh-CN','en'];
+  const urls=[];
+  for(const locale of locales){
+    try{
+      const res=await fetch(`${cmsBase}/api/work-projects?locale=${encodeURIComponent(locale)}&pageSize=48&sort=manual`,{
+        headers:{Accept:'application/json'},
+      });
+      if(!res.ok) continue;
+      const json=await res.json();
+      const rows=json?.data||[];
+      if(!rows.length) continue; // only emit locales that have published content
+      urls.push({
+        loc:`${origin}/?cmsWork=all&cmsLocale=${encodeURIComponent(locale)}#work`,
+        locale,
+      });
+      for(const row of rows){
+        const id=row.legacyId||row.slug;
+        if(!id) continue;
+        urls.push({
+          loc:`${origin}/?cmsWork=all&cmsLocale=${encodeURIComponent(locale)}#case/${encodeURIComponent(id)}`,
+          locale,
+        });
+      }
+    }catch{
+      // CMS unreachable — skip locale
+    }
+  }
+  const body=[
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...urls.map((entry)=>`  <url><loc>${entry.loc.replace(/&/g,'&amp;')}</loc></url>`),
+    '</urlset>',
+    '',
+  ].join('\n');
+  return body;
+}
+
 const server=http.createServer(async(req,res)=>{
  try{
   if(req.method==='OPTIONS'){
@@ -65,6 +104,16 @@ const server=http.createServer(async(req,res)=>{
   }
   if(req.url?.includes('asset-manifest.json') || !manifest) manifest=loadManifest();
   const url=new URL(req.url,'http://localhost');
+  if(url.pathname==='/sitemap-work.xml'){
+    const origin=process.env.SITE_ORIGIN||`http://127.0.0.1:${server.address()?.port||5173}`;
+    const xml=await buildWorkSitemap(origin);
+    res.writeHead(200,{
+      'Content-Type':'application/xml; charset=utf-8',
+      'Cache-Control':'public, max-age=300',
+    });
+    res.end(xml);
+    return;
+  }
   const requested=decodeURIComponent(url.pathname);
   const version=url.searchParams.get('v');
   const file=path.resolve(root,'.'+(requested==='/'?'/index.html':requested));

@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_shared_about_stats",
+  "info": {
+    "displayName": "About Stat",
+    "icon": "chartBubble",
+    "description": "About center copy statistics block"
+  },
+  "options": {},
+  "attributes": {
+    "number": {
+      "type": "string",
+      "required": true
+    },
+    "lines": {
+      "type": "json",
+      "required": true
+    },
+    "sortOrder": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

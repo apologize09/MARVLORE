@@ -2,20 +2,17 @@ import type { Core } from '@strapi/strapi';
 import { registerWorkDocumentRules } from './middlewares/work-document-rules';
 
 const PUBLIC_ACTIONS: Record<string, string[]> = {
-  article: ['find', 'findOne'],
-  category: ['find', 'findOne'],
-  author: ['find', 'findOne'],
-  global: ['find', 'findOne'],
-  about: ['find', 'findOne'],
-  faq: ['find', 'findOne'],
-  certification: ['find', 'findOne'],
-  'page-seo': ['find', 'findOne'],
-  // Phase 2 — Work public read (Draft & Publish already scopes live content for Public)
+  // Marvlore only — legacy Phoenix Pouch CTs intentionally omitted from Public bootstrap
   'work-category': ['find', 'findOne'],
   'work-tag': ['find', 'findOne'],
   'work-project': ['find', 'findOne'],
   'work-project-media': ['find', 'findOne'],
   'work-page': ['find'],
+  'global-setting': ['find'],
+  award: ['find', 'findOne'],
+  'service-item': ['find', 'findOne'],
+  'about-page': ['find'],
+  'hero-item': ['find', 'findOne'],
 };
 
 const REQUIRED_LOCALES: Array<{ code: string; name: string }> = [

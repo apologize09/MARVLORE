@@ -1,0 +1,87 @@
+/* Phase 6 — progressive Work filters (CMS). Does not restyle existing category pills. */
+.work-filter-bar{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:center;
+  gap:10px 12px;
+  width:min(920px,94vw);
+  margin:0 auto 22px;
+}
+.work-filter-search{
+  flex:1 1 220px;
+  min-width:min(100%,220px);
+  max-width:360px;
+}
+.work-filter-search input{
+  width:100%;
+  min-height:44px;
+  padding:10px 16px;
+  border:1px solid #ffffff12;
+  border-radius:100px;
+  background:#171719;
+  color:#f7f7f5;
+  font:inherit;
+  font-size:13px;
+}
+.work-filter-search input::placeholder{color:#6f6f76;}
+.work-filter-search input:focus-visible{
+  outline:2px solid #d7ff3f;
+  outline-offset:3px;
+}
+.work-filter-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  justify-content:center;
+  max-width:100%;
+}
+.work-filter-tags button{
+  min-height:36px;
+  padding:6px 14px;
+  border:1px solid #ffffff12;
+  border-radius:100px;
+  background:transparent;
+  color:#a7a7ad;
+  font-size:12px;
+}
+.work-filter-tags button[aria-pressed="true"]{
+  color:#f7f7f5;
+  background:#363639;
+}
+.work-filter-tags button:hover{color:#fff;}
+.work-filter-sort select{
+  min-height:44px;
+  padding:8px 14px;
+  border:1px solid #ffffff12;
+  border-radius:100px;
+  background:#171719;
+  color:#d0d0d4;
+  font:inherit;
+  font-size:13px;
+}
+.work-filter-clear,
+.work-filter-empty button{
+  min-height:44px;
+  padding:8px 16px;
+  border:1px solid #ffffff18;
+  border-radius:100px;
+  background:#1d1d20;
+  color:#f0f0f0;
+  font-size:13px;
+}
+.work-filter-empty{
+  width:min(640px,92vw);
+  margin:12px auto 36px;
+  text-align:center;
+  color:#a7a7ad;
+}
+.work-filter-empty p{
+  margin:0 0 14px;
+  font-size:15px;
+}
+#work[data-work-mode="empty"] .elastic-reel,
+#work[data-work-mode="empty"] #work-overview{display:none;}
+@media(prefers-reduced-motion:reduce){
+  .work-filter-tags button,.work-filter-clear{transition:none;}
+}

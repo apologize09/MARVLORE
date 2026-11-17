@@ -2,13 +2,23 @@ import React,{useEffect,useLayoutEffect,useRef,useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {flushSync} from 'react-dom';
 import {servicesTitleFrame,servicesListFrame,SERVICES_LIST_START} from './title-motion.js';
-import {serviceItems} from './items.js';
+import {serviceItems as staticServiceItems} from './items.js';
 import './experience.css';
 
 const clamp=value=>Math.max(0,Math.min(1,value));
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 
-function ServiceDirectory({canAutoplay=false}){
+function resolveServiceItems(){
+ // Shared with app.js boot bundle via window — avoid importing the CMS runtime module
+ // (esbuild would duplicate module state and miss CMS hydration).
+ try{
+  const fromCms=typeof window!=='undefined'?window.__MARVLORE_SERVICE_ITEMS__:null;
+  if(Array.isArray(fromCms)&&fromCms.length)return fromCms;
+ }catch{}
+ return staticServiceItems;
+}
+
+function ServiceDirectory({canAutoplay=false,items=staticServiceItems}){
  const [hovered,setHovered]=useState(null),[focused,setFocused]=useState(null);
  const [autoIndex,setAutoIndex]=useState(null),[pageVisible,setPageVisible]=useState(()=>!document.hidden);
  const [leaving,setLeaving]=useState([]),previousActive=useRef(null);
@@ -23,13 +33,13 @@ function ServiceDirectory({canAutoplay=false}){
   if(!pageVisible||hovered!==null||focused!==null)return;
   let cancelled=false;
   const timer=setTimeout(async()=>{
-   const next=autoIndex===null?0:(autoIndex+1)%serviceItems.length;
+   const next=autoIndex===null?0:(autoIndex+1)%items.length;
    // Decode the incoming cover before cross-fading; manual input cancels the handoff.
    await previewImages.current[next]?.decode().catch(()=>{});
    if(!cancelled)setAutoIndex(next);
   },autoIndex===null?280:2600);
   return ()=>{cancelled=true;clearTimeout(timer);};
- },[canAutoplay,pageVisible,hovered,focused,autoIndex]);
+ },[canAutoplay,pageVisible,hovered,focused,autoIndex,items.length]);
  const active=hovered??focused??(canAutoplay&&pageVisible?autoIndex:null);
  useLayoutEffect(()=>{
   const previous=previousActive.current;previousActive.current=active;
@@ -45,7 +55,7 @@ function ServiceDirectory({canAutoplay=false}){
    <h2>What We Do</h2><p lang="zh-CN">我们的服务</p>
   </header>
   <ul className="services-list" onPointerLeave={()=>setHovered(null)} onBlur={event=>{if(!event.currentTarget.contains(event.relatedTarget))setFocused(null);}}>
-   {serviceItems.map((item,index)=><li key={item.id} data-service-enter={index+1}>
+   {items.map((item,index)=><li key={item.id} data-service-enter={index+1}>
     <button type="button" className={`service-item${active===index?' is-active':''}${leaving.includes(index)?' is-leaving':''}`} onPointerEnter={()=>{setHovered(index);setAutoIndex(index);}} onFocus={()=>{setFocused(index);setAutoIndex(index);}} aria-label={`${item.en} · ${item.cn}`} aria-describedby={`service-description-${item.id}`} style={{'--service-type-scale':item.typeScale??1}}>
      <span className="service-preview" aria-hidden="true" onTransitionEnd={event=>{
       if(event.target===event.currentTarget&&active!==index&&(event.propertyName==='opacity'||event.propertyName==='transform')){
@@ -68,17 +78,18 @@ function ServiceDirectory({canAutoplay=false}){
 export function mountServices(){
  const section=document.querySelector('#services');
  if(!section)return;
+ const items=resolveServiceItems();
  const stage=section.querySelector('.services-stage'),title=section.querySelector('#services-title'),directory=section.querySelector('#services-directory');
  const directoryRoot=createRoot(directory);
  let autoplayReady=false;
  const setAutoplayReady=ready=>{
   if(ready===autoplayReady)return;
   autoplayReady=ready;
-  directoryRoot.render(<ServiceDirectory canAutoplay={ready}/>);
+  directoryRoot.render(<ServiceDirectory canAutoplay={ready} items={items}/>);
  };
  flushSync(()=>{
   createRoot(title).render(<div className="services-title-inner"><h2 className="services-heading services-exit-line"><span className="scroll-reveal-text">What We Can</span></h2><h2 className="services-heading services-exit-line"><span className="scroll-reveal-text">Do For You</span></h2><h2 className="services-subheading services-exit-line"><span className="scroll-reveal-text">我们能为你做什么</span></h2></div>);
-  directoryRoot.render(<ServiceDirectory/>);
+  directoryRoot.render(<ServiceDirectory items={items}/>);
  });
  const lines=[...title.querySelectorAll('.services-exit-line')],entries=[...directory.querySelectorAll('[data-service-enter]')];
  let metrics=[],scrollRaf=0;

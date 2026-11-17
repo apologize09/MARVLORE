@@ -15,7 +15,20 @@
     "upgrade": "npx @strapi/upgrade latest",
     "upgrade:dry": "npx @strapi/upgrade latest --dry",
     "migrate:work": "node ./scripts/work-migrate/cli.mjs",
-    "migrate:work:execute": "node ./scripts/work-migrate/cli.mjs --execute"
+    "migrate:work:execute": "node ./scripts/work-migrate/cli.mjs --execute",
+    "verify:i18n": "node ./scripts/verify-i18n.mjs",
+    "i18n:work": "node ./scripts/work-i18n-localize.mjs",
+    "i18n:work:execute": "node ./scripts/work-i18n-localize.mjs --execute",
+    "seed:site": "node ./scripts/site-seed-contact-awards.mjs",
+    "seed:site:execute": "node ./scripts/site-seed-contact-awards.mjs --execute",
+    "seed:services": "node ./scripts/site-seed-services.mjs",
+    "seed:services:execute": "node ./scripts/site-seed-services.mjs --execute",
+    "seed:about": "node ./scripts/site-seed-about.mjs",
+    "seed:about:execute": "node ./scripts/site-seed-about.mjs --execute",
+    "seed:hero": "node ./scripts/site-seed-hero.mjs",
+    "seed:hero:execute": "node ./scripts/site-seed-hero.mjs --execute",
+    "purge:phoenix": "node ./scripts/purge-phoenix-legacy.mjs",
+    "purge:phoenix:execute": "node ./scripts/purge-phoenix-legacy.mjs --execute"
   },
   "dependencies": {
     "@strapi/database": "5.52.1",
