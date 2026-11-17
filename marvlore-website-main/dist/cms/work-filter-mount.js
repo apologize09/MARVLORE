@@ -106,6 +106,9 @@ function syncCategoryButtons(root, state) {
 /**
  * Progressive Work filters: URL query sync + CMS search (OR tags) + empty clear.
  * Existing category toolbar / reel physics stay intact.
+ *
+ * Homepage: bar is off by default (getCmsConfig().useFilter). Re-enable with
+ * ?cmsFilter=on when mounting on a dedicated Work page later.
  */
 export function mountWorkFilters() {
   const config = getCmsConfig();

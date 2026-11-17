@@ -61,13 +61,14 @@ test('tags parse accepts comma lists and arrays', async () => {
   assert.deepEqual(readWorkFilters('?tags=cgi').tags, ['cgi']);
 });
 
-test('getCmsConfig enables filters for list/all stages', async () => {
+test('getCmsConfig keeps Work filter bar off unless cmsFilter=on', async () => {
   globalThis.location = { search: '?cmsWork=list' };
   globalThis.localStorage = { getItem: () => null };
   const { getCmsConfig } = await import(`${cms('config.js')}?t=${Date.now()}-list`);
   const cfg = getCmsConfig();
   assert.equal(cfg.useList, true);
-  assert.equal(cfg.useFilter, true);
+  // Homepage / default: search+tag bar stays hidden; module kept for later pages
+  assert.equal(cfg.useFilter, false);
 
   globalThis.location = { search: '?cmsWork=categories' };
   const { getCmsConfig: get2 } = await import(`${cms('config.js')}?t=${Date.now()}-cats`);
@@ -76,6 +77,10 @@ test('getCmsConfig enables filters for list/all stages', async () => {
   globalThis.location = { search: '?cmsWork=categories&cmsFilter=1' };
   const { getCmsConfig: get3 } = await import(`${cms('config.js')}?t=${Date.now()}-flag`);
   assert.equal(get3().useFilter, true);
+
+  globalThis.location = { search: '?cmsWork=all&cmsFilter=on' };
+  const { getCmsConfig: get4 } = await import(`${cms('config.js')}?t=${Date.now()}-on`);
+  assert.equal(get4().useFilter, true);
 });
 
 test('work-api search builds /api/work-search URL', async () => {
