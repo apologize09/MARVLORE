@@ -25,17 +25,46 @@ export function extractRelationIds(value: unknown): string[] {
     const obj = value as Record<string, unknown>;
     if (typeof obj.documentId === 'string') return [obj.documentId];
     if (obj.id != null) return [String(obj.id)];
-    if ('connect' in obj) return extractRelationIds(obj.connect);
+    // Prefer explicit set; otherwise merge connect ids (disconnect alone is handled by callers).
     if ('set' in obj) return extractRelationIds(obj.set);
+    if ('connect' in obj) return extractRelationIds(obj.connect);
   }
   return [];
+}
+
+/**
+ * Admin CM often sends `{ connect: [], disconnect: [] }` or `null` on partial saves
+ * even when the relation was not cleared. Treat those as "no change".
+ * Explicit clear remains `set: []`.
+ */
+export function isRelationNoop(value: unknown): boolean {
+  if (value == null) return true;
+  if (typeof value !== 'object' || Array.isArray(value)) return false;
+  const obj = value as Record<string, unknown>;
+  if ('set' in obj) return false;
+  const hasConnect = Object.prototype.hasOwnProperty.call(obj, 'connect');
+  const hasDisconnect = Object.prototype.hasOwnProperty.call(obj, 'disconnect');
+  if (!hasConnect && !hasDisconnect) return false;
+  return extractRelationIds(obj.connect).length === 0 && extractRelationIds(obj.disconnect).length === 0;
 }
 
 function fail(message: string): never {
   throw new ValidationError(message);
 }
 
-async function findCategory(strapi: Core.Strapi, documentId: string) {
+async function resolveCategoryDocumentId(strapi: Core.Strapi, idOrDocumentId: string) {
+  if (!idOrDocumentId) return null;
+  if (!/^\d+$/.test(idOrDocumentId)) return idOrDocumentId;
+  const row = await strapi.db.query(WORK_UIDS.category).findOne({
+    where: { id: Number(idOrDocumentId) },
+    select: ['documentId'],
+  });
+  return (row?.documentId as string | undefined) || null;
+}
+
+async function findCategory(strapi: Core.Strapi, idOrDocumentId: string) {
+  const documentId = await resolveCategoryDocumentId(strapi, idOrDocumentId);
+  if (!documentId) return null;
   return strapi.documents(WORK_UIDS.category).findOne({
     documentId,
     status: 'draft',
@@ -143,11 +172,19 @@ export async function assertProjectPayload(
   opts: { requireCategory: boolean } = { requireCategory: true }
 ) {
   const categoryTouched = Object.prototype.hasOwnProperty.call(data, 'category');
-  const categoryIds = categoryTouched
-    ? extractRelationIds(data.category)
-    : existing?.category?.documentId
-      ? [existing.category.documentId]
-      : [];
+  const categoryNoop = categoryTouched && isRelationNoop(data.category);
+  let categoryIds =
+    categoryTouched && !categoryNoop
+      ? extractRelationIds(data.category)
+      : existing?.category?.documentId
+        ? [existing.category.documentId]
+        : [];
+
+  // Resolve numeric pk → documentId so later tag/category checks compare apples to apples.
+  if (categoryIds.length === 1) {
+    const resolved = await resolveCategoryDocumentId(strapi, categoryIds[0]);
+    if (resolved) categoryIds = [resolved];
+  }
 
   if (opts.requireCategory && categoryIds.length === 0) {
     fail('work-project.category is required and must be an active level-2 category');
@@ -162,9 +199,11 @@ export async function assertProjectPayload(
   }
 
   const tagsTouched = Object.prototype.hasOwnProperty.call(data, 'tags');
-  const tagIds = tagsTouched
-    ? extractRelationIds(data.tags)
-    : (existing?.tags || []).map((t) => t.documentId).filter(Boolean) as string[];
+  const tagsNoop = tagsTouched && isRelationNoop(data.tags);
+  const tagIds =
+    tagsTouched && !tagsNoop
+      ? extractRelationIds(data.tags)
+      : (existing?.tags || []).map((t) => t.documentId).filter(Boolean) as string[];
 
   if (tagIds.length > 0 && categoryIds.length === 1) {
     for (const tagId of tagIds) {
