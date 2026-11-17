@@ -24,7 +24,9 @@
     "seed:services": "node ./scripts/site-seed-services.mjs",
     "seed:services:execute": "node ./scripts/site-seed-services.mjs --execute",
     "seed:about": "node ./scripts/site-seed-about.mjs",
-    "seed:about:execute": "node ./scripts/site-seed-about.mjs --execute"
+    "seed:about:execute": "node ./scripts/site-seed-about.mjs --execute",
+    "seed:hero": "node ./scripts/site-seed-hero.mjs",
+    "seed:hero:execute": "node ./scripts/site-seed-hero.mjs --execute"
   },
   "dependencies": {
     "@strapi/database": "5.52.1",

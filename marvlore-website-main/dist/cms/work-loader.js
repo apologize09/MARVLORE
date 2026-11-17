@@ -156,6 +156,45 @@ export async function resolveWorkBundle() {
       }
     }
 
+    if (config.useHero) {
+      try {
+        const heroRes = await api.getHeroItems();
+        const rows = heroRes?.data || [];
+        const projects = rows.filter((row) => row.role === 'project');
+        const orbit = rows.filter((row) => row.role === 'orbit');
+        if (projects.length) {
+          next.heroProjects = projects.map((row) => {
+            const item = {
+              id: row.id,
+              slug: row.slug,
+              title: row.title,
+              alt: row.alt,
+              src: row.src,
+              width: row.width,
+              height: row.height,
+            };
+            if (row.videoSrc) item.videoSrc = row.videoSrc;
+            if (row.videoSrcHd) item.videoSrcHd = row.videoSrcHd;
+            if (row.previewSrc) item.previewSrc = row.previewSrc;
+            if (row.homePreviewSrc) item.homePreviewSrc = row.homePreviewSrc;
+            if (Array.isArray(row.slides)) item.slides = row.slides;
+            return item;
+          });
+        }
+        if (orbit.length) {
+          next.heroImages = orbit.map((row) => ({
+            id: String(row.id).replace(/^orbit-/, ''),
+            src: row.src,
+            alt: row.alt,
+            width: row.width,
+            height: row.height,
+          }));
+        }
+      } catch (err) {
+        console.warn('[cms] hero fallback:', err?.message || err);
+      }
+    }
+
     return next;
   } catch (err) {
     console.warn('[cms] falling back to static Work data:', err?.message || err);

@@ -21,6 +21,7 @@ const PUBLIC_ACTIONS: Record<string, string[]> = {
   award: ['find', 'findOne'],
   'service-item': ['find', 'findOne'],
   'about-page': ['find'],
+  'hero-item': ['find', 'findOne'],
 };
 
 const REQUIRED_LOCALES: Array<{ code: string; name: string }> = [

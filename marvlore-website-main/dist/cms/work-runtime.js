@@ -39,6 +39,14 @@ export function getAbout() {
   return bundle.about || null;
 }
 
+export function getHeroProjects() {
+  return bundle.heroProjects || [];
+}
+
+export function getHeroImages() {
+  return bundle.heroImages || [];
+}
+
 export function getWorkPage() {
   return bundle.workPage || null;
 }
@@ -67,6 +75,8 @@ export function installWorkBundle(next) {
         : next.source;
       window.__MARVLORE_SERVICE_ITEMS__ = Array.isArray(next.services) ? next.services : [];
       window.__MARVLORE_ABOUT__ = next.about || null;
+      window.__MARVLORE_HERO_PROJECTS__ = Array.isArray(next.heroProjects) ? next.heroProjects : [];
+      window.__MARVLORE_HERO_IMAGES__ = Array.isArray(next.heroImages) ? next.heroImages : [];
     }
   } catch {
     // non-DOM test env

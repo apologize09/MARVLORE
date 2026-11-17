@@ -48,6 +48,7 @@ export function createWorkApi(config) {
     getAwards: () => get('/awards', { sort: 'sortOrder:asc' }, ['awards']),
     getServices: () => get('/service-items', { sort: 'sortOrder:asc' }, ['services']),
     getAboutPage: () => get('/about-page', {}, ['about-page']),
+    getHeroItems: (query = {}) => get('/hero-items', { sort: 'sortOrder:asc', ...query }, ['hero', query.role]),
     // single type — not localized; avoid forcing locale query
     getGlobalSetting: async () => {
       const full = url(baseUrl, '/global-setting', {});

@@ -18,6 +18,34 @@ export function toAwardDto(row: Record<string, unknown>) {
   };
 }
 
+export function toHeroItemDto(row: Record<string, unknown>) {
+  const role = String(row.role || 'project');
+  const mediaType = String(row.mediaType || 'image');
+  const legacyId = (row.legacyId as string) || (row.slug as string);
+  const base: Record<string, unknown> = {
+    documentId: row.documentId,
+    legacyId,
+    id: legacyId,
+    slug: row.slug,
+    role,
+    mediaType,
+    title: row.title ?? '',
+    alt: row.alt ?? row.title ?? '',
+    src: row.imageUrl ?? '',
+    width: row.width ?? null,
+    height: row.height ?? null,
+    sortOrder: row.sortOrder ?? 0,
+  };
+  if (role === 'project') {
+    if (row.videoUrl) base.videoSrc = row.videoUrl;
+    if (row.videoUrlHd) base.videoSrcHd = row.videoUrlHd;
+    if (row.previewUrl) base.previewSrc = row.previewUrl;
+    if (row.homePreviewUrl) base.homePreviewSrc = row.homePreviewUrl;
+    if (Array.isArray(row.slides) && row.slides.length) base.slides = row.slides;
+  }
+  return base;
+}
+
 export function toAboutPageDto(row: Record<string, unknown> | null) {
   if (!row) return null;
   const stats = Array.isArray(row.stats)

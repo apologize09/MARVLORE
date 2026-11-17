@@ -10,7 +10,7 @@
  *   localStorage.marvlore.cmsBase
  */
 const STAGES = new Set(['off', 'categories', 'list', 'detail', 'all']);
-const SITE_STAGES = new Set(['off', 'contact', 'awards', 'services', 'about', 'all']);
+const SITE_STAGES = new Set(['off', 'contact', 'awards', 'services', 'about', 'hero', 'all']);
 
 function readParam(name) {
   try {
@@ -57,6 +57,7 @@ export function getCmsConfig() {
   const useAwards = siteStage === 'awards' || siteStage === 'all';
   const useServices = siteStage === 'services' || siteStage === 'all';
   const useAbout = siteStage === 'about' || siteStage === 'all';
+  const useHero = siteStage === 'hero' || siteStage === 'all';
 
   return {
     stage,
@@ -73,5 +74,6 @@ export function getCmsConfig() {
     useAwards,
     useServices,
     useAbout,
+    useHero,
   };
 }

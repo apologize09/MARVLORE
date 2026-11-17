@@ -6,7 +6,7 @@ import {mountWorkInteractions} from './work-interactions.js';
 import {mountWorkEntrance} from './work-entrance.js';
 import {mountWorkReel} from './work-reel.js?v=cms-adapter-190';
 import { Hero,Services,About,Work,Explore,Portal,Awards,Contact } from './components.js?v=cms-adapter-190';
-import { bootWorkBundle,getProjects,getWorkReelItems,getAwards,getWorkPage,getBundleLocale } from './cms/work-runtime.js';
+import { bootWorkBundle,getProjects,getWorkReelItems,getAwards,getWorkPage,getBundleLocale,getHeroProjects } from './cms/work-runtime.js';
 import { mountWorkFilters } from './cms/work-filter-mount.js';
 import { getCmsConfig } from './cms/config.js';
 import { applyDocumentLang,mountLocaleSwitch } from './cms/locale.js';
@@ -17,7 +17,6 @@ import { Spring,reducedMotion,createAwardsCarousel } from './motion.js';
 import { mountHeroOrbit } from './hero/orbit.js?v=hero-soft-entry-187';
 import { observeCardCorners } from './card-shape.js';
 import { createProjectGallery } from './project-gallery.js?v=title-case-pop-140';
-import { heroProjects } from './hero/images.js?v=motion-vapx-128';
 import { mountServices } from './services/experience.js?v=service-matched-motion-181';
 import { mountExploreScene } from './explore-scene.js?v=explore-entry-172';
 import { mountPortalWall } from './portal-wall.js';
@@ -41,7 +40,7 @@ async function start(){
 
  document.querySelector('#app').innerHTML=[Hero,Services,About,Work,Explore,Portal,Awards,Contact].map(component=>component()).join('');
  document.documentElement.classList.add('js');
- const brandProjects=heroProjects;
+ const brandProjects=getHeroProjects();
  const workProjects=projects.map(project=>({id:`work-${project.id}`,src:project.image?assetUrl(project.image):null,title:project.title}));
  const gallery=createProjectGallery({groups:[brandProjects,workProjects,workReelItems],sourceFor:id=>{
   if(id.startsWith('reel-'))return document.querySelector(`.elastic-reel-item[data-reel-index="${workReelItems.findIndex(item=>item.id===id)}"]`);
