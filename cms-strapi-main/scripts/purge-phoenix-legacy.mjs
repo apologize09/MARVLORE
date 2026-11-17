@@ -14,13 +14,12 @@ const root = path.resolve(__dirname, '..');
 const require = createRequire(import.meta.url);
 
 const LEGACY_UIDS = [
-  'api::about.about',
+  // api::about.about / api::global.global removed from src/api (use about-page / global-setting)
   'api::article.article',
   'api::author.author',
   'api::category.category',
   'api::certification.certification',
   'api::faq.faq',
-  'api::global.global',
   'api::page-seo.page-seo',
 ];
 

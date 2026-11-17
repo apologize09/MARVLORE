@@ -5,9 +5,10 @@
 ## 做了什么
 
 1. **默认接通 CMS**：官网 `cmsWork=all` + `cmsSite=all`（可用 `?cmsWork=off` 回静态）
-2. **清除 Phoenix Pouch 遗留数据**：`about/article/author/category/certification/faq/global/page-seo` 文档 + 相关 uploads
-3. **Public 权限**只引导 Marvlore Work / V1.0 类型
-4. 备份：`cms-strapi-main/.backups/pre-phoenix-clean-20261117/data.db`（gitignored）
+2. **清除 Phoenix Pouch 遗留数据**：article/author/category/certification/faq/page-seo 文档 + 相关 uploads
+3. **删除重复 Single Types**：移除 `About` / `Global` API（保留 `About Page` / `Global Setting`）
+4. **Public 权限**只引导 Marvlore Work / V1.0 类型
+5. 备份：`cms-strapi-main/.backups/pre-phoenix-clean-20261117/data.db`（gitignored）
 
 ## 命令
 
@@ -25,5 +26,5 @@ CMS_BASE=http://127.0.0.1:1337 node server.mjs
 
 ## 注意
 
-- `npm run seed:example` 仍指向 **遗留** Phoenix `pouch-seed.json`，不要对迈络库执行
+- `npm run seed:example` 已拒绝执行（`About`/`Global` CT 已删除）；不要对迈络库跑 Phoenix seed
 - 迈络内容种子：`migrate:work` / `seed:site` / `seed:services` / `seed:about` / `seed:hero`

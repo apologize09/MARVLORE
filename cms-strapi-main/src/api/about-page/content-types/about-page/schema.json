@@ -5,7 +5,7 @@
     "singularName": "about-page",
     "pluralName": "about-pages",
     "displayName": "About Page",
-    "description": "V1.0 About copy + collage media overrides. Does not replace api::about. Geometry frozen in frontend."
+    "description": "Marvlore About copy + collage media overrides. Geometry frozen in frontend."
   },
   "options": {
     "draftAndPublish": true

@@ -5,7 +5,7 @@
     "singularName": "global-setting",
     "pluralName": "global-settings",
     "displayName": "Global Setting",
-    "description": "Site brand + contact colophon (V1.0). Does not replace api::global."
+    "description": "Marvlore site brand + contact colophon."
   },
   "options": {
     "draftAndPublish": false
