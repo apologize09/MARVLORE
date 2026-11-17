@@ -1,5 +1,5 @@
-import { getCmsConfig } from './config.js';
-import { cacheClear } from './work-cache.js';
+import { getCmsConfig } from './config.js?v=1e182ce0a2';
+import { cacheClear } from './work-cache.js?v=bb57b07579';
 
 /**
  * Poll CMS work-cache-version; clear browser CMS cache when editors publish/unpublish.

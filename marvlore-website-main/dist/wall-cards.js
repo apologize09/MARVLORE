@@ -1,6 +1,6 @@
-import {heroImages} from './hero/images.js';
-import {aboutCards} from './about-cards.js';
-import {coverImageScale} from './cover-framing.js?v=cover-edges-164';
+import {heroImages} from './hero/images.js?v=e3a01fefe9';
+import {aboutCards} from './about-cards.js?v=6d5625a465';
+import {coverImageScale} from './cover-framing.js?v=4d498fdbae';
 // 每张卡片可单独替换，例如：
 // 'wall-01': {image: './assets/your-project.webp'}
 const blueCover=(image,alt)=>({image:'./assets/'+image,alt,keepOriginal:true});

@@ -35,7 +35,7 @@
 #awards .award-enter-ready:not(.award-entered) .awards-track figure{opacity:0!important;}
 @media(prefers-reduced-motion:reduce){#awards .award-enter-ready:not(.award-entered) .awards-track figure{opacity:1!important;}}
 #awards .awards-track .award-artwork img{position:absolute;inset:0;display:block;width:100%;height:100%;max-height:none;object-fit:fill;}
-#awards figure[data-award="0"] .award-sheen{mask-image:url('./assets/award-inner-aigc.svg');}
-#awards figure[data-award="1"] .award-sheen{mask-image:url('./assets/award-inner-reddot.svg');}
-#awards figure[data-award="2"] .award-sheen{mask-image:url('./assets/award-inner-partner.svg');}
+#awards figure[data-award="0"] .award-sheen{mask-image:url('./assets/award-inner-aigc.svg?v=5da9dc39f0');}
+#awards figure[data-award="1"] .award-sheen{mask-image:url('./assets/award-inner-reddot.svg?v=db4b51605e');}
+#awards figure[data-award="2"] .award-sheen{mask-image:url('./assets/award-inner-partner.svg?v=0ee01e5256');}
 @media(prefers-reduced-motion:reduce){#awards .award-sheen{display:none;}}

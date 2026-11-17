@@ -1,6 +1,6 @@
 // Scroll-triggered, staggered reveal inspired by React Bits AnimatedContent.
 // Original implementation; native animations keep entrance independent of hover transforms.
-import {reducedMotion} from './motion.js';
+import {reducedMotion} from './motion.js?v=53e5c054f1';
 
 export function mountWorkEntrance(root=document.querySelector('#work')){
  if(!root||reducedMotion.matches||typeof IntersectionObserver==='undefined')return;

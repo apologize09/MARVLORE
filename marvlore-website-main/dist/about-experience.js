@@ -1,5 +1,5 @@
-import {Spring,reducedMotion} from './motion.js';
-import {aboutGeometry,aboutMotionFrame,clamp01} from './about-motion-model.js';
+import {Spring,reducedMotion} from './motion.js?v=53e5c054f1';
+import {aboutGeometry,aboutMotionFrame,clamp01} from './about-motion-model.js?v=9c1e646b9b';
 
 export function mountAbout(){
  const section=document.querySelector('#about');if(!section)return;

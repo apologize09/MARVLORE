@@ -1,6 +1,6 @@
 @font-face {
  font-family:'OPPO Sans';
- src:local('OPPO Sans 4.0'),url('./assets/fonts/OPPOSans4.0-subset.woff2') format('woff2');
+ src:local('OPPO Sans 4.0'),url('./assets/fonts/OPPOSans4.0-subset.woff2?v=5c02f58df6') format('woff2');
  font-weight:100 700;
  font-style:normal;
  font-display:swap;
@@ -8,13 +8,13 @@
 /* Latin-only faces keep every Chinese glyph in the existing OPPO Sans face. */
 @font-face {
  font-family:'Newsreader 6pt Light';
- src:url('./assets/fonts/Newsreader6pt-Light.woff2') format('woff2');
+ src:url('./assets/fonts/Newsreader6pt-Light.woff2?v=f91644f265') format('woff2');
  font-weight:100 700;font-style:normal;font-display:swap;
  unicode-range:U+0000-024F,U+1E00-1EFF,U+2000-206F;
 }
 @font-face {
  font-family:'FK Grotesk Trial';
- src:url('./assets/fonts/FKGroteskTrial-Regular.woff2') format('woff2');
+ src:url('./assets/fonts/FKGroteskTrial-Regular.woff2?v=7697cc97d5') format('woff2');
  font-weight:100 700;font-style:normal;font-display:swap;
  unicode-range:U+0000-024F,U+1E00-1EFF,U+2000-206F;
 }

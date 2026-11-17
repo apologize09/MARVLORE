@@ -1,11 +1,11 @@
-import { getCmsConfig } from './config.js';
-import { createWorkApi } from './work-api.js';
-import { buildStaticBundle, getStaticOverviewById } from './work-fallback.js';
+import { getCmsConfig } from './config.js?v=1e182ce0a2';
+import { createWorkApi } from './work-api.js?v=a97c6ac490';
+import { buildStaticBundle, getStaticOverviewById } from './work-fallback.js?v=efa3d94e78';
 import {
   buildDetailList,
   normalizeCategoryToOverview,
   normalizeProjectToReelItem,
-} from './work-normalize.js';
+} from './work-normalize.js?v=1a5b0c5d33';
 
 function mergeOverview(staticBundle, categoryTree) {
   const fallbackById = getStaticOverviewById();

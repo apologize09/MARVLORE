@@ -1,6 +1,6 @@
 // Interaction references: React Bits SpotlightCard and TiltedCard.
 // Original implementation using the site's existing spring; no new runtime dependencies.
-import {Spring,reducedMotion,clamp} from './motion.js';
+import {Spring,reducedMotion,clamp} from './motion.js?v=53e5c054f1';
 
 export function mountWorkInteractions(root=document.querySelector('.work-grid')){
  if(!root)return;
