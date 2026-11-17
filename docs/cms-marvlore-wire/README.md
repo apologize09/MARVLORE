@@ -16,7 +16,8 @@
 cd cms-strapi-main
 npm run purge:phoenix              # dry-run
 npm run purge:phoenix:execute -- --database=.tmp/data.db
-npm run start
+# 本地后台用开发模式（可改 Content-Type）；生产再用 npm run build && npm run start
+NODE_ENV=development npm run develop
 
 cd ../marvlore-website-main
 CMS_BASE=http://127.0.0.1:1337 node server.mjs
