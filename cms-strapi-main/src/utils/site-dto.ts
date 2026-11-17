@@ -1,9 +1,49 @@
-/** Public DTOs for V1.0 Contact / Awards (frontend contracts). */
+/** Public DTOs for V1.0 Contact / Awards / Hero / About / Services. */
+
+type MediaLike = {
+  url?: string | null;
+  caption?: string | null;
+  alternativeText?: string | null;
+  width?: number | null;
+  height?: number | null;
+  mime?: string | null;
+  name?: string | null;
+} | null | undefined;
+
+/**
+ * Prefer Media Library relation for admin upload/preview.
+ * When sync-site-media set caption to `/assets/...`, return `./assets/...`
+ * so the static site keeps same-origin asset paths. URL strings remain fallback.
+ */
+export function resolveSiteMediaUrl(
+  media: MediaLike,
+  fallbackUrl?: string | null,
+): string | null {
+  if (media && typeof media === 'object') {
+    const caption = typeof media.caption === 'string' ? media.caption.trim() : '';
+    if (caption) {
+      let path = caption.replace(/^\.\//, '');
+      if (path.startsWith('assets/')) path = `/${path}`;
+      if (path.startsWith('/assets/')) return `.${path}`;
+    }
+  }
+  if (fallbackUrl != null && String(fallbackUrl).trim()) {
+    return String(fallbackUrl);
+  }
+  if (media && media.url) {
+    return String(media.url);
+  }
+  return null;
+}
+
+function awardImageName(media: MediaLike, imageUrl: unknown) {
+  const raw = resolveSiteMediaUrl(media, imageUrl == null ? null : String(imageUrl)) || '';
+  return raw.replace(/^\.\//, '').replace(/^\/?assets\//, '');
+}
 
 export function toAwardDto(row: Record<string, unknown>) {
-  const imageUrl = String(row.imageUrl || '');
   // Frontend carousel expects bare asset filenames (e.g. award-aigc.webp).
-  const image = imageUrl.replace(/^\/?assets\//, '').replace(/^\.\//, '');
+  const image = awardImageName(row.image as MediaLike, row.imageUrl);
   return {
     documentId: row.documentId,
     legacyId: row.legacyId ?? null,
@@ -22,6 +62,7 @@ export function toHeroItemDto(row: Record<string, unknown>) {
   const role = String(row.role || 'project');
   const mediaType = String(row.mediaType || 'image');
   const legacyId = (row.legacyId as string) || (row.slug as string);
+  const src = resolveSiteMediaUrl(row.image as MediaLike, row.imageUrl as string | null) || '';
   const base: Record<string, unknown> = {
     documentId: row.documentId,
     legacyId,
@@ -31,16 +72,23 @@ export function toHeroItemDto(row: Record<string, unknown>) {
     mediaType,
     title: row.title ?? '',
     alt: row.alt ?? row.title ?? '',
-    src: row.imageUrl ?? '',
-    width: row.width ?? null,
-    height: row.height ?? null,
+    src,
+    width: row.width ?? (row.image as MediaLike)?.width ?? null,
+    height: row.height ?? (row.image as MediaLike)?.height ?? null,
     sortOrder: row.sortOrder ?? 0,
   };
   if (role === 'project') {
-    if (row.videoUrl) base.videoSrc = row.videoUrl;
-    if (row.videoUrlHd) base.videoSrcHd = row.videoUrlHd;
-    if (row.previewUrl) base.previewSrc = row.previewUrl;
-    if (row.homePreviewUrl) base.homePreviewSrc = row.homePreviewUrl;
+    const videoSrc = resolveSiteMediaUrl(row.video as MediaLike, row.videoUrl as string | null);
+    const videoSrcHd = resolveSiteMediaUrl(row.videoHd as MediaLike, row.videoUrlHd as string | null);
+    const previewSrc = resolveSiteMediaUrl(row.preview as MediaLike, row.previewUrl as string | null);
+    const homePreviewSrc = resolveSiteMediaUrl(
+      row.homePreview as MediaLike,
+      row.homePreviewUrl as string | null,
+    );
+    if (videoSrc) base.videoSrc = videoSrc;
+    if (videoSrcHd) base.videoSrcHd = videoSrcHd;
+    if (previewSrc) base.previewSrc = previewSrc;
+    if (homePreviewSrc) base.homePreviewSrc = homePreviewSrc;
     if (Array.isArray(row.slides) && row.slides.length) base.slides = row.slides;
   }
   return base;
@@ -59,7 +107,7 @@ export function toAboutPageDto(row: Record<string, unknown> | null) {
   const collage = Array.isArray(row.collageImages)
     ? row.collageImages.map((item: any) => ({
         slotIndex: Number(item.slotIndex),
-        src: String(item.imageUrl || ''),
+        src: resolveSiteMediaUrl(item.image, item.imageUrl) || '',
         alt: String(item.alt || ''),
         focus: item.focus ? String(item.focus) : undefined,
       }))
@@ -86,7 +134,7 @@ export function toServiceItemDto(row: Record<string, unknown>) {
     en: row.titleEn ?? '',
     cn: row.titleCn ?? '',
     description: row.description ?? '',
-    image: row.imageUrl ?? '',
+    image: resolveSiteMediaUrl(row.image as MediaLike, row.imageUrl as string | null) || '',
     typeScale: row.typeScale == null || row.typeScale === '' ? undefined : Number(row.typeScale),
     sortOrder: row.sortOrder ?? 0,
   };

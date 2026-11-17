@@ -14,6 +14,7 @@ export default factories.createCoreController('api::service-item.service-item', 
       filters: { isActive: { $eq: true } },
       sort: ['sortOrder:asc'],
       limit: 50,
+      populate: { image: true },
     });
     const data = (rows || []).map((row) => toServiceItemDto(row as Record<string, unknown>));
     ctx.body = { data, meta: { locale, total: data.length } };
@@ -33,6 +34,7 @@ export default factories.createCoreController('api::service-item.service-item', 
         documentId: id,
         locale,
         status: 'published',
+        populate: { image: true },
       })) as Record<string, unknown> | null;
     } catch {
       row = null;
@@ -43,6 +45,7 @@ export default factories.createCoreController('api::service-item.service-item', 
         status: 'published',
         filters: { slug: { $eq: id }, isActive: { $eq: true } },
         limit: 1,
+        populate: { image: true },
       });
       row = (bySlug[0] as Record<string, unknown>) || null;
     }

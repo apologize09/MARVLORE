@@ -117,7 +117,7 @@ export function sortParams(sort: WorkSort): any {
 
 export function mediaPopulate(): any {
   return {
-    fields: ['url', 'alternativeText', 'width', 'height', 'mime', 'name'],
+    fields: ['url', 'alternativeText', 'caption', 'width', 'height', 'mime', 'name'],
   };
 }
 
@@ -134,6 +134,10 @@ export function projectListPopulate(): any {
     cover: mediaPopulate(),
     thumbnail: mediaPopulate(),
     heroMedia: mediaPopulate(),
+    video: mediaPopulate(),
+    poster: mediaPopulate(),
+    previewVideo: mediaPopulate(),
+    homePreviewVideo: mediaPopulate(),
   };
 }
 

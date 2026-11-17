@@ -13,8 +13,16 @@ export default factories.createCoreController('api::about-page.about-page', ({ s
       status: 'published',
       populate: {
         stats: true,
-        collageImages: true,
-        seo: true,
+        collageImages: {
+          populate: {
+            image: true,
+          },
+        },
+        seo: {
+          populate: {
+            shareImage: true,
+          },
+        },
       },
     });
     ctx.body = {

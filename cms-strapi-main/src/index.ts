@@ -74,6 +74,22 @@ async function ensureContentLocales(strapi: Core.Strapi) {
   }
 }
 
+/** Prefer Simplified Chinese for the admin UI (Profile → Interface language). */
+async function ensureAdminUiLanguage(strapi: Core.Strapi) {
+  const preferred = 'zh-Hans';
+  const users = await strapi.db.query('admin::user').findMany({
+    select: ['id', 'preferedLanguage'],
+  });
+  for (const user of users || []) {
+    if (user.preferedLanguage === preferred) continue;
+    await strapi.db.query('admin::user').update({
+      where: { id: user.id },
+      data: { preferedLanguage: preferred },
+    });
+    strapi.log.info(`[bootstrap] set admin user ${user.id} preferedLanguage=${preferred}`);
+  }
+}
+
 export default {
   register({ strapi }: { strapi: Core.Strapi }) {
     registerWorkDocumentRules(strapi);
@@ -82,5 +98,6 @@ export default {
   async bootstrap({ strapi }: { strapi: Core.Strapi }) {
     await ensureContentLocales(strapi);
     await ensurePublicPermissions(strapi);
+    await ensureAdminUiLanguage(strapi);
   },
 };

@@ -136,11 +136,33 @@
         }
       }
     },
+    "video": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["videos"],
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
     "videoUrl": {
       "type": "string",
       "pluginOptions": {
         "i18n": {
           "localized": false
+        }
+      }
+    },
+    "poster": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"],
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
         }
       }
     },
@@ -152,11 +174,33 @@
         }
       }
     },
+    "previewVideo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["videos"],
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
     "previewVideoUrl": {
       "type": "string",
       "pluginOptions": {
         "i18n": {
           "localized": false
+        }
+      }
+    },
+    "homePreviewVideo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["videos"],
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
         }
       }
     },

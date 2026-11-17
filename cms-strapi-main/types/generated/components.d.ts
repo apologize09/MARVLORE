@@ -10,7 +10,8 @@ export interface SharedAboutCollageImage extends Struct.ComponentSchema {
   attributes: {
     alt: Schema.Attribute.String & Schema.Attribute.Required;
     focus: Schema.Attribute.String;
-    imageUrl: Schema.Attribute.String & Schema.Attribute.Required;
+    image: Schema.Attribute.Media<'images'>;
+    imageUrl: Schema.Attribute.String;
     slotIndex: Schema.Attribute.Integer &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMax<

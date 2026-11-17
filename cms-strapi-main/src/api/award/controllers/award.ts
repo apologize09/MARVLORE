@@ -14,6 +14,7 @@ export default factories.createCoreController('api::award.award', ({ strapi }) =
       filters: { isActive: { $eq: true } },
       sort: ['sortOrder:asc'],
       limit: 50,
+      populate: { image: true },
     });
     const data = (rows || []).map((row) => toAwardDto(row as Record<string, unknown>));
     ctx.body = { data, meta: { locale, total: data.length } };
@@ -31,6 +32,7 @@ export default factories.createCoreController('api::award.award', ({ strapi }) =
       documentId: id,
       locale,
       status: 'published',
+      populate: { image: true },
     });
     if (!row || (row as any).isActive === false) {
       ctx.status = 404;
