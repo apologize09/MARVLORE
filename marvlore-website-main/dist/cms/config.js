@@ -5,10 +5,12 @@
  *   ?cmsWork=categories|list|detail|all
  *   localStorage.marvlore.cmsWork = same
  *   ?cmsFilter=1          (or on with cmsWork=list|detail|all)
+ *   ?cmsSite=contact|awards|all   (V1.0 Contact / Awards; independent of Work)
  *   ?cmsBase=http://127.0.0.1:1337
  *   localStorage.marvlore.cmsBase
  */
 const STAGES = new Set(['off', 'categories', 'list', 'detail', 'all']);
+const SITE_STAGES = new Set(['off', 'contact', 'awards', 'all']);
 
 function readParam(name) {
   try {
@@ -29,6 +31,13 @@ function readStorage(name) {
 export function getCmsConfig() {
   const stageRaw = (readParam('cmsWork') || readStorage('marvlore.cmsWork') || 'off').toLowerCase();
   const stage = STAGES.has(stageRaw) ? stageRaw : 'off';
+  const siteRaw = (readParam('cmsSite') || readStorage('marvlore.cmsSite') || 'off').toLowerCase();
+  // cmsWork=all also unlocks site modules for convenience
+  const siteStage = SITE_STAGES.has(siteRaw)
+    ? siteRaw
+    : stage === 'all'
+      ? 'all'
+      : 'off';
   const base = (
     readParam('cmsBase') ||
     readStorage('marvlore.cmsBase') ||
@@ -44,16 +53,21 @@ export function getCmsConfig() {
     filterRaw === 'true' ||
     filterRaw === 'on' ||
     useList;
+  const useContact = siteStage === 'contact' || siteStage === 'all';
+  const useAwards = siteStage === 'awards' || siteStage === 'all';
 
   return {
     stage,
+    siteStage,
     baseUrl: base,
     locale: locale === 'zh' ? 'zh-CN' : locale,
     timeoutMs: Number.isFinite(timeoutMs) ? timeoutMs : 6000,
-    enabled: stage !== 'off',
+    enabled: stage !== 'off' || siteStage !== 'off',
     useCategories: stage === 'categories' || stage === 'list' || stage === 'detail' || stage === 'all',
     useList,
     useDetail: stage === 'detail' || stage === 'all',
     useFilter,
+    useContact,
+    useAwards,
   };
 }

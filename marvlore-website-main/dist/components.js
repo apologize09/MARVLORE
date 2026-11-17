@@ -1,8 +1,7 @@
 import {titleCase} from './typography.js';
 import {coverImageScale} from './cover-framing.js?v=cover-edges-164';
 import {renderContact} from './contact-template.js?v=contact-service-motion-169';
-import {awards} from './data.js?v=work-covers-153';
-import {getProjects,getWorkReelItems} from './cms/work-runtime.js';
+import {getProjects,getWorkReelItems,getAwards,getContact} from './cms/work-runtime.js';
 import {renderAboutCards} from './about-cards.js';
 import {renderExploreCards} from './explore-scene.js?v=cover-edges-164';
 import {renderWallCards} from './wall-cards.js?v=cover-edges-164';
@@ -40,6 +39,6 @@ export function Explore(){return `<section id="explore" class="explore screen wr
 
 export function Portal(){return `<section id="marvlore-go" class="portal screen" data-screen="06-marvlore-go"><div class="portal-wall" tabindex="0" aria-label="迈络作品墙，可左右拖动或使用方向键浏览"><div class="portal-viewport" aria-hidden="true"><div class="portal-origin">${renderWallCards()}</div></div><div class="portal-copy"><h2>Marvlore Go</h2><p>赛道既定布局，但玩法可层出不穷</p></div></div></section>`;}
 
-export function Awards(){return `<section id="awards" class="awards screen wrap" data-screen="07-awards" aria-labelledby="awards-title"><header class="section-label"><h2 id="awards-title" aria-label="Awards & Recognition 荣誉与认可"><span data-award-reveal>Awards &</span><span data-award-reveal>Recognition</span><span data-award-reveal>荣誉与认可</span></h2></header><div class="awards-carousel reveal" aria-roledescription="轮播" aria-label="荣誉与认可"><button class="carousel-button prev" type="button" aria-label="上一项荣誉">‹</button><div class="awards-viewport" tabindex="0" role="group" aria-label="荣誉卡片，左右拖动或使用左右方向键切换"><div class="awards-track">${Array.from({length:3},()=>awards.map((a,i)=>`<figure data-award="${i}" aria-hidden="true">${img(a.image,'')}</figure>`).join('')).join('')}</div></div><button class="carousel-button next" type="button" aria-label="下一项荣誉">›</button><div class="award-pagination" aria-label="选择荣誉">${awards.map((a,i)=>`<button class="award-dot" type="button" aria-label="${a.alt}" aria-pressed="${i===0}"><span></span></button>`).join('')}</div><p class="award-gesture-hint">拖动探索 <span aria-hidden="true">↔</span></p></div><p class="sr-only" id="award-status" aria-live="polite"></p></section>`;}
+export function Awards(){const awards=getAwards();return `<section id="awards" class="awards screen wrap" data-screen="07-awards" aria-labelledby="awards-title"><header class="section-label"><h2 id="awards-title" aria-label="Awards & Recognition 荣誉与认可"><span data-award-reveal>Awards &</span><span data-award-reveal>Recognition</span><span data-award-reveal>荣誉与认可</span></h2></header><div class="awards-carousel reveal" aria-roledescription="轮播" aria-label="荣誉与认可"><button class="carousel-button prev" type="button" aria-label="上一项荣誉">‹</button><div class="awards-viewport" tabindex="0" role="group" aria-label="荣誉卡片，左右拖动或使用左右方向键切换"><div class="awards-track">${Array.from({length:3},()=>awards.map((a,i)=>`<figure data-award="${i}" aria-hidden="true">${img(a.image,'')}</figure>`).join('')).join('')}</div></div><button class="carousel-button next" type="button" aria-label="下一项荣誉">›</button><div class="award-pagination" aria-label="选择荣誉">${awards.map((a,i)=>`<button class="award-dot" type="button" aria-label="${a.alt}" aria-pressed="${i===0}"><span></span></button>`).join('')}</div><p class="award-gesture-hint">拖动探索 <span aria-hidden="true">↔</span></p></div><p class="sr-only" id="award-status" aria-live="polite"></p></section>`;}
 
-export function Contact(){return renderContact();}
+export function Contact(){return renderContact(getContact());}

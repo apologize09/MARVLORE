@@ -18,7 +18,9 @@
     "migrate:work:execute": "node ./scripts/work-migrate/cli.mjs --execute",
     "verify:i18n": "node ./scripts/verify-i18n.mjs",
     "i18n:work": "node ./scripts/work-i18n-localize.mjs",
-    "i18n:work:execute": "node ./scripts/work-i18n-localize.mjs --execute"
+    "i18n:work:execute": "node ./scripts/work-i18n-localize.mjs --execute",
+    "seed:site": "node ./scripts/site-seed-contact-awards.mjs",
+    "seed:site:execute": "node ./scripts/site-seed-contact-awards.mjs --execute"
   },
   "dependencies": {
     "@strapi/database": "5.52.1",

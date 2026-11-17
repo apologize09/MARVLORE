@@ -27,6 +27,10 @@ export function getAwards() {
   return bundle.awards;
 }
 
+export function getContact() {
+  return bundle.contact || null;
+}
+
 export function getWorkPage() {
   return bundle.workPage || null;
 }

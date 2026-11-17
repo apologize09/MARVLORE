@@ -1,0 +1,72 @@
+{
+  "kind": "singleType",
+  "collectionName": "global_settings",
+  "info": {
+    "singularName": "global-setting",
+    "pluralName": "global-settings",
+    "displayName": "Global Setting",
+    "description": "Site brand + contact colophon (V1.0). Does not replace api::global."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": false
+    }
+  },
+  "attributes": {
+    "siteName": {
+      "type": "string",
+      "default": "MARVLORE"
+    },
+    "siteNameCn": {
+      "type": "string",
+      "default": "迈络"
+    },
+    "tagline": {
+      "type": "string",
+      "default": "Ideas Make Brands POP"
+    },
+    "email": {
+      "type": "email"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "phoneDisplay": {
+      "type": "string"
+    },
+    "wechat": {
+      "type": "string"
+    },
+    "addressEn": {
+      "type": "text"
+    },
+    "addressCn": {
+      "type": "text"
+    },
+    "studioNoteEn": {
+      "type": "string"
+    },
+    "studioNoteCn": {
+      "type": "string"
+    },
+    "welcomeCn": {
+      "type": "string"
+    },
+    "copyrightText": {
+      "type": "string"
+    },
+    "defaultSeo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
+    },
+    "socialLinks": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.social-link"
+    }
+  }
+}

@@ -43,13 +43,19 @@ export async function resolveWorkBundle() {
 
   try {
     const api = createWorkApi(config);
-    const next = { ...fallback, source: `cms:${config.stage}`, locale: config.locale };
+    const sourceLabel =
+      config.stage !== 'off'
+        ? `cms:${config.stage}`
+        : `cms:site:${config.siteStage || 'on'}`;
+    const next = { ...fallback, source: sourceLabel, locale: config.locale };
 
-    try {
-      const pageRes = await api.getWorkPage();
-      next.workPage = pageRes?.data || null;
-    } catch {
-      next.workPage = null;
+    if (config.useCategories || config.useList || config.useDetail) {
+      try {
+        const pageRes = await api.getWorkPage();
+        next.workPage = pageRes?.data || null;
+      } catch {
+        next.workPage = null;
+      }
     }
 
     if (config.useCategories) {
@@ -88,6 +94,32 @@ export async function resolveWorkBundle() {
       if (details.length) {
         next.workDetailCases = buildDetailList(details);
         next.detailById = new Map(next.workDetailCases.map((item) => [item.id, item]));
+      }
+    }
+
+    if (config.useAwards) {
+      try {
+        const awardsRes = await api.getAwards();
+        const rows = awardsRes?.data || [];
+        if (rows.length) {
+          next.awards = rows.map((row) => ({
+            image: row.image,
+            alt: row.alt || '',
+          }));
+        }
+      } catch (err) {
+        console.warn('[cms] awards fallback:', err?.message || err);
+      }
+    }
+
+    if (config.useContact) {
+      try {
+        const contactRes = await api.getGlobalSetting();
+        if (contactRes?.data) {
+          next.contact = { ...fallback.contact, ...contactRes.data };
+        }
+      } catch (err) {
+        console.warn('[cms] contact fallback:', err?.message || err);
       }
     }
 

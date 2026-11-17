@@ -45,5 +45,14 @@ export function createWorkApi(config) {
         query.pageSize,
       ]),
     getCacheVersion: () => get('/work-cache-version', {}, ['cache-version']),
+    getAwards: () => get('/awards', { sort: 'sortOrder:asc' }, ['awards']),
+    // single type — not localized; avoid forcing locale query
+    getGlobalSetting: async () => {
+      const full = url(baseUrl, '/global-setting', {});
+      const cached = cacheGet(['cms', full, 'global-setting']);
+      if (cached) return cached;
+      const json = await cmsGet(full, { timeoutMs });
+      return cacheSet(['cms', full, 'global-setting'], json);
+    },
   };
 }

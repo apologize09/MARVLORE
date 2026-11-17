@@ -16,6 +16,9 @@ const PUBLIC_ACTIONS: Record<string, string[]> = {
   'work-project': ['find', 'findOne'],
   'work-project-media': ['find', 'findOne'],
   'work-page': ['find'],
+  // V1.0 Contact / Awards (editorial read only)
+  'global-setting': ['find'],
+  award: ['find', 'findOne'],
 };
 
 const REQUIRED_LOCALES: Array<{ code: string; name: string }> = [
