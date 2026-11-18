@@ -45,7 +45,9 @@
     "patch:work-field-labels-cn:execute": "node ./scripts/patch-work-project-field-labels-cn.mjs --execute",
     "patch:component-field-labels-cn": "node ./scripts/patch-component-field-labels-cn.mjs",
     "patch:component-field-labels-cn:execute": "node ./scripts/patch-component-field-labels-cn.mjs --execute",
-    "verify:admin-localization": "node ./scripts/verify-admin-localization.mjs"
+    "verify:admin-localization": "node ./scripts/verify-admin-localization.mjs",
+    "dedupe:work-cm-edit": "node ./scripts/dedupe-work-project-cm-edit-layout.mjs",
+    "dedupe:work-cm-edit:execute": "node ./scripts/dedupe-work-project-cm-edit-layout.mjs --execute"
   },
   "dependencies": {
     "@strapi/database": "5.52.1",
