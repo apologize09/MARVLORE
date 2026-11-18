@@ -846,7 +846,7 @@ export interface ApiHeroItemHeroItem extends Struct.CollectionTypeSchema {
   collectionName: 'hero_items';
   info: {
     description: '\u9996\u9875\u8F6E\u64AD / \u8F68\u9053\u5A92\u4F53';
-    displayName: '\u9996\u9875\u4E3B\u89C6\u89C9\u5185\u5BB9';
+    displayName: '\u9996\u9875\u4E3B\u89C6\u89C9';
     pluralName: 'hero-items';
     singularName: 'hero-item';
   };
@@ -1013,7 +1013,7 @@ export interface ApiPageSeoPageSeo extends Struct.CollectionTypeSchema {
   collectionName: 'page_seos';
   info: {
     description: '\u9875\u9762 SEO \u6761\u76EE';
-    displayName: '\u9875\u9762 SEO \u914D\u7F6E';
+    displayName: 'SEO\u914D\u7F6E';
     pluralName: 'page-seos';
     singularName: 'page-seo';
   };
@@ -1370,7 +1370,7 @@ export interface ApiWorkProjectMediaWorkProjectMedia
   collectionName: 'work_project_medias';
   info: {
     description: '\u4F5C\u54C1\u8BE6\u60C5\u5A92\u4F53\u5757';
-    displayName: '\u4F5C\u54C1\u5173\u8054\u7D20\u6750';
+    displayName: '\u5173\u8054\u7D20\u6750';
     pluralName: 'work-project-medias';
     singularName: 'work-project-media';
   };

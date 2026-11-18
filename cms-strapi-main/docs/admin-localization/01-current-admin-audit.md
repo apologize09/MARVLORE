@@ -66,13 +66,13 @@ No custom plugins under `src/plugins/`. Components: `src/components/shared/` (e.
 | category | （归档）Category | 文章分类 |
 | faq | FAQ | 常见问题 |
 | global-setting | Contact | 全局网站配置 |
-| hero-item | Hero | 首页主视觉内容 |
-| page-seo | SEO | 页面 SEO 配置 |
+| hero-item | Hero | 首页主视觉 |
+| page-seo | SEO | SEO配置 |
 | service-item | Services | 服务项目 |
 | work-category | 分类 | 作品分类 |
 | work-page | 作品总览 | 作品页面配置 |
 | work-project | 作品 | 作品案例 |
-| work-project-media | 详情媒体 | 作品关联素材 |
+| work-project-media | 详情媒体 | 关联素材 |
 | work-tag | 标签 | 作品标签 |
 
 **Attribute `displayName` in schema.json:** none set (all `null`).  

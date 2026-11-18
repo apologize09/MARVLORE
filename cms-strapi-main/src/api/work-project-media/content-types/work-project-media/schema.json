@@ -4,7 +4,7 @@
   "info": {
     "singularName": "work-project-media",
     "pluralName": "work-project-medias",
-    "displayName": "作品关联素材",
+    "displayName": "关联素材",
     "description": "作品详情媒体块"
   },
   "options": {

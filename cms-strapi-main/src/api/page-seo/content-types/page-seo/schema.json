@@ -4,7 +4,7 @@
   "info": {
     "singularName": "page-seo",
     "pluralName": "page-seos",
-    "displayName": "页面 SEO 配置",
+    "displayName": "SEO配置",
     "description": "页面 SEO 条目"
   },
   "options": {

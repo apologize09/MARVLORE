@@ -15,18 +15,18 @@ const STORAGE_KEY = 'strapi-admin-language';
 /** Chinese labels for Content Manager type names (ops-friendly). */
 const contentTypeNameTranslations = {
   'zh-Hans': {
-    'content-manager.api::hero-item.hero-item': '首页主视觉内容',
+    'content-manager.api::hero-item.hero-item': '首页主视觉',
     'content-manager.api::about-page.about-page': '关于我们页面',
     'content-manager.api::service-item.service-item': '服务项目',
     'content-manager.api::award.award': '奖项',
     'content-manager.api::global-setting.global-setting': '全局网站配置',
     'content-manager.api::faq.faq': '常见问题',
-    'content-manager.api::page-seo.page-seo': '页面 SEO 配置',
+    'content-manager.api::page-seo.page-seo': 'SEO配置',
     'content-manager.api::work-page.work-page': '作品页面配置',
     'content-manager.api::work-category.work-category': '作品分类',
     'content-manager.api::work-tag.work-tag': '作品标签',
     'content-manager.api::work-project.work-project': '作品案例',
-    'content-manager.api::work-project-media.work-project-media': '作品关联素材',
+    'content-manager.api::work-project-media.work-project-media': '关联素材',
     'content-manager.api::article.article': '（归档）文章',
     'content-manager.api::author.author': '（归档）作者',
     'content-manager.api::category.category': '（归档）文章分类',
