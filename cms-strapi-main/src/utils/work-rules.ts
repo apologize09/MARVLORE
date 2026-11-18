@@ -68,11 +68,25 @@ async function findCategory(strapi: Core.Strapi, idOrDocumentId: string) {
   return strapi.documents(WORK_UIDS.category).findOne({
     documentId,
     status: 'draft',
-    fields: ['documentId', 'level', 'isActive', 'name'],
+    fields: ['documentId', 'level', 'isActive', 'name', 'nameCn'],
     populate: {
       parent: { fields: ['documentId', 'level', 'isActive'] },
     },
   });
+}
+
+/** Resolve Chinese category label for Work list / filters (nameCn → name fallback). */
+export async function resolveCategoryNameCn(
+  strapi: Core.Strapi,
+  categoryIdOrDocumentId: string | null | undefined
+): Promise<string | null> {
+  if (!categoryIdOrDocumentId) return null;
+  const cat = await findCategory(strapi, categoryIdOrDocumentId);
+  if (!cat) return null;
+  const nameCn = typeof cat.nameCn === 'string' ? cat.nameCn.trim() : '';
+  if (nameCn) return nameCn;
+  const name = typeof cat.name === 'string' ? cat.name.trim() : '';
+  return name || null;
 }
 
 async function findTag(strapi: Core.Strapi, documentId: string) {
