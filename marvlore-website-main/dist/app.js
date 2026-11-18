@@ -9,10 +9,9 @@ import { Hero,Services,About,Work,Explore,Portal,Awards,Contact } from './compon
 import { bootWorkBundle,getProjects,getWorkReelItems,getAwards,getWorkPage,getBundleLocale,getHeroProjects } from './cms/work-runtime.js?v=59be725797';
 import { mountWorkFilters } from './cms/work-filter-mount.js?v=d7aaa23267';
 import { getCmsConfig } from './cms/config.js?v=1e182ce0a2';
-import { applyDocumentLang,mountLocaleSwitch } from './cms/locale.js?v=654d705d77';
+import { applyDocumentLang } from './cms/locale.js?v=654d705d77';
 import { applyWorkSeo } from './cms/seo.js?v=53dbe2d483';
 import { mountWorkCacheSync } from './cms/work-cache-sync.js?v=9068347e6b';
-import { cacheClear } from './cms/work-cache.js?v=bb57b07579';
 import { Spring,reducedMotion,createAwardsCarousel } from './motion.js?v=53e5c054f1';
 import { mountHeroOrbit } from './hero/orbit.js?v=a4001d3d57';
 import { observeCardCorners } from './card-shape.js?v=dc5814bef2';
@@ -68,19 +67,13 @@ async function start(){
  mountWorkReel();
  mountWorkFilters();
  if(cms.enabled){
-  mountLocaleSwitch({
-   onChange:()=>{
-    cacheClear();
-    location.reload();
-   },
-  });
   mountWorkCacheSync({
    onInvalidate:()=>{
     console.info('[cms] work cache invalidated; reloading');
     location.reload();
    },
   });
-}
+ }
  mountSiteNavigation();
  window.addEventListener('marvlore:work-mode',()=>workTextReveal.refresh());
 
