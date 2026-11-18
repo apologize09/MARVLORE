@@ -18,6 +18,8 @@ export type WorkListQuery = {
   tags: string[];
   year?: number;
   projectType?: 'image' | 'video' | 'mixed';
+  /** When set, filter by Work project showOnHome (homepage / reel visibility). */
+  showOnHome?: boolean;
   sort: WorkSort;
 };
 
@@ -86,6 +88,15 @@ export function parseWorkListQuery(query: Record<string, unknown>): WorkListQuer
 
   const q = query.q != null && String(query.q).trim() ? String(query.q).trim() : undefined;
 
+  let showOnHome: boolean | undefined;
+  if (query.showOnHome != null && query.showOnHome !== '') {
+    const raw = String(query.showOnHome).trim().toLowerCase();
+    if (!['1', '0', 'true', 'false', 'yes', 'no', 'on', 'off'].includes(raw)) {
+      throw apiError('INVALID_FILTER', 'showOnHome must be a boolean');
+    }
+    showOnHome = raw === '1' || raw === 'true' || raw === 'yes' || raw === 'on';
+  }
+
   return {
     locale,
     page,
@@ -97,6 +108,7 @@ export function parseWorkListQuery(query: Record<string, unknown>): WorkListQuer
     tags: parseTags(query.tags),
     year,
     projectType,
+    showOnHome,
     sort: sortRaw as WorkSort,
   };
 }

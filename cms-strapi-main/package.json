@@ -34,7 +34,9 @@
     "sync:site-media": "node ./scripts/sync-site-media.mjs",
     "sync:site-media:execute": "node ./scripts/sync-site-media.mjs --execute",
     "link:site-media": "node ./scripts/link-site-media.mjs",
-    "link:site-media:execute": "node ./scripts/link-site-media.mjs --execute"
+    "link:site-media:execute": "node ./scripts/link-site-media.mjs --execute",
+    "align:work-home": "node ./scripts/align-work-home-display.mjs",
+    "align:work-home:execute": "node ./scripts/align-work-home-display.mjs --execute"
   },
   "dependencies": {
     "@strapi/database": "5.52.1",

@@ -53,6 +53,7 @@ async function buildProjectFilters(strapi: Core.Strapi, q: WorkListQuery) {
 
   if (q.year != null) filters.projectYear = { $eq: q.year };
   if (q.projectType) filters.projectType = { $eq: q.projectType };
+  if (q.showOnHome != null) filters.showOnHome = { $eq: q.showOnHome };
 
   if (q.tags.length > 0) {
     // OR semantics across selected tag slugs

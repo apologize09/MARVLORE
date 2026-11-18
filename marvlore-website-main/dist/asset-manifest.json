@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-17T09:50:46.142Z",
+  "generatedAt": "2026-11-18T02:39:12.759Z",
   "hashLength": 10,
   "assets": {
     "about/reference.css": "3cb381c423",
@@ -8,7 +8,7 @@
     "about-cards.js": "9850e4be8e",
     "about-experience.js": "df70632841",
     "about-motion-model.js": "9c1e646b9b",
-    "app.js": "ca43d8ddef",
+    "app.js": "462ef2850d",
     "assets/about-arc-bottom.webp": "82760c4116",
     "assets/about-arc-top.webp": "6b2d982b8f",
     "assets/about-white/daily-mark.webp": "6a65d470ab",
@@ -170,11 +170,11 @@
     "cms/work-fallback.js": "efa3d94e78",
     "cms/work-filter-mount.js": "3758d454c3",
     "cms/work-filter-state.js": "118870d81b",
-    "cms/work-loader.js": "8fb2f87593",
+    "cms/work-loader.js": "9bb7286e3d",
     "cms/work-normalize.js": "1a5b0c5d33",
-    "cms/work-runtime.js": "a3472201c9",
+    "cms/work-runtime.js": "06c1570e4a",
     "cms-locale.css": "8ce38eb083",
-    "components.js": "d42e455c74",
+    "components.js": "c2b8a93baf",
     "contact-interactions.js": "d6e35aeffa",
     "contact-layout.css": "e76c53b8e3",
     "contact-template.js": "acaf0960a0",
@@ -225,7 +225,7 @@
     "wall-tone.js": "69c5e58aa8",
     "work-detail-data.js": "420832bd60",
     "work-detail.css": "ed76707bb1",
-    "work-detail.js": "103afb67a9",
+    "work-detail.js": "01ad9de29d",
     "work-entrance.js": "70df8c2b46",
     "work-filter.css": "63310a6759",
     "work-interactions.css": "9921a8b283",
@@ -233,6 +233,6 @@
     "work-navigation.js": "314b940e5b",
     "work-reel-data.js": "f80cf439f9",
     "work-reel.css": "369a8ae5ce",
-    "work-reel.js": "e3824eb4c7"
+    "work-reel.js": "4a4af52bcd"
   }
 }
