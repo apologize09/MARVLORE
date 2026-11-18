@@ -4,8 +4,8 @@
   "info": {
     "singularName": "work-project",
     "pluralName": "work-projects",
-    "displayName": "作品",
-    "description": "Work portfolio project (hash URL #case/{legacyId|documentId})"
+    "displayName": "作品案例",
+    "description": "作品组合案例（#case/…）"
   },
   "options": {
     "draftAndPublish": true
@@ -91,7 +91,9 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"],
+      "allowedTypes": [
+        "images"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -110,7 +112,9 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"],
+      "allowedTypes": [
+        "images"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -129,7 +133,10 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images", "videos"],
+      "allowedTypes": [
+        "images",
+        "videos"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -148,7 +155,9 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["videos"],
+      "allowedTypes": [
+        "videos"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -167,7 +176,9 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"],
+      "allowedTypes": [
+        "images"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -186,7 +197,9 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["videos"],
+      "allowedTypes": [
+        "videos"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -205,7 +218,9 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["videos"],
+      "allowedTypes": [
+        "videos"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -238,7 +253,11 @@
     },
     "projectType": {
       "type": "enumeration",
-      "enum": ["image", "video", "mixed"],
+      "enum": [
+        "image",
+        "video",
+        "mixed"
+      ],
       "required": true,
       "default": "image",
       "pluginOptions": {

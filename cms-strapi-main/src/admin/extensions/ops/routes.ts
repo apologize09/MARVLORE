@@ -28,7 +28,7 @@ const cmSingle = (uid: string) => `/content-manager/single-types/${uid}`;
 export const WEBSITE_LINKS: ContentLink[] = [
   {
     slug: 'hero',
-    label: 'Hero',
+    label: '首页主视觉',
     hint: '首页轮播 / 轨道媒体',
     uid: 'api::hero-item.hero-item',
     kind: 'collection',
@@ -37,7 +37,7 @@ export const WEBSITE_LINKS: ContentLink[] = [
   },
   {
     slug: 'about',
-    label: 'About',
+    label: '关于我们',
     hint: '关于页文案与拼贴图',
     uid: 'api::about-page.about-page',
     kind: 'single',
@@ -46,7 +46,7 @@ export const WEBSITE_LINKS: ContentLink[] = [
   },
   {
     slug: 'services',
-    label: 'Services',
+    label: '服务项目',
     hint: '服务目录条目',
     uid: 'api::service-item.service-item',
     kind: 'collection',
@@ -55,7 +55,7 @@ export const WEBSITE_LINKS: ContentLink[] = [
   },
   {
     slug: 'awards',
-    label: 'Awards',
+    label: '奖项',
     hint: '奖项轮播',
     uid: 'api::award.award',
     kind: 'collection',
@@ -63,7 +63,7 @@ export const WEBSITE_LINKS: ContentLink[] = [
   },
   {
     slug: 'contact',
-    label: 'Contact',
+    label: '联系我们',
     hint: '联络与全局站点信息',
     uid: 'api::global-setting.global-setting',
     kind: 'single',
@@ -81,7 +81,7 @@ export const WEBSITE_LINKS: ContentLink[] = [
   },
   {
     slug: 'seo',
-    label: 'SEO',
+    label: '页面 SEO',
     hint: '页面 SEO 条目',
     uid: 'api::page-seo.page-seo',
     kind: 'collection',
@@ -94,7 +94,7 @@ export const WEBSITE_LINKS: ContentLink[] = [
 export const WORK_LINKS: ContentLink[] = [
   {
     slug: 'overview',
-    label: '作品总览',
+    label: '作品页面配置',
     hint: 'Work 频道页标题与 SEO',
     uid: 'api::work-page.work-page',
     kind: 'single',
@@ -103,7 +103,7 @@ export const WORK_LINKS: ContentLink[] = [
   },
   {
     slug: 'categories',
-    label: '分类',
+    label: '作品分类',
     hint: '作品一级 / 二级分类',
     uid: 'api::work-category.work-category',
     kind: 'collection',
@@ -112,7 +112,7 @@ export const WORK_LINKS: ContentLink[] = [
   },
   {
     slug: 'tags',
-    label: '标签',
+    label: '作品标签',
     hint: '作品筛选标签',
     uid: 'api::work-tag.work-tag',
     kind: 'collection',
@@ -121,7 +121,7 @@ export const WORK_LINKS: ContentLink[] = [
   },
   {
     slug: 'projects',
-    label: '作品',
+    label: '作品列表',
     hint: '作品条目与封面媒体',
     uid: 'api::work-project.work-project',
     kind: 'collection',
@@ -130,7 +130,7 @@ export const WORK_LINKS: ContentLink[] = [
   },
   {
     slug: 'media',
-    label: '详情媒体',
+    label: '作品素材',
     hint: '作品详情页媒体块',
     uid: 'api::work-project-media.work-project-media',
     kind: 'collection',
@@ -157,9 +157,9 @@ export const SYSTEM_LINKS: Array<{ label: string; hint: string; to: string }> = 
 
 /** Stats cards for Dashboard — one request path each */
 export const DASHBOARD_STATS = [
-  { key: 'hero', label: 'Hero', uid: 'api::hero-item.hero-item', kind: 'collection' as const },
-  { key: 'services', label: 'Services', uid: 'api::service-item.service-item', kind: 'collection' as const },
-  { key: 'awards', label: 'Awards', uid: 'api::award.award', kind: 'collection' as const },
-  { key: 'work', label: '作品', uid: 'api::work-project.work-project', kind: 'collection' as const },
-  { key: 'faq', label: 'FAQ', uid: 'api::faq.faq', kind: 'collection' as const },
+  { key: 'hero', label: '首页主视觉', uid: 'api::hero-item.hero-item', kind: 'collection' as const },
+  { key: 'services', label: '服务项目', uid: 'api::service-item.service-item', kind: 'collection' as const },
+  { key: 'awards', label: '奖项', uid: 'api::award.award', kind: 'collection' as const },
+  { key: 'work', label: '作品案例', uid: 'api::work-project.work-project', kind: 'collection' as const },
+  { key: 'faq', label: '常见问题', uid: 'api::faq.faq', kind: 'collection' as const },
 ];

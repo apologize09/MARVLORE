@@ -17,7 +17,7 @@ export function registerOpsMenu(app: StrapiApp) {
     icon: ChartBubble,
     intlLabel: {
       id: 'marvlore.ops.dashboard',
-      defaultMessage: 'Dashboard',
+      defaultMessage: '工作台',
     },
     Component: () => import('./modules/dashboard'),
     permissions: [],
@@ -29,7 +29,7 @@ export function registerOpsMenu(app: StrapiApp) {
     icon: Earth,
     intlLabel: {
       id: 'marvlore.ops.website',
-      defaultMessage: 'Website Management',
+      defaultMessage: '官网内容管理',
     },
     Component: () => import('./modules/website'),
     permissions: [],
@@ -41,7 +41,7 @@ export function registerOpsMenu(app: StrapiApp) {
     icon: Briefcase,
     intlLabel: {
       id: 'marvlore.ops.work',
-      defaultMessage: 'Work Studio',
+      defaultMessage: '作品案例管理',
     },
     Component: () => import('./modules/work-studio'),
     permissions: [],
@@ -54,7 +54,7 @@ export function registerOpsMenu(app: StrapiApp) {
     icon: CloudUpload,
     intlLabel: {
       id: 'marvlore.ops.media',
-      defaultMessage: 'Media Library',
+      defaultMessage: '媒体资源管理',
     },
     Component: () => import('./modules/media'),
     permissions: [],
@@ -67,7 +67,7 @@ export function registerOpsMenu(app: StrapiApp) {
     icon: SlidersHorizontal,
     intlLabel: {
       id: 'marvlore.ops.system',
-      defaultMessage: 'System',
+      defaultMessage: '系统设置',
     },
     Component: () => import('./modules/system'),
     permissions: [],

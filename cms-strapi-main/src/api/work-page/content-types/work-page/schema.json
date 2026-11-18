@@ -4,8 +4,8 @@
   "info": {
     "singularName": "work-page",
     "pluralName": "work-pages",
-    "displayName": "作品总览",
-    "description": "Work landing page settings (single type)"
+    "displayName": "作品页面配置",
+    "description": "Work 频道页设置"
   },
   "options": {
     "draftAndPublish": true

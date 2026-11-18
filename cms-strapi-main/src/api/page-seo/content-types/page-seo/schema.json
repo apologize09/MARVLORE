@@ -4,8 +4,8 @@
   "info": {
     "singularName": "page-seo",
     "pluralName": "page-seos",
-    "displayName": "SEO",
-    "description": "Legacy per-route SEO (unused by Marvlore; retained empty)"
+    "displayName": "页面 SEO 配置",
+    "description": "页面 SEO 条目"
   },
   "options": {
     "draftAndPublish": false
@@ -58,7 +58,9 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images"
+      ]
     },
     "sortOrder": {
       "type": "integer",

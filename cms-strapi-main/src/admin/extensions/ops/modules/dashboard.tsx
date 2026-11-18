@@ -4,6 +4,7 @@
  */
 import React, { useEffect, useState } from 'react';
 import { useFetchClient } from '@strapi/strapi/admin';
+import { t } from '../../i18n';
 import { DASHBOARD_STATS } from '../routes';
 import { LinkGrid, OpsPage, StatCard } from '../ui';
 
@@ -66,10 +67,10 @@ const DashboardPage = () => {
 
   return (
     <OpsPage
-      title="Dashboard"
-      lead="内容概览：按官网模块统计已发布条目与媒体库用量。编辑请从 Website Management / Work Studio 进入，保持与前端 build-*.mjs 相同的模块边界。"
+      title={t('dashboard.title')}
+      lead={t('dashboard.lead')}
     >
-      <h2 style={{ margin: '0 0 12px', fontSize: 16 }}>内容统计</h2>
+      <h2 style={{ margin: '0 0 12px', fontSize: 16 }}>{t('dashboard.stats')}</h2>
       <LinkGrid>
         {DASHBOARD_STATS.map((stat) => (
           <StatCard
@@ -79,15 +80,15 @@ const DashboardPage = () => {
             to={`/content-manager/collection-types/${stat.uid}`}
           />
         ))}
-        <StatCard label="媒体库文件" value={loading ? '…' : mediaCount} to="/plugins/upload" />
+        <StatCard label={t('dashboard.mediaFiles')} value={loading ? '…' : mediaCount} to="/plugins/upload" />
       </LinkGrid>
 
-      <h2 style={{ margin: '28px 0 12px', fontSize: 16 }}>快捷入口</h2>
+      <h2 style={{ margin: '28px 0 12px', fontSize: 16 }}>{t('dashboard.shortcuts')}</h2>
       <LinkGrid>
-        <StatCard label="Website Management" value="→" to="/ops/website" />
-        <StatCard label="Work Studio" value="→" to="/ops/work" />
-        <StatCard label="Media Library" value="→" to="/ops/media" />
-        <StatCard label="System" value="→" to="/ops/system" />
+        <StatCard label={t('navigation.website')} value="→" to="/ops/website" />
+        <StatCard label={t('navigation.work')} value="→" to="/ops/work" />
+        <StatCard label={t('navigation.media')} value="→" to="/ops/media" />
+        <StatCard label={t('navigation.system')} value="→" to="/ops/system" />
       </LinkGrid>
     </OpsPage>
   );

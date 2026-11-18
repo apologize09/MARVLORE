@@ -1,13 +1,11 @@
 /** System hub — users, roles, locales, API permissions, app settings. */
 import React from 'react';
+import { t } from '../../i18n';
 import { SYSTEM_LINKS } from '../routes';
 import { LinkGrid, OpsLinkCard, OpsPage } from '../ui';
 
 const SystemPage = () => (
-  <OpsPage
-    title="System"
-    lead="账号、角色、语言与 API 权限。日常内容运营请优先使用 Website Management / Work Studio，系统项留给管理员。"
-  >
+  <OpsPage title={t('system.title')} lead={t('system.lead')}>
     <LinkGrid>
       {SYSTEM_LINKS.map((link) => (
         <OpsLinkCard key={link.to} to={link.to} label={link.label} hint={link.hint} />

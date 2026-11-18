@@ -4,8 +4,8 @@
   "info": {
     "singularName": "faq",
     "pluralName": "faqs",
-    "displayName": "FAQ",
-    "description": "OEM manufacturing FAQs"
+    "displayName": "常见问题",
+    "description": "常见问题条目"
   },
   "options": {
     "draftAndPublish": false
@@ -22,7 +22,13 @@
     },
     "category": {
       "type": "enumeration",
-      "enum": ["moq", "formulation", "packaging", "compliance", "lead-time"],
+      "enum": [
+        "moq",
+        "formulation",
+        "packaging",
+        "compliance",
+        "lead-time"
+      ],
       "default": "moq"
     },
     "sortOrder": {

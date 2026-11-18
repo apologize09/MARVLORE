@@ -4,8 +4,8 @@
   "info": {
     "singularName": "work-category",
     "pluralName": "work-categories",
-    "displayName": "分类",
-    "description": "Two-level Work taxonomy (V1.1). Does not replace api::category."
+    "displayName": "作品分类",
+    "description": "作品一二级分类"
   },
   "options": {
     "draftAndPublish": true
@@ -87,7 +87,9 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"],
+      "allowedTypes": [
+        "images"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": true
