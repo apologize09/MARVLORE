@@ -23,7 +23,7 @@ function toWebPath(url) {
 export function normalizeCategoryToOverview(categoryDto, fallbackById = {}) {
   const slug = categoryDto.slug;
   const fb = fallbackById[slug] || {};
-  const coverPath = stripAssetsPrefix(categoryDto.coverUrl || categoryDto.cover?.url) || fb.image || null;
+  const coverPath = stripAssetsPrefix(categoryDto.coverUrl || categoryDto.cover?.url) || null;
   return {
     id: slug,
     // Prefer CMS bilingual fields; keep static fallback so display stays stable when unset
@@ -31,8 +31,9 @@ export function normalizeCategoryToOverview(categoryDto, fallbackById = {}) {
     title: categoryDto.name || fb.title || slug,
     cn: categoryDto.nameCn || fb.cn || categoryDto.name || slug,
     description: categoryDto.description || fb.description || '',
-    image: coverPath,
-    overviewImage: fb.overviewImage,
+    // Homepage card uses overviewImage ?? image — prefer CMS cover (aligned to site overview)
+    image: coverPath || fb.image || null,
+    overviewImage: coverPath || fb.overviewImage,
     overviewLabel: fb.overviewLabel,
     tags: fb.tags || [],
     detail: fb.detail || categoryDto.description || '',

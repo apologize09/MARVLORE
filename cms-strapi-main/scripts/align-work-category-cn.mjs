@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 /**
- * Backfill work-category nameCn + eyebrow from the live website overview cards.
- * Does not change site markup — only fills CMS so admin matches current display.
+ * Backfill work-category fields from the live website overview cards
+ * (name / nameCn / eyebrow / description / coverUrl). Does not change site markup.
  *
  * Dry-run by default. Apply with: node scripts/align-work-category-cn.mjs --execute
+ * After execute, run: npm run link:site-media:execute  (to refresh Media Library cover)
  */
 import path from 'node:path';
 import { createRequire } from 'node:module';
@@ -14,31 +15,38 @@ const CMS_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'
 const EXECUTE = process.argv.includes('--execute');
 const CAT = 'api::work-category.work-category';
 
-/** Exact copy from marvlore-website-main/dist/data.js overview cards */
+/**
+ * Exact homepage overview card copy + images from marvlore-website-main/dist/data.js
+ * (film/culture use overviewImage; visual/web use image)
+ */
 const L2_COPY = {
   film: {
     name: 'Film & Animation',
     nameCn: '影视动画',
     eyebrow: 'Creative Visuals',
     description: 'AI 时代下技术赋能与视觉表达的融合实践探索',
+    coverUrl: '/assets/work-covers/film-blue-152.webp',
   },
   visual: {
     name: 'Visual Design',
     nameCn: '视觉设计',
     eyebrow: 'Brand Visuals',
     description: '极简形态下的试验语言与多元视觉的研究',
+    coverUrl: '/assets/work-visual/lophthy-visual.webp',
   },
   web: {
     name: 'Web Development',
     nameCn: '网站设计',
     eyebrow: 'Digital Experiences',
     description: '以品牌为起点，连接内容、界面与交互体验',
+    coverUrl: '/assets/work-web.webp',
   },
   culture: {
     name: 'Marvlore',
     nameCn: '迈络文化',
     eyebrow: 'Marvlore Culture',
     description: '迈络的创作、实验与持续发生的新想法',
+    coverUrl: '/assets/work-covers/culture-lophty-152.webp',
   },
 };
 
@@ -58,10 +66,9 @@ async function main() {
       console.log(`[${locale}] draft L2 count=${rows.length}`);
 
       for (const row of rows) {
-        const key = row.slug;
-        const patch = L2_COPY[key];
+        const patch = L2_COPY[row.slug];
         if (!patch) {
-          console.log(`  skip ${key} (no site copy map)`);
+          console.log(`  skip ${row.slug}`);
           continue;
         }
         const data = {
@@ -69,20 +76,21 @@ async function main() {
           nameCn: patch.nameCn,
           eyebrow: patch.eyebrow,
           description: patch.description,
+          coverUrl: patch.coverUrl,
         };
         const changed =
           row.name !== data.name ||
           row.nameCn !== data.nameCn ||
           row.eyebrow !== data.eyebrow ||
-          (row.description || null) !== data.description;
-        console.log(`  ${key}`, {
+          (row.description || null) !== data.description ||
+          (row.coverUrl || null) !== data.coverUrl;
+        console.log(`  ${row.slug}`, {
           from: {
-            name: row.name,
             nameCn: row.nameCn,
             eyebrow: row.eyebrow,
-            description: row.description,
+            coverUrl: row.coverUrl,
           },
-          to: data,
+          to: { nameCn: data.nameCn, eyebrow: data.eyebrow, coverUrl: data.coverUrl },
           changed,
         });
         if (!EXECUTE || !changed) continue;
@@ -96,10 +104,13 @@ async function main() {
           documentId: row.documentId,
           locale,
         });
-        console.log(`  ${key} updated+published`);
+        console.log(`  ${row.slug} updated+published`);
       }
     }
     console.log(EXECUTE ? 'done (executed)' : 'dry-run only; pass --execute to apply');
+    if (EXECUTE) {
+      console.log('Next: npm run link:site-media:execute  # refresh Media Library cover from coverUrl');
+    }
   } finally {
     await app.destroy();
   }

@@ -1,5 +1,5 @@
 import { buildStaticBundle } from './work-fallback.js?v=efa3d94e78';
-import { resolveWorkBundle } from './work-loader.js?v=5952c1f1c2';
+import { resolveWorkBundle } from './work-loader.js?v=a5cdfa8810';
 
 let bundle = buildStaticBundle();
 

@@ -38,7 +38,9 @@
     "align:work-home": "node ./scripts/align-work-home-display.mjs",
     "align:work-home:execute": "node ./scripts/align-work-home-display.mjs --execute",
     "align:work-category-cn": "node ./scripts/align-work-category-cn.mjs",
-    "align:work-category-cn:execute": "node ./scripts/align-work-category-cn.mjs --execute"
+    "align:work-category-cn:execute": "node ./scripts/align-work-category-cn.mjs --execute",
+    "patch:work-category-cm": "node ./scripts/patch-work-category-cm-layout.mjs",
+    "patch:work-category-cm:execute": "node ./scripts/patch-work-category-cm-layout.mjs --execute"
   },
   "dependencies": {
     "@strapi/database": "5.52.1",

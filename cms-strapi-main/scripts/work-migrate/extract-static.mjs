@@ -234,7 +234,8 @@ export function extractStaticWork() {
     parentLegacyId: 'cat-l1-work',
     sortOrder: i,
     description: p.description,
-    coverUrl: normalizeAssetPath('assets/' + p.image),
+    // Prefer homepage overview card image when present (film/culture)
+    coverUrl: normalizeAssetPath('assets/' + (p.overviewImage || p.image)),
   }));
 
   const tagNames = new Set();
