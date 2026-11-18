@@ -23,3 +23,9 @@ Merged in `src/admin/app.tsx` via `nativeAdminTranslations()` **before** brand +
 1. Admin locale = 中文 (zh-Hans)
 2. Open any Content Manager edit view → tabs show **草稿 / 已发布**, panel **条目**
 3. List create button → **创建新条目** (or equivalent CN)
+
+## Polish pass
+
+Additional Admin / Upload keys merged into `strapi-native-zh-Hans.ts` (HomePage, Settings pages/sessions/tokens, global chrome, upload).
+
+Remaining EN mostly product tours / Blocks editor niche strings — acceptable fallback to English until curated.
