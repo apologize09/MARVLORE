@@ -6,9 +6,9 @@ import type { StrapiApp } from '@strapi/strapi/admin';
 import {
   Briefcase,
   ChartBubble,
-  Cog,
+  CloudUpload,
   Earth,
-  Images,
+  SlidersHorizontal,
 } from '@strapi/icons';
 
 export function registerOpsMenu(app: StrapiApp) {
@@ -48,9 +48,10 @@ export function registerOpsMenu(app: StrapiApp) {
     position: 3,
   });
 
+  // CloudUpload — distinct from the built-in Media Library (Images) icon
   app.addMenuLink({
     to: '/ops/media',
-    icon: Images,
+    icon: CloudUpload,
     intlLabel: {
       id: 'marvlore.ops.media',
       defaultMessage: 'Media Library',
@@ -60,9 +61,10 @@ export function registerOpsMenu(app: StrapiApp) {
     position: 4,
   });
 
+  // SlidersHorizontal — distinct from Settings (Cog)
   app.addMenuLink({
     to: '/ops/system',
-    icon: Cog,
+    icon: SlidersHorizontal,
     intlLabel: {
       id: 'marvlore.ops.system',
       defaultMessage: 'System',
