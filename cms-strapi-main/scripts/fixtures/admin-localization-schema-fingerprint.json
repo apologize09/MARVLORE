@@ -1,0 +1,1125 @@
+{
+  "apis": {
+    "api::about-page.about-page": {
+      "collectionName": "about_pages",
+      "kind": "singleType",
+      "singularName": "about-page",
+      "pluralName": "about-pages",
+      "attributes": {
+        "brandName": {
+          "type": "string",
+          "default": "Marvlore"
+        },
+        "brandNameCn": {
+          "type": "string",
+          "default": "（迈络）"
+        },
+        "partnerLine": {
+          "type": "string"
+        },
+        "partnerLineCn": {
+          "type": "string"
+        },
+        "stats": {
+          "type": "component",
+          "component": "shared.about-stat",
+          "repeatable": true
+        },
+        "collageImages": {
+          "type": "component",
+          "component": "shared.about-collage-image",
+          "repeatable": true
+        },
+        "seo": {
+          "type": "component",
+          "component": "shared.seo",
+          "repeatable": false
+        }
+      }
+    },
+    "api::article.article": {
+      "collectionName": "articles",
+      "kind": "collectionType",
+      "singularName": "article",
+      "pluralName": "articles",
+      "attributes": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "text"
+        },
+        "slug": {
+          "type": "uid"
+        },
+        "cover": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "images",
+            "files",
+            "videos"
+          ]
+        },
+        "author": {
+          "type": "relation",
+          "relation": "manyToOne",
+          "target": "api::author.author"
+        },
+        "category": {
+          "type": "relation",
+          "relation": "manyToOne",
+          "target": "api::category.category"
+        },
+        "blocks": {
+          "type": "dynamiczone",
+          "components": [
+            "shared.media",
+            "shared.quote",
+            "shared.rich-text",
+            "shared.slider"
+          ]
+        }
+      }
+    },
+    "api::author.author": {
+      "collectionName": "authors",
+      "kind": "collectionType",
+      "singularName": "author",
+      "pluralName": "authors",
+      "attributes": {
+        "name": {
+          "type": "string"
+        },
+        "avatar": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "images",
+            "files",
+            "videos"
+          ]
+        },
+        "email": {
+          "type": "string"
+        },
+        "articles": {
+          "type": "relation",
+          "relation": "oneToMany",
+          "target": "api::article.article"
+        }
+      }
+    },
+    "api::award.award": {
+      "collectionName": "awards",
+      "kind": "collectionType",
+      "singularName": "award",
+      "pluralName": "awards",
+      "attributes": {
+        "name": {
+          "type": "string"
+        },
+        "alt": {
+          "type": "string",
+          "required": true
+        },
+        "image": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "images"
+          ]
+        },
+        "imageUrl": {
+          "type": "string",
+          "required": false
+        },
+        "organization": {
+          "type": "string"
+        },
+        "description": {
+          "type": "text"
+        },
+        "awardYear": {
+          "type": "integer"
+        },
+        "externalUrl": {
+          "type": "string"
+        },
+        "sortOrder": {
+          "type": "integer",
+          "default": 0
+        },
+        "isActive": {
+          "type": "boolean",
+          "default": true
+        },
+        "legacyId": {
+          "type": "string",
+          "unique": true
+        }
+      }
+    },
+    "api::category.category": {
+      "collectionName": "categories",
+      "kind": "collectionType",
+      "singularName": "category",
+      "pluralName": "categories",
+      "attributes": {
+        "name": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "uid"
+        },
+        "articles": {
+          "type": "relation",
+          "relation": "oneToMany",
+          "target": "api::article.article"
+        },
+        "description": {
+          "type": "text"
+        }
+      }
+    },
+    "api::certification.certification": {
+      "collectionName": "certifications",
+      "kind": "collectionType",
+      "singularName": "certification",
+      "pluralName": "certifications",
+      "attributes": {
+        "codeKey": {
+          "type": "uid",
+          "required": true
+        },
+        "name": {
+          "type": "string",
+          "required": true
+        },
+        "code": {
+          "type": "string"
+        },
+        "description": {
+          "type": "text"
+        },
+        "verifiedBy": {
+          "type": "string"
+        },
+        "sortOrder": {
+          "type": "integer",
+          "default": 0
+        }
+      }
+    },
+    "api::faq.faq": {
+      "collectionName": "faqs",
+      "kind": "collectionType",
+      "singularName": "faq",
+      "pluralName": "faqs",
+      "attributes": {
+        "question": {
+          "type": "string",
+          "required": true
+        },
+        "answer": {
+          "type": "text",
+          "required": true
+        },
+        "category": {
+          "type": "enumeration",
+          "default": "moq",
+          "enum": [
+            "moq",
+            "formulation",
+            "packaging",
+            "compliance",
+            "lead-time"
+          ]
+        },
+        "sortOrder": {
+          "type": "integer",
+          "default": 0
+        }
+      }
+    },
+    "api::global-setting.global-setting": {
+      "collectionName": "global_settings",
+      "kind": "singleType",
+      "singularName": "global-setting",
+      "pluralName": "global-settings",
+      "attributes": {
+        "siteName": {
+          "type": "string",
+          "default": "MARVLORE"
+        },
+        "siteNameCn": {
+          "type": "string",
+          "default": "迈络"
+        },
+        "tagline": {
+          "type": "string",
+          "default": "Ideas Make Brands POP"
+        },
+        "email": {
+          "type": "email"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "phoneDisplay": {
+          "type": "string"
+        },
+        "wechat": {
+          "type": "string"
+        },
+        "addressEn": {
+          "type": "text"
+        },
+        "addressCn": {
+          "type": "text"
+        },
+        "studioNoteEn": {
+          "type": "string"
+        },
+        "studioNoteCn": {
+          "type": "string"
+        },
+        "welcomeCn": {
+          "type": "string"
+        },
+        "copyrightText": {
+          "type": "string"
+        },
+        "defaultSeo": {
+          "type": "component",
+          "component": "shared.seo",
+          "repeatable": false
+        },
+        "socialLinks": {
+          "type": "component",
+          "component": "shared.social-link",
+          "repeatable": true
+        }
+      }
+    },
+    "api::hero-item.hero-item": {
+      "collectionName": "hero_items",
+      "kind": "collectionType",
+      "singularName": "hero-item",
+      "pluralName": "hero-items",
+      "attributes": {
+        "title": {
+          "type": "string",
+          "required": true
+        },
+        "slug": {
+          "type": "uid",
+          "required": true
+        },
+        "role": {
+          "type": "enumeration",
+          "required": true,
+          "default": "project",
+          "enum": [
+            "project",
+            "orbit"
+          ]
+        },
+        "mediaType": {
+          "type": "enumeration",
+          "required": true,
+          "default": "image",
+          "enum": [
+            "video",
+            "image"
+          ]
+        },
+        "alt": {
+          "type": "string"
+        },
+        "image": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "images"
+          ]
+        },
+        "imageUrl": {
+          "type": "string",
+          "required": false
+        },
+        "video": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "videos"
+          ]
+        },
+        "videoUrl": {
+          "type": "string"
+        },
+        "videoHd": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "videos"
+          ]
+        },
+        "videoUrlHd": {
+          "type": "string"
+        },
+        "preview": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "videos",
+            "images"
+          ]
+        },
+        "previewUrl": {
+          "type": "string"
+        },
+        "homePreview": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "videos",
+            "images"
+          ]
+        },
+        "homePreviewUrl": {
+          "type": "string"
+        },
+        "slides": {
+          "type": "json"
+        },
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "sortOrder": {
+          "type": "integer",
+          "default": 0
+        },
+        "isActive": {
+          "type": "boolean",
+          "default": true
+        },
+        "legacyId": {
+          "type": "string",
+          "unique": true
+        }
+      }
+    },
+    "api::page-seo.page-seo": {
+      "collectionName": "page_seos",
+      "kind": "collectionType",
+      "singularName": "page-seo",
+      "pluralName": "page-seos",
+      "attributes": {
+        "pageId": {
+          "type": "enumeration",
+          "required": true,
+          "unique": true,
+          "enum": [
+            "home",
+            "nicotine-pouches",
+            "nootropic-pouches",
+            "caffeine-pouches",
+            "service",
+            "production-process",
+            "about-us",
+            "contact-us"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "required": true
+        },
+        "metaTitle": {
+          "type": "string",
+          "required": true
+        },
+        "metaDescription": {
+          "type": "text",
+          "required": true
+        },
+        "ogTitle": {
+          "type": "string"
+        },
+        "ogDescription": {
+          "type": "text"
+        },
+        "keywords": {
+          "type": "text"
+        },
+        "robots": {
+          "type": "string",
+          "default": "index,follow"
+        },
+        "shareImage": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "images"
+          ]
+        },
+        "sortOrder": {
+          "type": "integer",
+          "default": 0
+        }
+      }
+    },
+    "api::service-item.service-item": {
+      "collectionName": "service_items",
+      "kind": "collectionType",
+      "singularName": "service-item",
+      "pluralName": "service-items",
+      "attributes": {
+        "titleEn": {
+          "type": "string",
+          "required": true
+        },
+        "titleCn": {
+          "type": "string",
+          "required": true
+        },
+        "slug": {
+          "type": "uid",
+          "required": true
+        },
+        "description": {
+          "type": "text"
+        },
+        "image": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "images"
+          ]
+        },
+        "imageUrl": {
+          "type": "string",
+          "required": false
+        },
+        "typeScale": {
+          "type": "decimal"
+        },
+        "sortOrder": {
+          "type": "integer",
+          "default": 0
+        },
+        "isActive": {
+          "type": "boolean",
+          "default": true
+        },
+        "legacyId": {
+          "type": "string",
+          "unique": true
+        }
+      }
+    },
+    "api::work-category.work-category": {
+      "collectionName": "work_categories",
+      "kind": "collectionType",
+      "singularName": "work-category",
+      "pluralName": "work-categories",
+      "attributes": {
+        "name": {
+          "type": "string",
+          "required": true
+        },
+        "nameCn": {
+          "type": "string"
+        },
+        "eyebrow": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "uid",
+          "required": true
+        },
+        "description": {
+          "type": "text"
+        },
+        "level": {
+          "type": "integer",
+          "required": true,
+          "default": 1
+        },
+        "parent": {
+          "type": "relation",
+          "relation": "manyToOne",
+          "target": "api::work-category.work-category"
+        },
+        "children": {
+          "type": "relation",
+          "relation": "oneToMany",
+          "target": "api::work-category.work-category"
+        },
+        "cover": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "images"
+          ]
+        },
+        "coverUrl": {
+          "type": "string"
+        },
+        "sortOrder": {
+          "type": "integer",
+          "default": 0
+        },
+        "isActive": {
+          "type": "boolean",
+          "default": true
+        },
+        "legacyId": {
+          "type": "string",
+          "unique": true
+        },
+        "tags": {
+          "type": "relation",
+          "relation": "manyToMany",
+          "target": "api::work-tag.work-tag"
+        },
+        "projects": {
+          "type": "relation",
+          "relation": "oneToMany",
+          "target": "api::work-project.work-project"
+        },
+        "seo": {
+          "type": "component",
+          "component": "shared.seo",
+          "repeatable": false
+        }
+      }
+    },
+    "api::work-page.work-page": {
+      "collectionName": "work_pages",
+      "kind": "singleType",
+      "singularName": "work-page",
+      "pluralName": "work-pages",
+      "attributes": {
+        "title": {
+          "type": "string",
+          "required": true
+        },
+        "intro": {
+          "type": "richtext"
+        },
+        "featuredProjects": {
+          "type": "relation",
+          "relation": "manyToMany",
+          "target": "api::work-project.work-project"
+        },
+        "displayCategories": {
+          "type": "relation",
+          "relation": "manyToMany",
+          "target": "api::work-category.work-category"
+        },
+        "showFeatured": {
+          "type": "boolean",
+          "default": true
+        },
+        "seo": {
+          "type": "component",
+          "component": "shared.seo",
+          "repeatable": false
+        }
+      }
+    },
+    "api::work-project.work-project": {
+      "collectionName": "work_projects",
+      "kind": "collectionType",
+      "singularName": "work-project",
+      "pluralName": "work-projects",
+      "attributes": {
+        "title": {
+          "type": "string",
+          "required": true
+        },
+        "slug": {
+          "type": "uid",
+          "required": true
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "eyebrow": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "text"
+        },
+        "description": {
+          "type": "richtext"
+        },
+        "category": {
+          "type": "relation",
+          "relation": "manyToOne",
+          "target": "api::work-category.work-category"
+        },
+        "categoryNameCn": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "relation",
+          "relation": "manyToMany",
+          "target": "api::work-tag.work-tag"
+        },
+        "cover": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "images"
+          ]
+        },
+        "coverUrl": {
+          "type": "string"
+        },
+        "thumbnail": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "images"
+          ]
+        },
+        "thumbnailUrl": {
+          "type": "string"
+        },
+        "heroMedia": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "images",
+            "videos"
+          ]
+        },
+        "heroMediaUrl": {
+          "type": "string"
+        },
+        "video": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "videos"
+          ]
+        },
+        "videoUrl": {
+          "type": "string"
+        },
+        "poster": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "images"
+          ]
+        },
+        "posterUrl": {
+          "type": "string"
+        },
+        "previewVideo": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "videos"
+          ]
+        },
+        "previewVideoUrl": {
+          "type": "string"
+        },
+        "homePreviewVideo": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "videos"
+          ]
+        },
+        "homePreviewVideoUrl": {
+          "type": "string"
+        },
+        "clientName": {
+          "type": "string"
+        },
+        "projectYear": {
+          "type": "integer"
+        },
+        "projectType": {
+          "type": "enumeration",
+          "required": true,
+          "default": "image",
+          "enum": [
+            "image",
+            "video",
+            "mixed"
+          ]
+        },
+        "focusX": {
+          "type": "integer"
+        },
+        "focusY": {
+          "type": "integer"
+        },
+        "isFeatured": {
+          "type": "boolean",
+          "default": false
+        },
+        "showOnHome": {
+          "type": "boolean",
+          "default": false
+        },
+        "sortOrder": {
+          "type": "integer",
+          "default": 0
+        },
+        "relatedProjects": {
+          "type": "relation",
+          "relation": "manyToMany",
+          "target": "api::work-project.work-project"
+        },
+        "relatedFrom": {
+          "type": "relation",
+          "relation": "manyToMany",
+          "target": "api::work-project.work-project"
+        },
+        "mediaItems": {
+          "type": "relation",
+          "relation": "oneToMany",
+          "target": "api::work-project-media.work-project-media"
+        },
+        "legacyId": {
+          "type": "string",
+          "unique": true
+        },
+        "seo": {
+          "type": "component",
+          "component": "shared.seo",
+          "repeatable": false
+        }
+      }
+    },
+    "api::work-project-media.work-project-media": {
+      "collectionName": "work_project_medias",
+      "kind": "collectionType",
+      "singularName": "work-project-media",
+      "pluralName": "work-project-medias",
+      "attributes": {
+        "project": {
+          "type": "relation",
+          "relation": "manyToOne",
+          "target": "api::work-project.work-project"
+        },
+        "blockType": {
+          "type": "enumeration",
+          "required": true,
+          "default": "image",
+          "enum": [
+            "image",
+            "video",
+            "text",
+            "embed"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "richtext"
+        },
+        "image": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "images"
+          ]
+        },
+        "imageUrl": {
+          "type": "string"
+        },
+        "video": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "videos"
+          ]
+        },
+        "videoUrl": {
+          "type": "string"
+        },
+        "poster": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "images"
+          ]
+        },
+        "posterUrl": {
+          "type": "string"
+        },
+        "embedUrl": {
+          "type": "string"
+        },
+        "altText": {
+          "type": "string"
+        },
+        "caption": {
+          "type": "text"
+        },
+        "displayMode": {
+          "type": "enumeration",
+          "default": "full-width",
+          "enum": [
+            "cover",
+            "contain",
+            "full-width"
+          ]
+        },
+        "aspectRatio": {
+          "type": "string"
+        },
+        "sortOrder": {
+          "type": "integer",
+          "required": true,
+          "default": 0
+        },
+        "legacyId": {
+          "type": "string",
+          "unique": true
+        }
+      }
+    },
+    "api::work-tag.work-tag": {
+      "collectionName": "work_tags",
+      "kind": "collectionType",
+      "singularName": "work-tag",
+      "pluralName": "work-tags",
+      "attributes": {
+        "name": {
+          "type": "string",
+          "required": true
+        },
+        "slug": {
+          "type": "uid",
+          "required": true
+        },
+        "description": {
+          "type": "text"
+        },
+        "color": {
+          "type": "string"
+        },
+        "categories": {
+          "type": "relation",
+          "relation": "manyToMany",
+          "target": "api::work-category.work-category"
+        },
+        "projects": {
+          "type": "relation",
+          "relation": "manyToMany",
+          "target": "api::work-project.work-project"
+        },
+        "sortOrder": {
+          "type": "integer",
+          "default": 0
+        },
+        "isActive": {
+          "type": "boolean",
+          "default": true
+        },
+        "legacyId": {
+          "type": "string",
+          "unique": true
+        }
+      }
+    }
+  },
+  "comps": {
+    "shared.about-collage-image": {
+      "collectionName": "components_shared_about_collage_images",
+      "attributes": {
+        "slotIndex": {
+          "type": "integer",
+          "required": true
+        },
+        "image": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "images"
+          ]
+        },
+        "imageUrl": {
+          "type": "string",
+          "required": false
+        },
+        "alt": {
+          "type": "string",
+          "required": true
+        },
+        "focus": {
+          "type": "string"
+        }
+      }
+    },
+    "shared.about-stat": {
+      "collectionName": "components_shared_about_stats",
+      "attributes": {
+        "number": {
+          "type": "string",
+          "required": true
+        },
+        "lines": {
+          "type": "json",
+          "required": true
+        },
+        "sortOrder": {
+          "type": "integer",
+          "default": 0
+        }
+      }
+    },
+    "shared.media": {
+      "collectionName": "components_shared_media",
+      "attributes": {
+        "file": {
+          "type": "media",
+          "multiple": false,
+          "allowedTypes": [
+            "images",
+            "files",
+            "videos"
+          ]
+        }
+      }
+    },
+    "shared.quote": {
+      "collectionName": "components_shared_quotes",
+      "attributes": {
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "text"
+        }
+      }
+    },
+    "shared.rich-text": {
+      "collectionName": "components_shared_rich_texts",
+      "attributes": {
+        "body": {
+          "type": "richtext"
+        }
+      }
+    },
+    "shared.seo": {
+      "collectionName": "components_shared_seos",
+      "attributes": {
+        "metaTitle": {
+          "type": "string",
+          "required": true
+        },
+        "metaDescription": {
+          "type": "text",
+          "required": true
+        },
+        "shareImage": {
+          "type": "media",
+          "required": false,
+          "multiple": false,
+          "allowedTypes": [
+            "images"
+          ]
+        }
+      }
+    },
+    "shared.slider": {
+      "collectionName": "components_shared_sliders",
+      "attributes": {
+        "files": {
+          "type": "media",
+          "required": false,
+          "multiple": true,
+          "allowedTypes": [
+            "images"
+          ]
+        }
+      }
+    },
+    "shared.social-link": {
+      "collectionName": "components_shared_social_links",
+      "attributes": {
+        "platform": {
+          "type": "enumeration",
+          "enum": [
+            "instagram",
+            "youtube",
+            "facebook",
+            "linkedin",
+            "behance",
+            "dribbble",
+            "tiktok",
+            "x",
+            "other"
+          ]
+        },
+        "label": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "sortOrder": {
+          "type": "integer",
+          "default": 0
+        }
+      }
+    },
+    "shared.why-choose-item": {
+      "collectionName": "components_shared_why_choose_items",
+      "attributes": {
+        "titleLine1": {
+          "type": "string"
+        },
+        "titleLine2": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "text"
+        },
+        "icon": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "generatedAt": "2026-11-18T09:20:51.033Z"
+}
