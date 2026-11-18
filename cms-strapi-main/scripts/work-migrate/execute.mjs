@@ -100,6 +100,8 @@ export async function executeMigration(options = {}) {
         let doc = await findByLegacyId(app, CAT, cat.legacyId, locale);
         const data = {
           name: cat.name,
+          nameCn: cat.nameCn || cat.cn || null,
+          eyebrow: cat.eyebrow || null,
           slug: cat.slug,
           level: 2,
           parent: categoryDocBySlug.get('__l1__').documentId,

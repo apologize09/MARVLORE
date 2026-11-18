@@ -5,10 +5,11 @@ import {
   buildDetailList,
   normalizeCategoryToOverview,
   normalizeProjectToReelItem,
-} from './work-normalize.js?v=1a5b0c5d33';
+} from './work-normalize.js?v=f3f85eefc7';
 
-function mergeOverview(staticBundle, categoryTree) {
-  const fallbackById = getStaticOverviewById();
+const DIRECTION_SHELL_IDS = new Set(['film', 'visual', 'web', 'culture']);
+
+function collectLevel2(categoryTree) {
   const level2 = [];
   for (const parent of categoryTree || []) {
     if (Array.isArray(parent.children) && parent.children.length) {
@@ -17,8 +18,20 @@ function mergeOverview(staticBundle, categoryTree) {
       level2.push(parent);
     }
   }
-  // Prefer known direction slugs order from static
-  const order = staticBundle.projects.map((p) => p.id);
+  return level2;
+}
+
+function mergeOverview(staticBundle, categoryTree, displayCategories) {
+  const fallbackById = getStaticOverviewById();
+  const fromDisplay = Array.isArray(displayCategories)
+    ? displayCategories.filter((c) => c && c.slug)
+    : [];
+  const level2 = fromDisplay.length ? fromDisplay : collectLevel2(categoryTree);
+
+  // Prefer work-page.displayCategories order; else known static direction order
+  const order = fromDisplay.length
+    ? fromDisplay.map((c) => c.slug)
+    : staticBundle.projects.map((p) => p.id);
   const bySlug = new Map(level2.map((c) => [c.slug, c]));
   const projects = order
     .map((id) => {
@@ -27,13 +40,25 @@ function mergeOverview(staticBundle, categoryTree) {
     })
     .filter(Boolean);
 
-  // Append any extra CMS L2 not in static directions
+  // Append any extra CMS L2 not already listed
   for (const cat of level2) {
     if (!order.includes(cat.slug)) {
       projects.push(normalizeCategoryToOverview(cat, fallbackById));
     }
   }
   return projects;
+}
+
+function isDirectionShell(projectDto) {
+  const id = projectDto?.legacyId || projectDto?.slug;
+  return Boolean(id && DIRECTION_SHELL_IDS.has(id));
+}
+
+function pickReelRows(homeRows, listRows) {
+  const fromHome = (homeRows || []).filter((p) => p && !isDirectionShell(p));
+  if (fromHome.length) return fromHome;
+  // Preserve current site content when showOnHome is unset: non-shell list items
+  return (listRows || []).filter((p) => p && !isDirectionShell(p));
 }
 
 export async function resolveWorkBundle() {
@@ -60,23 +85,35 @@ export async function resolveWorkBundle() {
 
     if (config.useCategories) {
       const categoriesRes = await api.getCategories();
-      next.projects = mergeOverview(fallback, categoriesRes?.data || []);
+      next.projects = mergeOverview(
+        fallback,
+        categoriesRes?.data || [],
+        next.workPage?.displayCategories || [],
+      );
     }
 
     let listRows = null;
+    let homeRows = null;
     if (config.useList || config.useDetail) {
       const listRes = await api.getProjects({ pageSize: 48, sort: 'manual' });
       listRows = listRes?.data || [];
     }
 
-    if (config.useList && listRows?.length) {
-      // Keep reel-like items: prefer non-direction overview cards when possible
-      const reelRows = listRows.filter((p) => {
-        const id = p.legacyId || p.slug;
-        return id && !['film', 'visual', 'web', 'culture'].includes(id);
-      });
-      const source = reelRows.length ? reelRows : listRows;
-      next.workReelItems = source.map(normalizeProjectToReelItem);
+    if (config.useList) {
+      try {
+        const homeRes = await api.getProjects({
+          pageSize: 48,
+          sort: 'manual',
+          showOnHome: true,
+        });
+        homeRows = homeRes?.data || [];
+      } catch (err) {
+        console.warn('[cms] showOnHome reel query failed:', err?.message || err);
+      }
+      const source = pickReelRows(homeRows, listRows);
+      if (source.length) {
+        next.workReelItems = source.map(normalizeProjectToReelItem);
+      }
     }
 
     if (config.useDetail && listRows?.length) {

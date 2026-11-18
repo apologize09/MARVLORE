@@ -53,6 +53,7 @@ async function buildProjectFilters(strapi: Core.Strapi, q: WorkListQuery) {
 
   if (q.year != null) filters.projectYear = { $eq: q.year };
   if (q.projectType) filters.projectType = { $eq: q.projectType };
+  if (q.showOnHome != null) filters.showOnHome = { $eq: q.showOnHome };
 
   if (q.tags.length > 0) {
     // OR semantics across selected tag slugs
@@ -148,7 +149,19 @@ export function createWorkPublicService(strapi: Core.Strapi) {
             parent: { fields: ['documentId', 'name', 'slug', 'level'] },
             children: {
               filters: { isActive: { $eq: true } },
-              fields: ['documentId', 'name', 'slug', 'level', 'sortOrder', 'isActive', 'coverUrl', 'legacyId'],
+              fields: [
+                'documentId',
+                'name',
+                'nameCn',
+                'eyebrow',
+                'slug',
+                'level',
+                'description',
+                'sortOrder',
+                'isActive',
+                'coverUrl',
+                'legacyId',
+              ],
               sort: ['sortOrder:asc'],
             },
             cover: { fields: ['url', 'alternativeText', 'width', 'height', 'mime', 'name'] },

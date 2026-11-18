@@ -18,7 +18,12 @@ const q = parseWorkListQuery({ locale: 'en', page: '2', pageSize: '12', tags: 'c
 assert.equal(q.page, 2);
 assert.equal(q.start, 12);
 assert.deepEqual(q.tags, ['cgi', '3d']);
+assert.equal(q.showOnHome, undefined);
+const homeQ = parseWorkListQuery({ showOnHome: 'true', pageSize: '12' });
+assert.equal(homeQ.showOnHome, true);
+assert.equal(parseWorkListQuery({ showOnHome: '0', pageSize: '12' }).showOnHome, false);
 assert.throws(() => parseWorkListQuery({ pageSize: '100' }), /pageSize/);
+assert.throws(() => parseWorkListQuery({ showOnHome: 'maybe', pageSize: '12' }), /showOnHome/);
 
 const tree = buildCategoryTree([
   { documentId: '1', name: 'A', slug: 'a', level: 1, sortOrder: 0, isActive: true },
