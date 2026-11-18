@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-18T02:49:40.005Z",
+  "generatedAt": "2026-11-18T02:57:56.091Z",
   "hashLength": 10,
   "assets": {
     "about/reference.css": "3cb381c423",
@@ -8,7 +8,7 @@
     "about-cards.js": "9850e4be8e",
     "about-experience.js": "df70632841",
     "about-motion-model.js": "9c1e646b9b",
-    "app.js": "cc82b1f219",
+    "app.js": "c50a51649f",
     "assets/about-arc-bottom.webp": "82760c4116",
     "assets/about-arc-top.webp": "6b2d982b8f",
     "assets/about-white/daily-mark.webp": "6a65d470ab",
@@ -168,13 +168,13 @@
     "cms/work-cache-sync.js": "bc2b521df5",
     "cms/work-cache.js": "bb57b07579",
     "cms/work-fallback.js": "efa3d94e78",
-    "cms/work-filter-mount.js": "a9c7904c8d",
+    "cms/work-filter-mount.js": "77b6d6f674",
     "cms/work-filter-state.js": "118870d81b",
-    "cms/work-loader.js": "5952c1f1c2",
-    "cms/work-normalize.js": "f3f85eefc7",
-    "cms/work-runtime.js": "0e7bc9d56a",
+    "cms/work-loader.js": "a5cdfa8810",
+    "cms/work-normalize.js": "5cce48ed19",
+    "cms/work-runtime.js": "b0b55ff514",
     "cms-locale.css": "8ce38eb083",
-    "components.js": "041da22a73",
+    "components.js": "1559efe707",
     "contact-interactions.js": "d6e35aeffa",
     "contact-layout.css": "e76c53b8e3",
     "contact-template.js": "acaf0960a0",
@@ -225,7 +225,7 @@
     "wall-tone.js": "69c5e58aa8",
     "work-detail-data.js": "420832bd60",
     "work-detail.css": "ed76707bb1",
-    "work-detail.js": "cbfb60e9df",
+    "work-detail.js": "a348d10b90",
     "work-entrance.js": "70df8c2b46",
     "work-filter.css": "63310a6759",
     "work-interactions.css": "9921a8b283",
@@ -233,6 +233,6 @@
     "work-navigation.js": "314b940e5b",
     "work-reel-data.js": "f80cf439f9",
     "work-reel.css": "369a8ae5ce",
-    "work-reel.js": "e64c066dba"
+    "work-reel.js": "fd2184ef1b"
   }
 }
