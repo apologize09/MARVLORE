@@ -1,8 +1,8 @@
 /**
  * Work list UX:
  * - Hide i18n "Available In" column
- * - Replace the top-right locale switcher (same slot) with a Chinese category <select>
- * - Selecting a category filters the list via CM query params (categoryNameCn)
+ * - Reuse the locale switcher DOM slot (do not restyle page ancestors)
+ * - Category <select> filters via categoryNameCn
  */
 const WORK_UID = 'api::work-project.work-project';
 const STYLE_ID = 'marvlore-work-category-list-style';
@@ -14,7 +14,6 @@ type CategoryChip = { documentId: string; label: string; slug?: string };
 let cachedCategories: CategoryChip[] | null = null;
 let ticking = false;
 let paused = false;
-let built = false;
 
 function isWorkListPath(pathname: string) {
   return (
@@ -31,23 +30,23 @@ function ensureStyle() {
     body[data-marvlore-work-list="1"] [data-marvlore-hide-available="1"] {
       display: none !important;
     }
-    body[data-marvlore-work-list="1"] [data-marvlore-locale-slot="1"] {
+    /* Hide original locale control children, keep the slot box for layout */
+    body[data-marvlore-work-list="1"] [data-marvlore-locale-original="1"] {
       display: none !important;
     }
     body[data-marvlore-work-list="1"] [data-marvlore-locale-portal="1"] {
       display: none !important;
     }
     #${ROOT_ID} {
-      display: inline-flex !important;
+      display: inline-flex;
       align-items: center;
-      flex: 0 0 auto;
       margin: 0;
       padding: 0;
-      position: relative;
-      z-index: 5;
+      vertical-align: middle;
     }
     #${SELECT_ID} {
-      min-width: 160px;
+      min-width: 148px;
+      max-width: 200px;
       height: 32px;
       border-radius: 4px;
       border: 1px solid #dcdce4;
@@ -63,6 +62,7 @@ function ensureStyle() {
       background-repeat: no-repeat;
       background-position: right 10px center;
       pointer-events: auto;
+      box-sizing: border-box;
     }
     #${SELECT_ID}:focus {
       outline: 2px solid #4945ff;
@@ -93,12 +93,10 @@ function getToken(): string | null {
 async function fetchLevel2Categories(): Promise<CategoryChip[]> {
   const token = getToken();
   if (!token) return [];
-  const url =
-    '/content-manager/collection-types/api::work-category.work-category' +
-    '?pageSize=50&locale=zh-CN&sort=sortOrder:ASC';
-  const res = await fetch(url, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const res = await fetch(
+    '/content-manager/collection-types/api::work-category.work-category?pageSize=50&locale=zh-CN&sort=sortOrder:ASC',
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
   if (!res.ok) return [];
   const json = await res.json();
   const rows = (json.results || json.data || []) as Array<{
@@ -128,7 +126,6 @@ function currentCategoryLabel(): string | null {
 }
 
 function applyCategoryFilter(label: string | null) {
-  // Build a clean list URL so Strapi CM hydrates filters.$and from the query string.
   const path = `/admin/content-manager/collection-types/${WORK_UID}`;
   const params = new URLSearchParams();
   params.set('page', '1');
@@ -139,13 +136,12 @@ function applyCategoryFilter(label: string | null) {
     params.set('marvloreCategoryLabel', label);
     params.set('filters[$and][0][categoryNameCn][$eq]', label);
   }
-  // Full navigation — CM reads filters on load; avoids SPA ignoring custom params.
   paused = true;
   window.location.href = `${path}?${params.toString()}`;
 }
 
 function isLocaleText(text: string) {
-  return /Chinese\s*\(zh-CN\)|English\s*\(en\)|\bzh-CN\b|\bEnglish\b/i.test(text);
+  return /Chinese\s*\(zh-CN\)|English\s*\(en\)|\bzh-CN\b/.test(text);
 }
 
 function findCreateButton(): HTMLElement | null {
@@ -156,8 +152,11 @@ function findCreateButton(): HTMLElement | null {
   );
 }
 
-/** Hide locale control (incl. globe) and return its slot element. */
-function hideLocaleSwitcher(): HTMLElement | null {
+/**
+ * Find the compact locale field wrapper (globe + combobox).
+ * Do NOT climb to page layout ancestors.
+ */
+function findLocaleSlot(): HTMLElement | null {
   const createBtn = findCreateButton();
   const nodes = [
     ...document.querySelectorAll(
@@ -177,20 +176,20 @@ function hideLocaleSwitcher(): HTMLElement | null {
   if (!localeControl) return null;
 
   let slot: HTMLElement = localeControl;
-  for (let i = 0; i < 6; i += 1) {
+  for (let i = 0; i < 4; i += 1) {
     const parent = slot.parentElement as HTMLElement | null;
-    if (!parent || parent === document.body || parent.tagName === 'MAIN') break;
-    // Don't swallow the Create button
-    if (createBtn && parent.contains(createBtn) && parent === createBtn.parentElement) break;
-    if (createBtn && parent.contains(createBtn) && parent.childElementCount > 4) break;
-    // Prefer wrappers that look like the locale field (globe + combobox)
-    if (parent.childElementCount <= 4) {
-      slot = parent;
-    } else {
+    if (!parent || parent === document.body || parent.tagName === 'MAIN' || parent.tagName === 'HEADER') {
       break;
     }
+    // Never take a parent that also wraps Create — that is page chrome
+    if (createBtn && parent.contains(createBtn)) break;
+    // Stay on a tight field wrapper (globe + control)
+    if (parent.childElementCount <= 3 && parent.offsetWidth < 360) {
+      slot = parent;
+      continue;
+    }
+    break;
   }
-  slot.setAttribute('data-marvlore-locale-slot', '1');
   return slot;
 }
 
@@ -201,21 +200,6 @@ function hideLocalePortals() {
       (node as HTMLElement).setAttribute('data-marvlore-locale-portal', '1');
     }
   });
-}
-
-/** Shared horizontal header row that holds locale + Create. */
-function findActionsRow(localeSlot: HTMLElement | null, createBtn: HTMLElement | null): HTMLElement | null {
-  if (localeSlot && createBtn) {
-    let a: HTMLElement | null = localeSlot;
-    while (a) {
-      if (a.contains(createBtn) && a !== createBtn) {
-        // Prefer the nearest shared ancestor that lays out children in a row
-        return a;
-      }
-      a = a.parentElement;
-    }
-  }
-  return createBtn?.parentElement || localeSlot?.parentElement || null;
 }
 
 function ensureSelectBuilt(categories: CategoryChip[]) {
@@ -240,19 +224,16 @@ function ensureSelectBuilt(categories: CategoryChip[]) {
       paused = true;
     });
     select.addEventListener('blur', () => {
-      // Allow DOM sync again after a beat
       window.setTimeout(() => {
         paused = false;
       }, 300);
     });
     select.addEventListener('change', () => {
       const opt = select!.selectedOptions[0];
-      const label = opt?.value || null;
-      applyCategoryFilter(label);
+      applyCategoryFilter(opt?.value || null);
     });
   }
 
-  // Rebuild options only when empty / category set changed
   const optionKey = categories.map((c) => c.label).join('|');
   if (select.dataset.optionKey !== optionKey) {
     select.innerHTML = '';
@@ -269,39 +250,32 @@ function ensureSelectBuilt(categories: CategoryChip[]) {
     select.dataset.optionKey = optionKey;
   }
 
-  const active = currentCategoryLabel();
-  select.value = active || '';
-  built = true;
+  select.value = currentCategoryLabel() || '';
   return root;
 }
 
-function placeSelect(root: HTMLElement, localeSlot: HTMLElement | null, createBtn: HTMLElement | null) {
-  const row = findActionsRow(localeSlot, createBtn);
-  if (!row) {
-    document.querySelector('main')?.prepend(root);
+/**
+ * Put the select inside the original locale slot (same layout box).
+ * Never change flex/display on page ancestors — that broke the list layout.
+ */
+function placeSelectInLocaleSlot(root: HTMLElement, localeSlot: HTMLElement | null, createBtn: HTMLElement | null) {
+  if (localeSlot) {
+    // Hide original locale UI children, keep slot for spacing/alignment
+    [...localeSlot.children].forEach((child) => {
+      if ((child as HTMLElement).id === ROOT_ID) return;
+      (child as HTMLElement).setAttribute('data-marvlore-locale-original', '1');
+    });
+    if (root.parentElement !== localeSlot) {
+      localeSlot.appendChild(root);
+    }
     return;
   }
 
-  // Force horizontal layout so select sits beside Create (original locale position)
-  const style = window.getComputedStyle(row);
-  if (style.flexDirection === 'column' || style.display !== 'flex') {
-    row.style.display = 'flex';
-    row.style.flexDirection = 'row';
-    row.style.alignItems = 'center';
-    row.style.flexWrap = 'wrap';
-    row.style.gap = row.style.gap || '8px';
-  }
-
-  if (localeSlot && row.contains(localeSlot)) {
-    if (root.parentElement !== row || root.nextElementSibling !== localeSlot) {
-      row.insertBefore(root, localeSlot);
+  // Fallback: sit immediately before Create, without restyling parents
+  if (createBtn?.parentElement) {
+    if (root.parentElement !== createBtn.parentElement || root.nextElementSibling !== createBtn) {
+      createBtn.parentElement.insertBefore(root, createBtn);
     }
-  } else if (createBtn && row.contains(createBtn)) {
-    if (root.parentElement !== row || root.nextElementSibling !== createBtn) {
-      row.insertBefore(root, createBtn);
-    }
-  } else if (root.parentElement !== row) {
-    row.appendChild(root);
   }
 }
 
@@ -318,19 +292,17 @@ function hideAvailableInColumn() {
   });
 }
 
-/** Client-side backup filter if CM URL filters didn't apply. */
 function filterTableClientSide() {
   const label = currentCategoryLabel();
   const table = document.querySelector('main table');
   if (!table) return;
   const ths = [...table.querySelectorAll('thead th')];
-  const catIdx = ths.findIndex((th) => /所属分类|categoryNameCn|category/i.test(th.textContent || ''));
+  const catIdx = ths.findIndex((th) => /所属分类|categoryNameCn/i.test(th.textContent || ''));
   if (catIdx < 0) return;
   table.querySelectorAll('tbody tr').forEach((tr) => {
     const cell = tr.children[catIdx] as HTMLElement | undefined;
     const text = (cell?.textContent || '').trim();
-    const show = !label || text === label;
-    (tr as HTMLElement).style.display = show ? '' : 'none';
+    (tr as HTMLElement).style.display = !label || text === label ? '' : 'none';
   });
 }
 
@@ -340,14 +312,14 @@ async function refresh() {
   document.body.dataset.marvloreWorkList = onList ? '1' : '0';
   if (!onList) {
     document.getElementById(ROOT_ID)?.remove();
-    built = false;
     return;
   }
 
   ensureStyle();
   hideAvailableInColumn();
-  const localeSlot = hideLocaleSwitcher();
   hideLocalePortals();
+
+  const localeSlot = findLocaleSlot();
   const createBtn = findCreateButton();
 
   if (!cachedCategories) {
@@ -356,8 +328,7 @@ async function refresh() {
   if (!cachedCategories.length) return;
 
   const root = ensureSelectBuilt(cachedCategories);
-  placeSelect(root, localeSlot, createBtn);
-  hideLocaleSwitcher();
+  placeSelectInLocaleSlot(root, localeSlot, createBtn);
   hideLocalePortals();
   filterTableClientSide();
   hideAvailableInColumn();
