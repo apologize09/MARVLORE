@@ -5,6 +5,7 @@ import {
   marvloreBrandTranslations,
 } from './extensions/marvlore-brand';
 import { registerOpsMenu } from './extensions/ops/register';
+import { installWorkCategoryListUx } from './extensions/work-category-list';
 import MarvloreMark from './extensions/marvlore-mark.svg';
 
 const ADMIN_UI_LOCALE = 'zh-Hans';
@@ -71,6 +72,7 @@ export default {
   },
   bootstrap(_app: StrapiApp) {
     installMarvloreDocumentTitle();
+    installWorkCategoryListUx();
 
     try {
       if (typeof window !== 'undefined' && !window.localStorage.getItem(STORAGE_KEY)) {

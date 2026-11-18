@@ -1529,6 +1529,12 @@ export interface ApiWorkProjectWorkProject extends Struct.CollectionTypeSchema {
       'manyToOne',
       'api::work-category.work-category'
     >;
+    categoryNameCn: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
     clientName: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
