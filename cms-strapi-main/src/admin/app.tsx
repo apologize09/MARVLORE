@@ -4,6 +4,7 @@ import {
   installMarvloreDocumentTitle,
   marvloreBrandTranslations,
 } from './extensions/marvlore-brand';
+import { nativeAdminTranslations } from './extensions/i18n';
 import { registerOpsMenu } from './extensions/ops/register';
 import { installWorkCategoryListUx } from './extensions/work-category-list';
 import MarvloreMark from './extensions/marvlore-mark.svg';
@@ -60,7 +61,10 @@ export default {
   config: {
     locales: [ADMIN_UI_LOCALE, 'en'],
     translations: mergeTranslations(
-      marvloreBrandTranslations as unknown as Record<string, Record<string, string>>,
+      mergeTranslations(
+        nativeAdminTranslations(),
+        marvloreBrandTranslations as unknown as Record<string, Record<string, string>>,
+      ),
       contentTypeNameTranslations,
     ),
     auth: { logo: MarvloreMark },

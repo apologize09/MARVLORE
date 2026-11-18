@@ -1,13 +1,11 @@
 /** Media Library hub — upload / preview / replace workflow for operators. */
 import React from 'react';
+import { t } from '../../i18n';
 import { MEDIA_LINKS } from '../routes';
 import { LinkGrid, OpsLinkCard, OpsPage } from '../ui';
 
 const MediaPage = () => (
-  <OpsPage
-    title="媒体资源管理"
-    lead="统一素材库：上传、预览、替换图片与视频。内容条目里的媒体字段会打开同一套库；同步站点静态资源后可用 caption 匹配到 ./assets 路径。"
-  >
+  <OpsPage title={t('media.title')} lead={t('media.lead')}>
     <LinkGrid>
       {MEDIA_LINKS.map((link) => (
         <OpsLinkCard key={link.to} to={link.to} label={link.label} hint={link.hint} />

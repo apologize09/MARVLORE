@@ -3,14 +3,12 @@
  * Module badges stay aligned with build-hero / about / services / contact.
  */
 import React from 'react';
+import { t } from '../../i18n';
 import { WEBSITE_LINKS } from '../routes';
 import { LinkGrid, OpsLinkCard, OpsPage } from '../ui';
 
 const WebsitePage = () => (
-  <OpsPage
-    title="官网内容管理"
-    lead="官网前台模块内容。点击卡片直接进入对应 Content Manager 编辑。每个入口对齐 build-hero / about / services / contact。"
-  >
+  <OpsPage title={t('website.title')} lead={t('website.lead')}>
     <LinkGrid>
       {WEBSITE_LINKS.map((link) => (
         <OpsLinkCard
