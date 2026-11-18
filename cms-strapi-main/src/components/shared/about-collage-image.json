@@ -1,9 +1,9 @@
 {
   "collectionName": "components_shared_about_collage_images",
   "info": {
-    "displayName": "About Collage Image",
+    "displayName": "关于页拼贴图",
     "icon": "picture",
-    "description": "Replaces artwork src/alt/focus only; geometry stays in frontend."
+    "description": "About 拼贴槽位"
   },
   "options": {},
   "attributes": {
@@ -17,7 +17,9 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images"
+      ]
     },
     "imageUrl": {
       "type": "string",

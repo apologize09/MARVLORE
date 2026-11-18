@@ -36,8 +36,17 @@ Covers:
 | video | 视频 |
 | tags | 标签 |
 
-## Not yet
+## Components (this iteration)
 
-- Full field translation for About / Hero / Services / Awards / Contact / FAQ / SEO
-- Nested component field labels (`shared.seo`, etc.)
-- Native Strapi Admin chrome (Publish tabs DRAFT/PUBLISHED, ENTRY, PREVIEW) — P1
+`scripts/patch-component-field-labels-cn.mjs --execute` + schema `info.displayName`:
+
+- `shared.seo` → SEO 标题 / SEO 描述 / 分享图
+- Other shared components (about collage/stat, quote, social-link, …)
+
+## Site / Work CM fields
+
+Covered by `patch-work-project-field-labels-cn.mjs` (Work + Hero/About/Services/…).
+
+## Native chrome
+
+See `02-native-admin-i18n.md` (P1).

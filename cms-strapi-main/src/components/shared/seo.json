@@ -3,8 +3,8 @@
   "info": {
     "name": "Seo",
     "icon": "allergies",
-    "displayName": "Seo",
-    "description": ""
+    "displayName": "SEO",
+    "description": "页面 SEO 组件"
   },
   "options": {},
   "attributes": {
@@ -20,7 +20,9 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images"
+      ]
     }
   }
 }

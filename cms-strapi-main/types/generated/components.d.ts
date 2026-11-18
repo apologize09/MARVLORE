@@ -3,8 +3,8 @@ import type { Schema, Struct } from '@strapi/strapi';
 export interface SharedAboutCollageImage extends Struct.ComponentSchema {
   collectionName: 'components_shared_about_collage_images';
   info: {
-    description: 'Replaces artwork src/alt/focus only; geometry stays in frontend.';
-    displayName: 'About Collage Image';
+    description: 'About \u62FC\u8D34\u69FD\u4F4D';
+    displayName: '\u5173\u4E8E\u9875\u62FC\u8D34\u56FE';
     icon: 'picture';
   };
   attributes: {
@@ -27,8 +27,8 @@ export interface SharedAboutCollageImage extends Struct.ComponentSchema {
 export interface SharedAboutStat extends Struct.ComponentSchema {
   collectionName: 'components_shared_about_stats';
   info: {
-    description: 'About center copy statistics block';
-    displayName: 'About Stat';
+    description: 'About \u7EDF\u8BA1\u6570\u5B57';
+    displayName: '\u5173\u4E8E\u9875\u6570\u636E';
     icon: 'chartBubble';
   };
   attributes: {
@@ -41,7 +41,8 @@ export interface SharedAboutStat extends Struct.ComponentSchema {
 export interface SharedMedia extends Struct.ComponentSchema {
   collectionName: 'components_shared_media';
   info: {
-    displayName: 'Media';
+    description: '\u5A92\u4F53\u6587\u4EF6';
+    displayName: '\u5A92\u4F53';
     icon: 'file-video';
   };
   attributes: {
@@ -52,7 +53,8 @@ export interface SharedMedia extends Struct.ComponentSchema {
 export interface SharedQuote extends Struct.ComponentSchema {
   collectionName: 'components_shared_quotes';
   info: {
-    displayName: 'Quote';
+    description: '\u5F15\u7528\u5757';
+    displayName: '\u5F15\u7528';
     icon: 'indent';
   };
   attributes: {
@@ -64,8 +66,8 @@ export interface SharedQuote extends Struct.ComponentSchema {
 export interface SharedRichText extends Struct.ComponentSchema {
   collectionName: 'components_shared_rich_texts';
   info: {
-    description: '';
-    displayName: 'Rich text';
+    description: '\u5BCC\u6587\u672C\u5757';
+    displayName: '\u5BCC\u6587\u672C';
     icon: 'align-justify';
   };
   attributes: {
@@ -76,8 +78,8 @@ export interface SharedRichText extends Struct.ComponentSchema {
 export interface SharedSeo extends Struct.ComponentSchema {
   collectionName: 'components_shared_seos';
   info: {
-    description: '';
-    displayName: 'Seo';
+    description: '\u9875\u9762 SEO \u7EC4\u4EF6';
+    displayName: 'SEO';
     icon: 'allergies';
     name: 'Seo';
   };
@@ -91,8 +93,8 @@ export interface SharedSeo extends Struct.ComponentSchema {
 export interface SharedSlider extends Struct.ComponentSchema {
   collectionName: 'components_shared_sliders';
   info: {
-    description: '';
-    displayName: 'Slider';
+    description: '\u8F6E\u64AD\u6587\u4EF6';
+    displayName: '\u8F6E\u64AD';
     icon: 'address-book';
   };
   attributes: {
@@ -103,8 +105,8 @@ export interface SharedSlider extends Struct.ComponentSchema {
 export interface SharedSocialLink extends Struct.ComponentSchema {
   collectionName: 'components_shared_social_links';
   info: {
-    description: 'Public social profile link';
-    displayName: 'Social Link';
+    description: '\u793E\u4EA4\u5E73\u53F0\u94FE\u63A5';
+    displayName: '\u793E\u4EA4\u94FE\u63A5';
     icon: 'link';
   };
   attributes: {
@@ -130,7 +132,8 @@ export interface SharedSocialLink extends Struct.ComponentSchema {
 export interface SharedWhyChooseItem extends Struct.ComponentSchema {
   collectionName: 'components_shared_why_choose_items';
   info: {
-    displayName: 'Why Choose Item';
+    description: 'Why choose \u6761\u76EE';
+    displayName: '\u4F18\u52BF\u6761\u76EE';
     icon: 'star';
   };
   attributes: {

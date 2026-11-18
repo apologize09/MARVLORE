@@ -1,8 +1,9 @@
 {
   "collectionName": "components_shared_why_choose_items",
   "info": {
-    "displayName": "Why Choose Item",
-    "icon": "star"
+    "displayName": "优势条目",
+    "icon": "star",
+    "description": "Why choose 条目"
   },
   "options": {},
   "attributes": {

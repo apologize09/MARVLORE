@@ -1,9 +1,9 @@
 {
   "collectionName": "components_shared_rich_texts",
   "info": {
-    "displayName": "Rich text",
+    "displayName": "富文本",
     "icon": "align-justify",
-    "description": ""
+    "description": "富文本块"
   },
   "options": {},
   "attributes": {

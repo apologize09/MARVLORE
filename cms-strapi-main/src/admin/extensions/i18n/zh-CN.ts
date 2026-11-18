@@ -23,29 +23,34 @@ export const zhCN: OpsDict = {
     website: '官网内容管理',
     work: '作品案例管理',
     media: '媒体资源管理',
+    seo: '内容与 SEO',
     system: '系统设置',
   },
   dashboard: {
     title: '工作台',
-    lead: '内容概览：按官网模块统计已发布条目与媒体库用量。编辑请从「官网内容管理 / 作品案例管理」进入，保持与前端 build-*.mjs 相同的模块边界。',
+    lead: '内容概览：按官网模块统计已发布条目与媒体库用量。编辑请从侧栏六组运营入口进入。',
     stats: '内容统计',
     shortcuts: '快捷入口',
     mediaFiles: '媒体库文件',
   },
   website: {
     title: '官网内容管理',
-    lead: '官网前台模块内容。点击卡片直接进入对应 Content Manager 编辑。每个入口对齐 build-hero / about / services / contact。',
+    lead: '首页、关于、服务、联络、FAQ、奖项等前台模块。点击卡片进入 Content Manager。',
   },
   work: {
     title: '作品案例管理',
-    lead: '作品内容生命周期。点击卡片直接进入对应 Content Manager 编辑。对齐 build-work.mjs。',
+    lead: '作品列表、分类、标签、频道页与详情素材。对齐 build-work.mjs。',
   },
   media: {
     title: '媒体资源管理',
-    lead: '统一素材库：上传、预览、替换图片与视频。内容条目里的媒体字段会打开同一套库；同步站点静态资源后可用 caption 匹配到 ./assets 路径。',
+    lead: '统一素材库。图片 / 视频 / 文件均进入媒体库后在库内筛选；站点同步请用 CLI（后台暂不展示）。',
+  },
+  seo: {
+    title: '内容与 SEO',
+    lead: '文章相关归档模型与页面 SEO 配置。',
   },
   system: {
     title: '系统设置',
-    lead: '账号、角色、语言与 API 权限。日常内容运营请优先使用「官网内容管理 / 作品案例管理」，系统项留给管理员。',
+    lead: '管理员、角色、多语言与 API 权限。日常内容请优先使用内容运营入口。',
   },
 };

@@ -1,9 +1,9 @@
 {
   "collectionName": "components_shared_sliders",
   "info": {
-    "displayName": "Slider",
+    "displayName": "轮播",
     "icon": "address-book",
-    "description": ""
+    "description": "轮播文件"
   },
   "options": {},
   "attributes": {
@@ -11,7 +11,9 @@
       "type": "media",
       "multiple": true,
       "required": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images"
+      ]
     }
   }
 }
