@@ -130,7 +130,7 @@ export const WORK_LINKS: ContentLink[] = [
   },
   {
     slug: 'media',
-    label: '作品素材管理',
+    label: '关联素材',
     hint: '作品详情页媒体块',
     uid: 'api::work-project-media.work-project-media',
     kind: 'collection',
@@ -167,7 +167,7 @@ export const SEO_LINKS: ContentLink[] = [
   },
   {
     slug: 'page-seo',
-    label: '页面 SEO',
+    label: 'SEO配置',
     hint: '按路由的 SEO 条目',
     uid: 'api::page-seo.page-seo',
     kind: 'collection',
