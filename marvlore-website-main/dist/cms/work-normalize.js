@@ -26,9 +26,10 @@ export function normalizeCategoryToOverview(categoryDto, fallbackById = {}) {
   const coverPath = stripAssetsPrefix(categoryDto.coverUrl || categoryDto.cover?.url) || fb.image || null;
   return {
     id: slug,
-    eyebrow: fb.eyebrow || categoryDto.name || '',
+    // Prefer CMS bilingual fields; keep static fallback so display stays stable when unset
+    eyebrow: categoryDto.eyebrow || fb.eyebrow || categoryDto.name || '',
     title: categoryDto.name || fb.title || slug,
-    cn: fb.cn || categoryDto.name || slug,
+    cn: categoryDto.nameCn || fb.cn || categoryDto.name || slug,
     description: categoryDto.description || fb.description || '',
     image: coverPath,
     overviewImage: fb.overviewImage,

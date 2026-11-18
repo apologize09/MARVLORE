@@ -5,7 +5,7 @@ import {
   buildDetailList,
   normalizeCategoryToOverview,
   normalizeProjectToReelItem,
-} from './work-normalize.js?v=1a5b0c5d33';
+} from './work-normalize.js?v=f3f85eefc7';
 
 const DIRECTION_SHELL_IDS = new Set(['film', 'visual', 'web', 'culture']);
 

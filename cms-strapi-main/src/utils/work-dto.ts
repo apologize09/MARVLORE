@@ -45,6 +45,8 @@ export function toCategoryDto(cat: AnyRecord | null | undefined) {
   return {
     documentId: cat.documentId,
     name: cat.name,
+    nameCn: cat.nameCn ?? null,
+    eyebrow: cat.eyebrow ?? null,
     slug: cat.slug,
     level: cat.level,
     description: cat.description ?? null,
@@ -56,6 +58,7 @@ export function toCategoryDto(cat: AnyRecord | null | undefined) {
       ? {
           documentId: cat.parent.documentId,
           name: cat.parent.name,
+          nameCn: cat.parent.nameCn ?? null,
           slug: cat.parent.slug,
           level: cat.parent.level,
         }
