@@ -1,7 +1,8 @@
 /**
  * Work list UX:
- * - Hide i18n "Available In" column (replaced by 所属分类 / categoryNameCn)
- * - Replace the top-right locale switcher with a Chinese category filter select
+ * - Hide i18n "Available In" column
+ * - Replace the top-right locale switcher (same slot) with a Chinese category <select>
+ * - Selecting a category filters the list via CM query params (categoryNameCn)
  */
 const WORK_UID = 'api::work-project.work-project';
 const STYLE_ID = 'marvlore-work-category-list-style';
@@ -10,10 +11,15 @@ const SELECT_ID = 'marvlore-work-category-select';
 
 type CategoryChip = { documentId: string; label: string; slug?: string };
 
+let cachedCategories: CategoryChip[] | null = null;
+let ticking = false;
+let paused = false;
+let built = false;
+
 function isWorkListPath(pathname: string) {
   return (
     pathname.includes(`/content-manager/collection-types/${WORK_UID}`) &&
-    !pathname.includes(`${WORK_UID}/`)
+    !/\/api::work-project\.work-project\/[^/?#]+/.test(pathname)
   );
 }
 
@@ -25,68 +31,42 @@ function ensureStyle() {
     body[data-marvlore-work-list="1"] [data-marvlore-hide-available="1"] {
       display: none !important;
     }
-    /* Fully hide Strapi i18n locale controls on Work list */
-    body[data-marvlore-work-list="1"] [data-marvlore-locale-slot="1"],
-    body[data-marvlore-work-list="1"] [data-marvlore-locale-slot="1"] * {
+    body[data-marvlore-work-list="1"] [data-marvlore-locale-slot="1"] {
       display: none !important;
-    }
-    /* Hide open locale listbox portals while on Work list */
-    body[data-marvlore-work-list="1"] [data-radix-popper-content-wrapper],
-    body[data-marvlore-work-list="1"] [role="listbox"] {
-      /* only when they look like locale menus — refined in JS */
     }
     body[data-marvlore-work-list="1"] [data-marvlore-locale-portal="1"] {
       display: none !important;
     }
     #${ROOT_ID} {
-      display: inline-flex;
+      display: inline-flex !important;
       align-items: center;
-      gap: 8px;
-      margin-right: 8px;
-    }
-    #${ROOT_ID} .marvlore-cat-label {
-      font-size: 12px;
-      opacity: 0.72;
-      white-space: nowrap;
+      flex: 0 0 auto;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      z-index: 5;
     }
     #${SELECT_ID} {
-      min-width: 168px;
+      min-width: 160px;
       height: 32px;
       border-radius: 4px;
       border: 1px solid #dcdce4;
-      background: #fff;
+      background-color: #fff;
       color: #32324d;
       padding: 0 28px 0 12px;
       font-size: 14px;
       line-height: 32px;
       cursor: pointer;
       appearance: none;
+      -webkit-appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238e8ea9' d='M2.5 4.5L6 8l3.5-3.5'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 10px center;
+      pointer-events: auto;
     }
-    /* Keep the older chip row as a fallback below header if select can't mount */
-    #${ROOT_ID}[data-mode="chips"] {
-      display: flex;
-      flex-wrap: wrap;
-      width: 100%;
-      margin: 0 0 12px;
-    }
-    #${ROOT_ID}[data-mode="chips"] button {
-      appearance: none;
-      border: 1px solid #dcdce4;
-      background: #fff;
-      color: #32324d;
-      border-radius: 999px;
-      padding: 6px 12px;
-      font-size: 13px;
-      cursor: pointer;
-      line-height: 1.2;
-    }
-    #${ROOT_ID}[data-mode="chips"] button[data-active="1"] {
-      background: #f0f0ff;
-      border-color: #7b79ff;
-      color: #4945ff;
+    #${SELECT_ID}:focus {
+      outline: 2px solid #4945ff;
+      outline-offset: 1px;
     }
   `;
   document.head.appendChild(style);
@@ -100,7 +80,7 @@ function getToken(): string | null {
       if (typeof parsed === 'string' && parsed) return parsed;
     }
   } catch {
-    // fall through
+    // ignore
   }
   try {
     const match = document.cookie.match(/(?:^|; )jwtToken=([^;]*)/);
@@ -137,100 +117,79 @@ async function fetchLevel2Categories(): Promise<CategoryChip[]> {
     }));
 }
 
-function currentCategoryFilter(): string | null {
+function currentCategoryLabel(): string | null {
   const params = new URLSearchParams(window.location.search);
+  const label = params.get('marvloreCategoryLabel');
+  if (label) return label;
   for (const [key, value] of params.entries()) {
-    if (
-      key.includes('category') &&
-      (key.includes('documentId') || key.includes('categoryNameCn')) &&
-      key.includes('$eq')
-    ) {
-      return value;
-    }
+    if (key.includes('categoryNameCn') && key.includes('$eq')) return value;
   }
-  return params.get('marvloreCategory') || null;
+  return null;
 }
 
-function navigateCategory(documentId: string | null, label: string | null) {
-  const url = new URL(window.location.href);
-  const keys = [...url.searchParams.keys()];
-  for (const key of keys) {
-    if (
-      key === 'marvloreCategory' ||
-      key === 'marvloreCategoryLabel' ||
-      (key.includes('filters') && key.includes('category'))
-    ) {
-      url.searchParams.delete(key);
-    }
+function applyCategoryFilter(label: string | null) {
+  // Build a clean list URL so Strapi CM hydrates filters.$and from the query string.
+  const path = `/admin/content-manager/collection-types/${WORK_UID}`;
+  const params = new URLSearchParams();
+  params.set('page', '1');
+  params.set('pageSize', '50');
+  params.set('sort', 'title:ASC');
+  params.set('plugins[i18n][locale]', 'zh-CN');
+  if (label) {
+    params.set('marvloreCategoryLabel', label);
+    params.set('filters[$and][0][categoryNameCn][$eq]', label);
   }
-  // Keep locale locked to zh-CN for this list UX
-  if (!url.searchParams.get('plugins[i18n][locale]')) {
-    url.searchParams.set('plugins[i18n][locale]', 'zh-CN');
-  }
-  url.searchParams.set('page', '1');
-  if (documentId && label) {
-    url.searchParams.set('marvloreCategory', documentId);
-    url.searchParams.set('marvloreCategoryLabel', label);
-    url.searchParams.set('filters[$and][0][categoryNameCn][$eq]', label);
-  }
-  window.location.assign(url.toString());
+  // Full navigation — CM reads filters on load; avoids SPA ignoring custom params.
+  paused = true;
+  window.location.href = `${path}?${params.toString()}`;
 }
 
 function isLocaleText(text: string) {
-  return /Chinese\s*\(zh-CN\)|English\s*\(en\)|zh-CN|locale/i.test(text);
+  return /Chinese\s*\(zh-CN\)|English\s*\(en\)|\bzh-CN\b|\bEnglish\b/i.test(text);
 }
 
-/** Find and hard-hide the Strapi i18n locale combobox near Create new entry. */
-function hideLocaleSwitcher(): HTMLElement | null {
-  const createBtn = [...document.querySelectorAll('main button, main a')].find((el) =>
-    /Create new entry|创建新|创建条目/i.test(el.textContent || '')
+function findCreateButton(): HTMLElement | null {
+  return (
+    ([...document.querySelectorAll('main button, main a')].find((el) =>
+      /Create new entry|创建新|创建条目/i.test(el.textContent || '')
+    ) as HTMLElement | undefined) || null
   );
-  const scope = (createBtn?.closest('header, [class*="Header"], div') as HTMLElement) ||
-    (document.querySelector('main') as HTMLElement | null);
-  if (!scope) return null;
+}
 
-  const candidates = [
-    ...scope.querySelectorAll('button, [role="combobox"], select, [aria-haspopup="listbox"]'),
+/** Hide locale control (incl. globe) and return its slot element. */
+function hideLocaleSwitcher(): HTMLElement | null {
+  const createBtn = findCreateButton();
+  const nodes = [
+    ...document.querySelectorAll(
+      'main button, main [role="combobox"], main select, main [aria-haspopup="listbox"]'
+    ),
   ] as HTMLElement[];
 
   let localeControl: HTMLElement | null = null;
-  for (const el of candidates) {
+  for (const el of nodes) {
+    if (el.id === SELECT_ID || el.closest(`#${ROOT_ID}`)) continue;
     const text = (el.textContent || el.getAttribute('aria-label') || '').trim();
     if (isLocaleText(text)) {
       localeControl = el;
       break;
     }
   }
-  if (!localeControl) {
-    // Broader search in main header area
-    for (const el of document.querySelectorAll('main button, main [role="combobox"]')) {
-      const text = (el.textContent || '').trim();
-      if (isLocaleText(text)) {
-        localeControl = el as HTMLElement;
-        break;
-      }
-    }
-  }
   if (!localeControl) return null;
 
-  // Climb to a compact wrapper that sits beside Create (avoid hiding whole header)
   let slot: HTMLElement = localeControl;
-  for (let i = 0; i < 5; i += 1) {
+  for (let i = 0; i < 6; i += 1) {
     const parent = slot.parentElement as HTMLElement | null;
     if (!parent || parent === document.body || parent.tagName === 'MAIN') break;
-    const parentText = parent.textContent || '';
-    // Stop before wrapping Create new entry
-    if (/Create new entry|创建新|创建条目/i.test(parentText) && parent.contains(createBtn || null)) {
-      break;
-    }
-    // Prefer a wrapper that only contains the locale control (+ maybe icon)
-    if (parent.childElementCount <= 3) {
+    // Don't swallow the Create button
+    if (createBtn && parent.contains(createBtn) && parent === createBtn.parentElement) break;
+    if (createBtn && parent.contains(createBtn) && parent.childElementCount > 4) break;
+    // Prefer wrappers that look like the locale field (globe + combobox)
+    if (parent.childElementCount <= 4) {
       slot = parent;
     } else {
       break;
     }
   }
-
   slot.setAttribute('data-marvlore-locale-slot', '1');
   return slot;
 }
@@ -244,111 +203,110 @@ function hideLocalePortals() {
   });
 }
 
-function findHeaderActionsRow(): HTMLElement | null {
-  const createBtn = [...document.querySelectorAll('main button, main a')].find((el) =>
-    /Create new entry|创建新|创建条目/i.test(el.textContent || '')
-  );
-  if (!createBtn) return null;
-  return (createBtn.parentElement as HTMLElement) || null;
+/** Shared horizontal header row that holds locale + Create. */
+function findActionsRow(localeSlot: HTMLElement | null, createBtn: HTMLElement | null): HTMLElement | null {
+  if (localeSlot && createBtn) {
+    let a: HTMLElement | null = localeSlot;
+    while (a) {
+      if (a.contains(createBtn) && a !== createBtn) {
+        // Prefer the nearest shared ancestor that lays out children in a row
+        return a;
+      }
+      a = a.parentElement;
+    }
+  }
+  return createBtn?.parentElement || localeSlot?.parentElement || null;
 }
 
-function mountCategorySelect(categories: CategoryChip[], localeSlot: HTMLElement | null) {
-  const actions = findHeaderActionsRow();
+function ensureSelectBuilt(categories: CategoryChip[]) {
   let root = document.getElementById(ROOT_ID) as HTMLElement | null;
-
   if (!root) {
     root = document.createElement('div');
     root.id = ROOT_ID;
     root.setAttribute('data-marvlore-category-switch', '1');
   }
 
-  // Prefer inserting where the locale switcher was (before Create)
-  if (actions && root.parentElement !== actions) {
-    if (localeSlot && localeSlot.parentElement === actions) {
-      actions.insertBefore(root, localeSlot);
-    } else if (localeSlot?.parentElement) {
-      localeSlot.parentElement.insertBefore(root, localeSlot);
-    } else {
-      const createBtn = [...actions.querySelectorAll('button, a')].find((el) =>
-        /Create new entry|创建新|创建条目/i.test(el.textContent || '')
-      );
-      if (createBtn) actions.insertBefore(root, createBtn);
-      else actions.appendChild(root);
-    }
-  } else if (!actions && !root.parentElement) {
-    const main = document.querySelector('main');
-    main?.prepend(root);
+  let select = document.getElementById(SELECT_ID) as HTMLSelectElement | null;
+  if (!select) {
+    select = document.createElement('select');
+    select.id = SELECT_ID;
+    select.setAttribute('aria-label', '所属分类');
+    root.appendChild(select);
+
+    select.addEventListener('mousedown', () => {
+      paused = true;
+    });
+    select.addEventListener('focus', () => {
+      paused = true;
+    });
+    select.addEventListener('blur', () => {
+      // Allow DOM sync again after a beat
+      window.setTimeout(() => {
+        paused = false;
+      }, 300);
+    });
+    select.addEventListener('change', () => {
+      const opt = select!.selectedOptions[0];
+      const label = opt?.value || null;
+      applyCategoryFilter(label);
+    });
   }
 
-  root.dataset.mode = actions ? 'select' : 'chips';
-  const active = currentCategoryFilter();
-  const activeLabel = new URLSearchParams(window.location.search).get('marvloreCategoryLabel');
-
-  if (root.dataset.mode === 'select') {
-    root.innerHTML = '';
-    const label = document.createElement('span');
-    label.className = 'marvlore-cat-label';
-    label.textContent = '分类中文';
-    root.appendChild(label);
-
-    const select = document.createElement('select');
-    select.id = SELECT_ID;
-    select.setAttribute('aria-label', '所属分类中文筛选');
-
+  // Rebuild options only when empty / category set changed
+  const optionKey = categories.map((c) => c.label).join('|');
+  if (select.dataset.optionKey !== optionKey) {
+    select.innerHTML = '';
     const allOpt = document.createElement('option');
     allOpt.value = '';
     allOpt.textContent = '全部';
     select.appendChild(allOpt);
-
     for (const cat of categories) {
       const opt = document.createElement('option');
-      opt.value = cat.documentId;
+      opt.value = cat.label;
       opt.textContent = cat.label;
-      opt.dataset.label = cat.label;
-      if (active === cat.documentId || active === cat.label || activeLabel === cat.label) {
-        opt.selected = true;
-      }
       select.appendChild(opt);
     }
-    if (!active) allOpt.selected = true;
+    select.dataset.optionKey = optionKey;
+  }
 
-    select.addEventListener('change', () => {
-      const opt = select.selectedOptions[0];
-      if (!opt || !opt.value) navigateCategory(null, null);
-      else navigateCategory(opt.value, opt.dataset.label || opt.textContent || '');
-    });
-    root.appendChild(select);
+  const active = currentCategoryLabel();
+  select.value = active || '';
+  built = true;
+  return root;
+}
+
+function placeSelect(root: HTMLElement, localeSlot: HTMLElement | null, createBtn: HTMLElement | null) {
+  const row = findActionsRow(localeSlot, createBtn);
+  if (!row) {
+    document.querySelector('main')?.prepend(root);
     return;
   }
 
-  // Fallback chips
-  root.innerHTML = '';
-  const label = document.createElement('span');
-  label.className = 'marvlore-cat-label';
-  label.textContent = '所属分类';
-  root.appendChild(label);
+  // Force horizontal layout so select sits beside Create (original locale position)
+  const style = window.getComputedStyle(row);
+  if (style.flexDirection === 'column' || style.display !== 'flex') {
+    row.style.display = 'flex';
+    row.style.flexDirection = 'row';
+    row.style.alignItems = 'center';
+    row.style.flexWrap = 'wrap';
+    row.style.gap = row.style.gap || '8px';
+  }
 
-  const allBtn = document.createElement('button');
-  allBtn.type = 'button';
-  allBtn.textContent = '全部';
-  allBtn.dataset.active = !active ? '1' : '0';
-  allBtn.addEventListener('click', () => navigateCategory(null, null));
-  root.appendChild(allBtn);
-
-  for (const cat of categories) {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.textContent = cat.label;
-    btn.dataset.active =
-      active === cat.documentId || active === cat.label || activeLabel === cat.label ? '1' : '0';
-    btn.addEventListener('click', () => navigateCategory(cat.documentId, cat.label));
-    root.appendChild(btn);
+  if (localeSlot && row.contains(localeSlot)) {
+    if (root.parentElement !== row || root.nextElementSibling !== localeSlot) {
+      row.insertBefore(root, localeSlot);
+    }
+  } else if (createBtn && row.contains(createBtn)) {
+    if (root.parentElement !== row || root.nextElementSibling !== createBtn) {
+      row.insertBefore(root, createBtn);
+    }
+  } else if (root.parentElement !== row) {
+    row.appendChild(root);
   }
 }
 
 function hideAvailableInColumn() {
-  const tables = document.querySelectorAll('main table');
-  tables.forEach((table) => {
+  document.querySelectorAll('main table').forEach((table) => {
     const ths = [...table.querySelectorAll('thead th')];
     const idx = ths.findIndex((th) => /available\s*in|可用|语言/i.test(th.textContent || ''));
     if (idx < 0) return;
@@ -360,39 +318,58 @@ function hideAvailableInColumn() {
   });
 }
 
-let cachedCategories: CategoryChip[] | null = null;
-let ticking = false;
+/** Client-side backup filter if CM URL filters didn't apply. */
+function filterTableClientSide() {
+  const label = currentCategoryLabel();
+  const table = document.querySelector('main table');
+  if (!table) return;
+  const ths = [...table.querySelectorAll('thead th')];
+  const catIdx = ths.findIndex((th) => /所属分类|categoryNameCn|category/i.test(th.textContent || ''));
+  if (catIdx < 0) return;
+  table.querySelectorAll('tbody tr').forEach((tr) => {
+    const cell = tr.children[catIdx] as HTMLElement | undefined;
+    const text = (cell?.textContent || '').trim();
+    const show = !label || text === label;
+    (tr as HTMLElement).style.display = show ? '' : 'none';
+  });
+}
 
 async function refresh() {
+  if (paused) return;
   const onList = isWorkListPath(window.location.pathname);
   document.body.dataset.marvloreWorkList = onList ? '1' : '0';
   if (!onList) {
     document.getElementById(ROOT_ID)?.remove();
+    built = false;
     return;
   }
+
   ensureStyle();
   hideAvailableInColumn();
   const localeSlot = hideLocaleSwitcher();
   hideLocalePortals();
+  const createBtn = findCreateButton();
+
   if (!cachedCategories) {
     cachedCategories = await fetchLevel2Categories();
   }
-  if (cachedCategories.length) {
-    mountCategorySelect(cachedCategories, localeSlot);
-    // Re-hide after mount in case React re-rendered the locale control
-    hideLocaleSwitcher();
-    hideLocalePortals();
-  }
+  if (!cachedCategories.length) return;
+
+  const root = ensureSelectBuilt(cachedCategories);
+  placeSelect(root, localeSlot, createBtn);
+  hideLocaleSwitcher();
+  hideLocalePortals();
+  filterTableClientSide();
   hideAvailableInColumn();
 }
 
 function scheduleRefresh() {
-  if (ticking) return;
+  if (paused || ticking) return;
   ticking = true;
-  requestAnimationFrame(() => {
+  window.setTimeout(() => {
     ticking = false;
     void refresh();
-  });
+  }, 80);
 }
 
 export function installWorkCategoryListUx() {
