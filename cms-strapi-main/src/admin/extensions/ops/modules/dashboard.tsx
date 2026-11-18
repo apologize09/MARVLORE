@@ -88,6 +88,7 @@ const DashboardPage = () => {
         <StatCard label={t('navigation.website')} value="→" to="/ops/website" />
         <StatCard label={t('navigation.work')} value="→" to="/ops/work" />
         <StatCard label={t('navigation.media')} value="→" to="/ops/media" />
+        <StatCard label={t('navigation.seo')} value="→" to="/ops/seo" />
         <StatCard label={t('navigation.system')} value="→" to="/ops/system" />
       </LinkGrid>
     </OpsPage>

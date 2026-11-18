@@ -1,9 +1,9 @@
 {
   "collectionName": "components_shared_about_stats",
   "info": {
-    "displayName": "About Stat",
+    "displayName": "关于页数据",
     "icon": "chartBubble",
-    "description": "About center copy statistics block"
+    "description": "About 统计数字"
   },
   "options": {},
   "attributes": {

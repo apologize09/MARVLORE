@@ -35,6 +35,7 @@ const contentTypeNameTranslations = {
     'marvlore.ops.website': '官网内容管理',
     'marvlore.ops.work': '作品案例管理',
     'marvlore.ops.media': '媒体资源管理',
+    'marvlore.ops.seo': '内容与 SEO',
     'marvlore.ops.system': '系统设置',
   },
   en: {
@@ -42,6 +43,7 @@ const contentTypeNameTranslations = {
     'marvlore.ops.website': 'Website Management',
     'marvlore.ops.work': 'Work Studio',
     'marvlore.ops.media': 'Media Library',
+    'marvlore.ops.seo': 'Content & SEO',
     'marvlore.ops.system': 'System',
   },
 };

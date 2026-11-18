@@ -20,6 +20,7 @@ export type OpsDict = {
     website: string;
     work: string;
     media: string;
+    seo: string;
     system: string;
   };
   dashboard: {
@@ -41,6 +42,10 @@ export type OpsDict = {
     title: string;
     lead: string;
   };
+  seo: {
+    title: string;
+    lead: string;
+  };
   system: {
     title: string;
     lead: string;
@@ -54,4 +59,5 @@ export type OpsKey =
   | `website.${keyof OpsDict['website']}`
   | `work.${keyof OpsDict['work']}`
   | `media.${keyof OpsDict['media']}`
+  | `seo.${keyof OpsDict['seo']}`
   | `system.${keyof OpsDict['system']}`;

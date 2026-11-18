@@ -1,9 +1,9 @@
 {
   "collectionName": "components_shared_social_links",
   "info": {
-    "displayName": "Social Link",
+    "displayName": "社交链接",
     "icon": "link",
-    "description": "Public social profile link"
+    "description": "社交平台链接"
   },
   "options": {},
   "attributes": {

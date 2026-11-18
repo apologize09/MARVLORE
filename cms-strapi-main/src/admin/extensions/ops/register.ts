@@ -1,6 +1,6 @@
 /**
- * Register operator menu (Dashboard / Website / Work / Media / System).
- * Each section is a separate module page — do not collapse into one mega-controller.
+ * Register six operator hubs (pack menu groups).
+ * Flat sidebar links only — Strapi 5.52 has no nested menu API.
  */
 import type { StrapiApp } from '@strapi/strapi/admin';
 import {
@@ -8,6 +8,7 @@ import {
   ChartBubble,
   CloudUpload,
   Earth,
+  Feather,
   SlidersHorizontal,
 } from '@strapi/icons';
 
@@ -48,7 +49,6 @@ export function registerOpsMenu(app: StrapiApp) {
     position: 3,
   });
 
-  // CloudUpload — distinct from the built-in Media Library (Images) icon
   app.addMenuLink({
     to: '/ops/media',
     icon: CloudUpload,
@@ -61,7 +61,18 @@ export function registerOpsMenu(app: StrapiApp) {
     position: 4,
   });
 
-  // SlidersHorizontal — distinct from Settings (Cog)
+  app.addMenuLink({
+    to: '/ops/seo',
+    icon: Feather,
+    intlLabel: {
+      id: 'marvlore.ops.seo',
+      defaultMessage: '内容与 SEO',
+    },
+    Component: () => import('./modules/seo'),
+    permissions: [],
+    position: 5,
+  });
+
   app.addMenuLink({
     to: '/ops/system',
     icon: SlidersHorizontal,
