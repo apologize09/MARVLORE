@@ -447,7 +447,7 @@ export interface ApiAboutPageAboutPage extends Struct.SingleTypeSchema {
   collectionName: 'about_pages';
   info: {
     description: 'Marvlore About \u6587\u6848\u4E0E\u62FC\u8D34\u56FE\uFF08\u51E0\u4F55\u5E03\u5C40\u4ECD\u7531\u524D\u7AEF\u63A7\u5236\uFF09';
-    displayName: '\u5173\u4E8E\u6211\u4EEC\u9875\u9762';
+    displayName: '\u5173\u4E8E\u6211\u4EEC';
     pluralName: 'about-pages';
     singularName: 'about-page';
   };
@@ -796,7 +796,7 @@ export interface ApiGlobalSettingGlobalSetting extends Struct.SingleTypeSchema {
   collectionName: 'global_settings';
   info: {
     description: '\u7AD9\u70B9\u54C1\u724C\u4E0E\u8054\u7EDC\u4FE1\u606F';
-    displayName: '\u5168\u5C40\u7F51\u7AD9\u914D\u7F6E';
+    displayName: '\u7F51\u7AD9\u914D\u7F6E';
     pluralName: 'global-settings';
     singularName: 'global-setting';
   };

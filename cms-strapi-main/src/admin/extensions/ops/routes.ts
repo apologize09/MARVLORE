@@ -57,7 +57,7 @@ export const WEBSITE_LINKS: ContentLink[] = [
   {
     slug: 'contact',
     label: '联系与站点配置',
-    hint: '联络信息、品牌与版权（含原「全局网站配置」）',
+    hint: '联络信息、品牌与版权',
     uid: 'api::global-setting.global-setting',
     kind: 'single',
     cmTo: cmSingle('api::global-setting.global-setting'),
