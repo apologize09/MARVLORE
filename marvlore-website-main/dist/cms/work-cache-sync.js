@@ -16,10 +16,14 @@ export function mountWorkCacheSync({ onInvalidate } = {}) {
     if (stopped) return;
     try {
       const url = `${config.baseUrl}/api/work-cache-version`;
-      const res = await fetch(url, { headers: { Accept: 'application/json' }, credentials: 'omit' });
+      const res = await fetch(url, {
+        headers: { Accept: 'application/json' },
+        credentials: 'omit',
+        cache: 'no-store',
+      });
       if (!res.ok) return;
       const json = await res.json();
-      const version = json?.data?.version;
+      const version = json?.data?.version ?? res.headers.get('X-Marvlore-Work-Cache');
       if (version == null) return;
       if (lastVersion == null) {
         lastVersion = version;
@@ -41,7 +45,8 @@ export function mountWorkCacheSync({ onInvalidate } = {}) {
     if (document.visibilityState === 'visible') tick();
   });
   tick();
-  timer = setInterval(tick, 30_000);
+  // Poll often enough that admin → site edits feel live while drafting.
+  timer = setInterval(tick, 5_000);
 
   return {
     destroy() {

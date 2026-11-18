@@ -1,17 +1,17 @@
 import {mountAwardEffects} from './award-effects.js?v=75358a56db';
 import {mountContactInteractions} from './contact-interactions.js?v=d6e35aeffa';
 import {mountSiteNavigation} from './navigation/menu.js?v=8f8a524dc7';
-import {mountWorkDetails} from './work-detail.js?v=a348d10b90';
+import {mountWorkDetails} from './work-detail.js?v=2e897ee78a';
 import {mountWorkInteractions} from './work-interactions.js?v=203fae0eaf';
 import {mountWorkEntrance} from './work-entrance.js?v=70df8c2b46';
-import {mountWorkReel} from './work-reel.js?v=fd2184ef1b';
-import { Hero,Services,About,Work,Explore,Portal,Awards,Contact } from './components.js?v=1559efe707';
-import { bootWorkBundle,getProjects,getWorkReelItems,getAwards,getWorkPage,getBundleLocale,getHeroProjects } from './cms/work-runtime.js?v=b0b55ff514';
-import { mountWorkFilters } from './cms/work-filter-mount.js?v=77b6d6f674';
+import {mountWorkReel} from './work-reel.js?v=b2f5b7893b';
+import { Hero,Services,About,Work,Explore,Portal,Awards,Contact } from './components.js?v=85f9cdb27b';
+import { bootWorkBundle,getProjects,getWorkReelItems,getAwards,getWorkPage,getBundleLocale,getHeroProjects } from './cms/work-runtime.js?v=59be725797';
+import { mountWorkFilters } from './cms/work-filter-mount.js?v=d7aaa23267';
 import { getCmsConfig } from './cms/config.js?v=1e182ce0a2';
 import { applyDocumentLang,mountLocaleSwitch } from './cms/locale.js?v=654d705d77';
 import { applyWorkSeo } from './cms/seo.js?v=53dbe2d483';
-import { mountWorkCacheSync } from './cms/work-cache-sync.js?v=bc2b521df5';
+import { mountWorkCacheSync } from './cms/work-cache-sync.js?v=9068347e6b';
 import { cacheClear } from './cms/work-cache.js?v=bb57b07579';
 import { Spring,reducedMotion,createAwardsCarousel } from './motion.js?v=53e5c054f1';
 import { mountHeroOrbit } from './hero/orbit.js?v=a4001d3d57';
@@ -76,10 +76,11 @@ async function start(){
   });
   mountWorkCacheSync({
    onInvalidate:()=>{
-    console.info('[cms] work cache invalidated; reload to refresh');
+    console.info('[cms] work cache invalidated; reloading');
+    location.reload();
    },
   });
- }
+}
  mountSiteNavigation();
  window.addEventListener('marvlore:work-mode',()=>workTextReveal.refresh());
 
