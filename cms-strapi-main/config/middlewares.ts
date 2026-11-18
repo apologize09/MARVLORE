@@ -3,7 +3,19 @@ import type { Core } from '@strapi/strapi';
 const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Middlewares => [
   'strapi::logger',
   'strapi::errors',
-  'strapi::security',
+  {
+    // Allow Cursor / IDE Simple Browser preview (iframe) to open /admin locally.
+    name: 'strapi::security',
+    config: {
+      frameguard: false,
+      contentSecurityPolicy: {
+        useDefaults: true,
+        directives: {
+          'frame-ancestors': ["'self'", '*'],
+        },
+      },
+    },
+  },
   {
     name: 'strapi::cors',
     config: {
@@ -12,6 +24,8 @@ const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Middlewar
         'http://127.0.0.1:3000',
         'http://localhost:5173',
         'http://127.0.0.1:5173',
+        'http://localhost:5174',
+        'http://127.0.0.1:5174',
         'http://localhost:4173',
         'http://127.0.0.1:4173',
       ]),
