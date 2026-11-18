@@ -12,6 +12,8 @@ export async function cmsGet(url, { timeoutMs = 6000, retries = 1 } = {}) {
         signal: controller.signal,
         headers: { Accept: 'application/json' },
         credentials: 'omit',
+        // Admin publishes must not be masked by browser HTTP cache (Strapi max-age/SWR).
+        cache: 'no-store',
       });
       clearTimeout(timer);
       if (!res.ok) {
