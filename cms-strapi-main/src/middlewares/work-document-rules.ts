@@ -37,6 +37,7 @@ export function registerWorkDocumentRules(strapi: Core.Strapi) {
         const existing = await strapi.documents(WORK_UIDS.category).findOne({
           documentId: params.documentId,
           status: 'draft',
+          ...(locale ? { locale } : {}),
           fields: ['documentId', 'level'],
           populate: { parent: { fields: ['documentId', 'level'] } },
         });

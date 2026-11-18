@@ -98,7 +98,11 @@ export async function assertCategoryPayload(
     fail('work-category.level must be 1 or 2');
   }
 
-  const parentTouched = Object.prototype.hasOwnProperty.call(data, 'parent');
+  // CM partial saves often send `{ connect: [], disconnect: [] }` for unchanged
+  // relations — treat as noop and keep the existing parent (same as projects/tags).
+  const parentPresent = Object.prototype.hasOwnProperty.call(data, 'parent');
+  const parentNoop = parentPresent && isRelationNoop(data.parent);
+  const parentTouched = parentPresent && !parentNoop;
   const parentIds = parentTouched
     ? extractRelationIds(data.parent)
     : existing?.parent?.documentId
