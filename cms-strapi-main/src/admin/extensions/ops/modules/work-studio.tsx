@@ -7,7 +7,7 @@ import { LinkGrid, OpsLinkCard, OpsPage } from '../ui';
 
 const WorkStudioPage = () => (
   <OpsPage
-    title="Work Studio"
+    title="作品案例管理"
     lead="作品内容生命周期。点击卡片直接进入对应 Content Manager 编辑。对齐 build-work.mjs。"
   >
     <LinkGrid>

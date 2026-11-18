@@ -4,8 +4,8 @@
   "info": {
     "singularName": "about-page",
     "pluralName": "about-pages",
-    "displayName": "About",
-    "description": "Marvlore About copy + collage media overrides. Geometry frozen in frontend."
+    "displayName": "关于我们页面",
+    "description": "Marvlore About 文案与拼贴图（几何布局仍由前端控制）"
   },
   "options": {
     "draftAndPublish": true

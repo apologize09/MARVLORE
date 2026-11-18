@@ -446,8 +446,8 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 export interface ApiAboutPageAboutPage extends Struct.SingleTypeSchema {
   collectionName: 'about_pages';
   info: {
-    description: 'Marvlore About copy + collage media overrides. Geometry frozen in frontend.';
-    displayName: 'About';
+    description: 'Marvlore About \u6587\u6848\u4E0E\u62FC\u8D34\u56FE\uFF08\u51E0\u4F55\u5E03\u5C40\u4ECD\u7531\u524D\u7AEF\u63A7\u5236\uFF09';
+    displayName: '\u5173\u4E8E\u6211\u4EEC\u9875\u9762';
     pluralName: 'about-pages';
     singularName: 'about-page';
   };
@@ -597,8 +597,8 @@ export interface ApiAuthorAuthor extends Struct.CollectionTypeSchema {
 export interface ApiAwardAward extends Struct.CollectionTypeSchema {
   collectionName: 'awards';
   info: {
-    description: 'Awards carousel items (V1.0). Image paths reference static dist assets by default.';
-    displayName: 'Awards';
+    description: '\u5956\u9879\u8F6E\u64AD\u6761\u76EE';
+    displayName: '\u5956\u9879';
     pluralName: 'awards';
     singularName: 'award';
   };
@@ -763,8 +763,8 @@ export interface ApiCertificationCertification
 export interface ApiFaqFaq extends Struct.CollectionTypeSchema {
   collectionName: 'faqs';
   info: {
-    description: 'OEM manufacturing FAQs';
-    displayName: 'FAQ';
+    description: '\u5E38\u89C1\u95EE\u9898\u6761\u76EE';
+    displayName: '\u5E38\u89C1\u95EE\u9898';
     pluralName: 'faqs';
     singularName: 'faq';
   };
@@ -795,8 +795,8 @@ export interface ApiFaqFaq extends Struct.CollectionTypeSchema {
 export interface ApiGlobalSettingGlobalSetting extends Struct.SingleTypeSchema {
   collectionName: 'global_settings';
   info: {
-    description: 'Marvlore site brand + contact colophon.';
-    displayName: 'Contact';
+    description: '\u7AD9\u70B9\u54C1\u724C\u4E0E\u8054\u7EDC\u4FE1\u606F';
+    displayName: '\u5168\u5C40\u7F51\u7AD9\u914D\u7F6E';
     pluralName: 'global-settings';
     singularName: 'global-setting';
   };
@@ -845,8 +845,8 @@ export interface ApiGlobalSettingGlobalSetting extends Struct.SingleTypeSchema {
 export interface ApiHeroItemHeroItem extends Struct.CollectionTypeSchema {
   collectionName: 'hero_items';
   info: {
-    description: 'V1.0 Hero carousel/orbit media. URL strings reference static dist assets; physics/layout stay in frontend.';
-    displayName: 'Hero';
+    description: '\u9996\u9875\u8F6E\u64AD / \u8F68\u9053\u5A92\u4F53';
+    displayName: '\u9996\u9875\u4E3B\u89C6\u89C9\u5185\u5BB9';
     pluralName: 'hero-items';
     singularName: 'hero-item';
   };
@@ -1012,8 +1012,8 @@ export interface ApiHeroItemHeroItem extends Struct.CollectionTypeSchema {
 export interface ApiPageSeoPageSeo extends Struct.CollectionTypeSchema {
   collectionName: 'page_seos';
   info: {
-    description: 'Legacy per-route SEO (unused by Marvlore; retained empty)';
-    displayName: 'SEO';
+    description: '\u9875\u9762 SEO \u6761\u76EE';
+    displayName: '\u9875\u9762 SEO \u914D\u7F6E';
     pluralName: 'page-seos';
     singularName: 'page-seo';
   };
@@ -1072,8 +1072,8 @@ export interface ApiPageSeoPageSeo extends Struct.CollectionTypeSchema {
 export interface ApiServiceItemServiceItem extends Struct.CollectionTypeSchema {
   collectionName: 'service_items';
   info: {
-    description: 'Services directory rows (V1.0). Maps to src/services/items.js contract.';
-    displayName: 'Services';
+    description: '\u670D\u52A1\u76EE\u5F55\u6761\u76EE';
+    displayName: '\u670D\u52A1\u9879\u76EE';
     pluralName: 'service-items';
     singularName: 'service-item';
   };
@@ -1171,8 +1171,8 @@ export interface ApiWorkCategoryWorkCategory
   extends Struct.CollectionTypeSchema {
   collectionName: 'work_categories';
   info: {
-    description: 'Two-level Work taxonomy (V1.1). Does not replace api::category.';
-    displayName: '\u5206\u7C7B';
+    description: '\u4F5C\u54C1\u4E00\u4E8C\u7EA7\u5206\u7C7B';
+    displayName: '\u4F5C\u54C1\u5206\u7C7B';
     pluralName: 'work-categories';
     singularName: 'work-category';
   };
@@ -1302,8 +1302,8 @@ export interface ApiWorkCategoryWorkCategory
 export interface ApiWorkPageWorkPage extends Struct.SingleTypeSchema {
   collectionName: 'work_pages';
   info: {
-    description: 'Work landing page settings (single type)';
-    displayName: '\u4F5C\u54C1\u603B\u89C8';
+    description: 'Work \u9891\u9053\u9875\u8BBE\u7F6E';
+    displayName: '\u4F5C\u54C1\u9875\u9762\u914D\u7F6E';
     pluralName: 'work-pages';
     singularName: 'work-page';
   };
@@ -1369,8 +1369,8 @@ export interface ApiWorkProjectMediaWorkProjectMedia
   extends Struct.CollectionTypeSchema {
   collectionName: 'work_project_medias';
   info: {
-    description: 'Ordered media/text/embed blocks for a Work Project';
-    displayName: '\u8BE6\u60C5\u5A92\u4F53';
+    description: '\u4F5C\u54C1\u8BE6\u60C5\u5A92\u4F53\u5757';
+    displayName: '\u4F5C\u54C1\u5173\u8054\u7D20\u6750';
     pluralName: 'work-project-medias';
     singularName: 'work-project-media';
   };
@@ -1511,8 +1511,8 @@ export interface ApiWorkProjectMediaWorkProjectMedia
 export interface ApiWorkProjectWorkProject extends Struct.CollectionTypeSchema {
   collectionName: 'work_projects';
   info: {
-    description: 'Work portfolio project (hash URL #case/{legacyId|documentId})';
-    displayName: '\u4F5C\u54C1';
+    description: '\u4F5C\u54C1\u7EC4\u5408\u6848\u4F8B\uFF08#case/\u2026\uFF09';
+    displayName: '\u4F5C\u54C1\u6848\u4F8B';
     pluralName: 'work-projects';
     singularName: 'work-project';
   };
@@ -1768,8 +1768,8 @@ export interface ApiWorkProjectWorkProject extends Struct.CollectionTypeSchema {
 export interface ApiWorkTagWorkTag extends Struct.CollectionTypeSchema {
   collectionName: 'work_tags';
   info: {
-    description: 'Work tags optionally scoped to level-2 categories';
-    displayName: '\u6807\u7B7E';
+    description: '\u4F5C\u54C1\u7B5B\u9009\u6807\u7B7E';
+    displayName: '\u4F5C\u54C1\u6807\u7B7E';
     pluralName: 'work-tags';
     singularName: 'work-tag';
   };

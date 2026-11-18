@@ -4,8 +4,8 @@
   "info": {
     "singularName": "work-tag",
     "pluralName": "work-tags",
-    "displayName": "标签",
-    "description": "Work tags optionally scoped to level-2 categories"
+    "displayName": "作品标签",
+    "description": "作品筛选标签"
   },
   "options": {
     "draftAndPublish": true

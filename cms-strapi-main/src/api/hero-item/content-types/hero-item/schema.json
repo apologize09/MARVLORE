@@ -4,8 +4,8 @@
   "info": {
     "singularName": "hero-item",
     "pluralName": "hero-items",
-    "displayName": "Hero",
-    "description": "V1.0 Hero carousel/orbit media. URL strings reference static dist assets; physics/layout stay in frontend."
+    "displayName": "首页主视觉内容",
+    "description": "首页轮播 / 轨道媒体"
   },
   "options": {
     "draftAndPublish": true
@@ -37,7 +37,10 @@
     },
     "role": {
       "type": "enumeration",
-      "enum": ["project", "orbit"],
+      "enum": [
+        "project",
+        "orbit"
+      ],
       "required": true,
       "default": "project",
       "pluginOptions": {
@@ -48,7 +51,10 @@
     },
     "mediaType": {
       "type": "enumeration",
-      "enum": ["video", "image"],
+      "enum": [
+        "video",
+        "image"
+      ],
       "required": true,
       "default": "image",
       "pluginOptions": {
@@ -69,7 +75,9 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"],
+      "allowedTypes": [
+        "images"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": false
@@ -89,7 +97,9 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["videos"],
+      "allowedTypes": [
+        "videos"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": false
@@ -108,7 +118,9 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["videos"],
+      "allowedTypes": [
+        "videos"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": false
@@ -127,7 +139,10 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["videos", "images"],
+      "allowedTypes": [
+        "videos",
+        "images"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": false
@@ -146,7 +161,10 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["videos", "images"],
+      "allowedTypes": [
+        "videos",
+        "images"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": false

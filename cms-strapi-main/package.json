@@ -40,7 +40,9 @@
     "align:work-category-cn": "node ./scripts/align-work-category-cn.mjs",
     "align:work-category-cn:execute": "node ./scripts/align-work-category-cn.mjs --execute",
     "patch:work-category-cm": "node ./scripts/patch-work-category-cm-layout.mjs",
-    "patch:work-category-cm:execute": "node ./scripts/patch-work-category-cm-layout.mjs --execute"
+    "patch:work-category-cm:execute": "node ./scripts/patch-work-category-cm-layout.mjs --execute",
+    "patch:work-field-labels-cn": "node ./scripts/patch-work-project-field-labels-cn.mjs",
+    "patch:work-field-labels-cn:execute": "node ./scripts/patch-work-project-field-labels-cn.mjs --execute"
   },
   "dependencies": {
     "@strapi/database": "5.52.1",

@@ -4,8 +4,8 @@
   "info": {
     "singularName": "service-item",
     "pluralName": "service-items",
-    "displayName": "Services",
-    "description": "Services directory rows (V1.0). Maps to src/services/items.js contract."
+    "displayName": "服务项目",
+    "description": "服务目录条目"
   },
   "options": {
     "draftAndPublish": true
@@ -56,7 +56,9 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"],
+      "allowedTypes": [
+        "images"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": false

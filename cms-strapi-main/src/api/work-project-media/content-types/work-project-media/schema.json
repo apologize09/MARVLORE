@@ -4,8 +4,8 @@
   "info": {
     "singularName": "work-project-media",
     "pluralName": "work-project-medias",
-    "displayName": "详情媒体",
-    "description": "Ordered media/text/embed blocks for a Work Project"
+    "displayName": "作品关联素材",
+    "description": "作品详情媒体块"
   },
   "options": {
     "draftAndPublish": true
@@ -24,7 +24,12 @@
     },
     "blockType": {
       "type": "enumeration",
-      "enum": ["image", "video", "text", "embed"],
+      "enum": [
+        "image",
+        "video",
+        "text",
+        "embed"
+      ],
       "required": true,
       "default": "image",
       "pluginOptions": {
@@ -53,7 +58,9 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"],
+      "allowedTypes": [
+        "images"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -72,7 +79,9 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["videos"],
+      "allowedTypes": [
+        "videos"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -91,7 +100,9 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"],
+      "allowedTypes": [
+        "images"
+      ],
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -132,7 +143,11 @@
     },
     "displayMode": {
       "type": "enumeration",
-      "enum": ["cover", "contain", "full-width"],
+      "enum": [
+        "cover",
+        "contain",
+        "full-width"
+      ],
       "default": "full-width",
       "pluginOptions": {
         "i18n": {

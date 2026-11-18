@@ -5,8 +5,8 @@ import { LinkGrid, OpsLinkCard, OpsPage } from '../ui';
 
 const SystemPage = () => (
   <OpsPage
-    title="System"
-    lead="账号、角色、语言与 API 权限。日常内容运营请优先使用 Website Management / Work Studio，系统项留给管理员。"
+    title="系统设置"
+    lead="账号、角色、语言与 API 权限。日常内容运营请优先使用「官网内容管理 / 作品案例管理」，系统项留给管理员。"
   >
     <LinkGrid>
       {SYSTEM_LINKS.map((link) => (

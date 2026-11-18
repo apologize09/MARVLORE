@@ -66,8 +66,8 @@ const DashboardPage = () => {
 
   return (
     <OpsPage
-      title="Dashboard"
-      lead="内容概览：按官网模块统计已发布条目与媒体库用量。编辑请从 Website Management / Work Studio 进入，保持与前端 build-*.mjs 相同的模块边界。"
+      title="工作台"
+      lead="内容概览：按官网模块统计已发布条目与媒体库用量。编辑请从「官网内容管理 / 作品案例管理」进入，保持与前端 build-*.mjs 相同的模块边界。"
     >
       <h2 style={{ margin: '0 0 12px', fontSize: 16 }}>内容统计</h2>
       <LinkGrid>
@@ -84,10 +84,10 @@ const DashboardPage = () => {
 
       <h2 style={{ margin: '28px 0 12px', fontSize: 16 }}>快捷入口</h2>
       <LinkGrid>
-        <StatCard label="Website Management" value="→" to="/ops/website" />
-        <StatCard label="Work Studio" value="→" to="/ops/work" />
-        <StatCard label="Media Library" value="→" to="/ops/media" />
-        <StatCard label="System" value="→" to="/ops/system" />
+        <StatCard label="官网内容管理" value="→" to="/ops/website" />
+        <StatCard label="作品案例管理" value="→" to="/ops/work" />
+        <StatCard label="媒体资源管理" value="→" to="/ops/media" />
+        <StatCard label="系统设置" value="→" to="/ops/system" />
       </LinkGrid>
     </OpsPage>
   );

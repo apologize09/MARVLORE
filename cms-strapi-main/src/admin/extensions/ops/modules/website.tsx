@@ -8,7 +8,7 @@ import { LinkGrid, OpsLinkCard, OpsPage } from '../ui';
 
 const WebsitePage = () => (
   <OpsPage
-    title="Website Management"
+    title="官网内容管理"
     lead="官网前台模块内容。点击卡片直接进入对应 Content Manager 编辑。每个入口对齐 build-hero / about / services / contact。"
   >
     <LinkGrid>

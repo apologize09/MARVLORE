@@ -4,8 +4,8 @@
   "info": {
     "singularName": "global-setting",
     "pluralName": "global-settings",
-    "displayName": "Contact",
-    "description": "Marvlore site brand + contact colophon."
+    "displayName": "全局网站配置",
+    "description": "站点品牌与联络信息"
   },
   "options": {
     "draftAndPublish": false
