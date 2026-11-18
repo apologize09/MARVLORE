@@ -4,7 +4,7 @@
   "info": {
     "singularName": "about-page",
     "pluralName": "about-pages",
-    "displayName": "关于我们页面",
+    "displayName": "关于我们",
     "description": "Marvlore About 文案与拼贴图（几何布局仍由前端控制）"
   },
   "options": {

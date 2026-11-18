@@ -12,7 +12,7 @@ Schema attribute `displayName` is not used in this repo. Schema `info.displayNam
 
 ### Schema `info.displayName`
 
-See pack table; active models renamed (e.g. `作品案例`, `作品分类`, `关于我们页面`…).
+See pack table; active models renamed (e.g. `作品案例`, `作品分类`, `关于我们`…).
 
 ### CM field labels (script)
 
