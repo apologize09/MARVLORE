@@ -1,7 +1,7 @@
 import {titleCase} from './typography.js?v=bff0b2cf2f';
 import PhotoSwipeLightbox from './vendor/photoswipe/photoswipe-lightbox.esm.min.js?v=b82c385604';
 import {Spring,reducedMotion,clamp} from './motion.js?v=53e5c054f1';
-import {getWorkDetail} from './cms/work-runtime.js?v=59be725797';
+import {getWorkDetail,ensureWorkDetail} from './cms/work-runtime.js?v=c0ed060a71';
 
 // Editorial case-study structure: title, context, large media, next project.
 // Independently styled for MARVLORE; PhotoSwipe 5.4.4 (MIT) handles image zoom.
@@ -89,8 +89,8 @@ export function mountWorkDetails(){
   observer?.disconnect();animations.forEach(a=>a.cancel());animations=[];lightbox?.destroy();lightbox=null;
   sourceFocus?.isConnected&&sourceFocus.focus({preventScroll:true});current=null;
  }
- function open({id,source:trigger=null,historyMode='push'}={}){
-  const item=getWorkDetail(id);if(!item)return;
+ async function open({id,source:trigger=null,historyMode='push'}={}){
+  let item=getWorkDetail(id);if(!item)return;
   if(opened&&!closing&&current?.id===id)return;
   const wasOpen=opened;
   if(!wasOpen){
@@ -98,10 +98,15 @@ export function mountWorkDetails(){
    returnHash=location.hash.startsWith('#case/')?(history.state?.returnHash??'#work'):(location.hash||'#work');
    ownedHistory=historyMode==='push'||Boolean(history.state?.marvloreCase);
   }
+  // Open immediately with light payload, then upgrade media from CMS if needed.
   current=item;opened=true;closing=false;root.hidden=false;lock();render(item);
   if(!wasOpen)progress.jump(reducedMotion.matches?1:0);progress.to(1);
   if(historyMode!=='none')history[wasOpen||historyMode==='replace'?'replaceState':'pushState']({marvloreCase:true,returnHash},'','#case/'+encodeURIComponent(id));
   root.querySelector('.case-back').focus({preventScroll:true});
+  try{
+   const full=await ensureWorkDetail(id);
+   if(full&&opened&&!closing&&current?.id===id&&full!==item){current=full;render(full);}
+  }catch{}
  }
  function close({historyMode='back'}={}){
   if(!opened)return;

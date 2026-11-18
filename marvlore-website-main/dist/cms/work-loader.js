@@ -61,6 +61,15 @@ function pickReelRows(homeRows, listRows) {
   return (listRows || []).filter((p) => p && !isDirectionShell(p));
 }
 
+function settledData(result) {
+  if (result.status !== 'fulfilled') return null;
+  return result.value?.data ?? result.value ?? null;
+}
+
+/**
+ * Homepage boot path: parallelize CMS reads and skip per-slug detail hydration.
+ * Full project media is loaded lazily via ensureWorkDetail() when a case opens.
+ */
 export async function resolveWorkBundle() {
   const config = getCmsConfig();
   const fallback = buildStaticBundle();
@@ -74,161 +83,153 @@ export async function resolveWorkBundle() {
         : `cms:site:${config.siteStage || 'on'}`;
     const next = { ...fallback, source: sourceLabel, locale: config.locale };
 
-    if (config.useCategories || config.useList || config.useDetail) {
-      try {
-        const pageRes = await api.getWorkPage();
-        next.workPage = pageRes?.data || null;
-      } catch {
-        next.workPage = null;
-      }
-    }
+    const needWork = config.useCategories || config.useList || config.useDetail;
+    const tasks = {
+      page: needWork ? api.getWorkPage().catch(() => null) : Promise.resolve(null),
+      categories: config.useCategories ? api.getCategories().catch(() => null) : Promise.resolve(null),
+      list:
+        config.useList || config.useDetail
+          ? api.getProjects({ pageSize: 48, sort: 'manual' }).catch(() => null)
+          : Promise.resolve(null),
+      home: config.useList
+        ? api.getProjects({ pageSize: 48, sort: 'manual', showOnHome: true }).catch(() => null)
+        : Promise.resolve(null),
+      awards: config.useAwards ? api.getAwards().catch(() => null) : Promise.resolve(null),
+      contact: config.useContact ? api.getGlobalSetting().catch(() => null) : Promise.resolve(null),
+      services: config.useServices ? api.getServices().catch(() => null) : Promise.resolve(null),
+      about: config.useAbout ? api.getAboutPage().catch(() => null) : Promise.resolve(null),
+      hero: config.useHero ? api.getHeroItems().catch(() => null) : Promise.resolve(null),
+    };
+
+    const results = await Promise.allSettled([
+      tasks.page,
+      tasks.categories,
+      tasks.list,
+      tasks.home,
+      tasks.awards,
+      tasks.contact,
+      tasks.services,
+      tasks.about,
+      tasks.hero,
+    ]);
+
+    const [
+      pageRes,
+      categoriesRes,
+      listRes,
+      homeRes,
+      awardsRes,
+      contactRes,
+      servicesRes,
+      aboutRes,
+      heroRes,
+    ] = results;
+
+    next.workPage = settledData(pageRes);
 
     if (config.useCategories) {
-      const categoriesRes = await api.getCategories();
       next.projects = mergeOverview(
         fallback,
-        categoriesRes?.data || [],
+        settledData(categoriesRes) || [],
         next.workPage?.displayCategories || [],
       );
     }
 
-    let listRows = null;
-    let homeRows = null;
-    if (config.useList || config.useDetail) {
-      const listRes = await api.getProjects({ pageSize: 48, sort: 'manual' });
-      listRows = listRes?.data || [];
-    }
+    const listRows = settledData(listRes) || [];
+    const homeRows = settledData(homeRes) || [];
 
     if (config.useList) {
-      try {
-        const homeRes = await api.getProjects({
-          pageSize: 48,
-          sort: 'manual',
-          showOnHome: true,
-        });
-        homeRows = homeRes?.data || [];
-      } catch (err) {
-        console.warn('[cms] showOnHome reel query failed:', err?.message || err);
-      }
       const source = pickReelRows(homeRows, listRows);
       if (source.length) {
         next.workReelItems = source.map(normalizeProjectToReelItem);
       }
     }
 
-    if (config.useDetail && listRows?.length) {
-      // List DTO may omit mediaItems — hydrate each slug for full detail payload
-      const details = [];
+    // Light detail index from list DTOs (no N+1 slug fetches on boot).
+    // Media-rich payloads hydrate on demand in ensureWorkDetail().
+    if (config.useDetail && listRows.length) {
+      const projectById = new Map();
       for (const row of listRows) {
-        try {
-          const full = await api.getProjectBySlug(row.slug);
-          if (full?.data) details.push(full.data);
-          else details.push(row);
-        } catch {
-          details.push(row);
-        }
+        if (!row) continue;
+        if (row.slug) projectById.set(row.slug, row);
+        const id = row.legacyId || row.slug;
+        if (id) projectById.set(id, row);
       }
-      if (details.length) {
-        next.workDetailCases = buildDetailList(details);
-        next.detailById = new Map(next.workDetailCases.map((item) => [item.id, item]));
-      }
+      next.projectById = projectById;
+      next.workDetailCases = buildDetailList(listRows);
+      next.detailById = new Map(next.workDetailCases.map((item) => [item.id, item]));
     }
 
     if (config.useAwards) {
-      try {
-        const awardsRes = await api.getAwards();
-        const rows = awardsRes?.data || [];
-        if (rows.length) {
-          next.awards = rows.map((row) => ({
-            image: row.image,
-            alt: row.alt || '',
-          }));
-        }
-      } catch (err) {
-        console.warn('[cms] awards fallback:', err?.message || err);
+      const rows = settledData(awardsRes) || [];
+      if (rows.length) {
+        next.awards = rows.map((row) => ({
+          image: row.image,
+          alt: row.alt || '',
+        }));
       }
     }
 
     if (config.useContact) {
-      try {
-        const contactRes = await api.getGlobalSetting();
-        if (contactRes?.data) {
-          next.contact = { ...fallback.contact, ...contactRes.data };
-        }
-      } catch (err) {
-        console.warn('[cms] contact fallback:', err?.message || err);
-      }
+      const contact = settledData(contactRes);
+      if (contact) next.contact = { ...fallback.contact, ...contact };
     }
 
     if (config.useServices) {
-      try {
-        const servicesRes = await api.getServices();
-        const rows = servicesRes?.data || [];
-        if (rows.length) {
-          next.services = rows.map((row) => {
-            const item = {
-              id: row.id || row.slug,
-              en: row.en,
-              cn: row.cn,
-              image: row.image,
-              description: row.description || '',
-            };
-            if (row.typeScale != null && Number.isFinite(Number(row.typeScale))) {
-              item.typeScale = Number(row.typeScale);
-            }
-            return item;
-          });
-        }
-      } catch (err) {
-        console.warn('[cms] services fallback:', err?.message || err);
+      const rows = settledData(servicesRes) || [];
+      if (rows.length) {
+        next.services = rows.map((row) => {
+          const item = {
+            id: row.id || row.slug,
+            en: row.en,
+            cn: row.cn,
+            image: row.image,
+            description: row.description || '',
+          };
+          if (row.typeScale != null && Number.isFinite(Number(row.typeScale))) {
+            item.typeScale = Number(row.typeScale);
+          }
+          return item;
+        });
       }
     }
 
     if (config.useAbout) {
-      try {
-        const aboutRes = await api.getAboutPage();
-        if (aboutRes?.data) next.about = aboutRes.data;
-      } catch (err) {
-        console.warn('[cms] about fallback:', err?.message || err);
-      }
+      const about = settledData(aboutRes);
+      if (about) next.about = about;
     }
 
     if (config.useHero) {
-      try {
-        const heroRes = await api.getHeroItems();
-        const rows = heroRes?.data || [];
-        const projects = rows.filter((row) => row.role === 'project');
-        const orbit = rows.filter((row) => row.role === 'orbit');
-        if (projects.length) {
-          next.heroProjects = projects.map((row) => {
-            const item = {
-              id: row.id,
-              slug: row.slug,
-              title: row.title,
-              alt: row.alt,
-              src: row.src,
-              width: row.width,
-              height: row.height,
-            };
-            if (row.videoSrc) item.videoSrc = row.videoSrc;
-            if (row.videoSrcHd) item.videoSrcHd = row.videoSrcHd;
-            if (row.previewSrc) item.previewSrc = row.previewSrc;
-            if (row.homePreviewSrc) item.homePreviewSrc = row.homePreviewSrc;
-            if (Array.isArray(row.slides)) item.slides = row.slides;
-            return item;
-          });
-        }
-        if (orbit.length) {
-          next.heroImages = orbit.map((row) => ({
-            id: String(row.id).replace(/^orbit-/, ''),
-            src: row.src,
+      const rows = settledData(heroRes) || [];
+      const projects = rows.filter((row) => row.role === 'project');
+      const orbit = rows.filter((row) => row.role === 'orbit');
+      if (projects.length) {
+        next.heroProjects = projects.map((row) => {
+          const item = {
+            id: row.id,
+            slug: row.slug,
+            title: row.title,
             alt: row.alt,
+            src: row.src,
             width: row.width,
             height: row.height,
-          }));
-        }
-      } catch (err) {
-        console.warn('[cms] hero fallback:', err?.message || err);
+          };
+          if (row.videoSrc) item.videoSrc = row.videoSrc;
+          if (row.videoSrcHd) item.videoSrcHd = row.videoSrcHd;
+          if (row.previewSrc) item.previewSrc = row.previewSrc;
+          if (row.homePreviewSrc) item.homePreviewSrc = row.homePreviewSrc;
+          if (Array.isArray(row.slides)) item.slides = row.slides;
+          return item;
+        });
+      }
+      if (orbit.length) {
+        next.heroImages = orbit.map((row) => ({
+          id: String(row.id).replace(/^orbit-/, ''),
+          src: row.src,
+          alt: row.alt,
+          width: row.width,
+          height: row.height,
+        }));
       }
     }
 

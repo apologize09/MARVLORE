@@ -1,12 +1,12 @@
 import {mountAwardEffects} from './award-effects.js?v=75358a56db';
 import {mountContactInteractions} from './contact-interactions.js?v=d6e35aeffa';
 import {mountSiteNavigation} from './navigation/menu.js?v=8f8a524dc7';
-import {mountWorkDetails} from './work-detail.js?v=2e897ee78a';
+import {mountWorkDetails} from './work-detail.js?v=c9232d31e7';
 import {mountWorkInteractions} from './work-interactions.js?v=203fae0eaf';
 import {mountWorkEntrance} from './work-entrance.js?v=70df8c2b46';
-import {mountWorkReel} from './work-reel.js?v=b2f5b7893b';
-import { Hero,Services,About,Work,Explore,Portal,Awards,Contact } from './components.js?v=85f9cdb27b';
-import { bootWorkBundle,getProjects,getWorkReelItems,getAwards,getWorkPage,getBundleLocale,getHeroProjects } from './cms/work-runtime.js?v=59be725797';
+import {mountWorkReel} from './work-reel.js?v=d91f2d6ce5';
+import { Hero,Services,About,Work,Explore,Portal,Awards,Contact } from './components.js?v=fdcd80ea1d';
+import { bootWorkBundle,getProjects,getWorkReelItems,getAwards,getWorkPage,getBundleLocale,getHeroProjects } from './cms/work-runtime.js?v=c0ed060a71';
 import { mountWorkFilters } from './cms/work-filter-mount.js?v=d7aaa23267';
 import { getCmsConfig } from './cms/config.js?v=1e182ce0a2';
 import { applyDocumentLang } from './cms/locale.js?v=654d705d77';
