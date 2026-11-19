@@ -116,8 +116,14 @@ const server=http.createServer(async(req,res)=>{
   }
   const requested=decodeURIComponent(url.pathname);
   const version=url.searchParams.get('v');
+  // Canonicalize trailing slash on Work paths (keeps URLs stable for share/refresh)
+  if(requested==='/work/'||/^\/work\/[^/]+\/$/.test(requested)){
+    const dest=requested.replace(/\/$/,'')+(url.search||'');
+    res.writeHead(308,{Location:dest}).end();
+    return;
+  }
   // SPA fallback for Creative Work channel paths (refresh must not 404)
-  const workSpa=/^\/work\/?$/.test(requested)||(/^\/work\/[^/]+\/?$/.test(requested)&&!path.extname(requested));
+  const workSpa=requested==='/work'||(/^\/work\/[^/]+$/.test(requested)&&!path.extname(requested));
   const file=path.resolve(root,'.'+(requested==='/'||workSpa?'/index.html':requested));
   if(!file.startsWith(root)){res.writeHead(403).end();return;}
   const body=await readFile(file);
