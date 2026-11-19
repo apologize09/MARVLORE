@@ -72,13 +72,22 @@ function patchProject(cfg) {
   };
 
   // categoryNameCn is list-only (auto-synced); omit from edit layout.
+  // projectType is required — keep near top so ops don't miss it under media.
   byName.delete('categoryNameCn');
   const rebuilt = [
     [take('title', 6), take('slug', 6)],
-    [take('subtitle', 6), take('category', 6)],
-    [take('eyebrow', 6)],
+    [take('projectType', 6), take('category', 6)],
+    [take('subtitle', 6), take('eyebrow', 6)],
   ];
-  const placed = new Set(['title', 'slug', 'subtitle', 'category', 'categoryNameCn', 'eyebrow']);
+  const placed = new Set([
+    'title',
+    'slug',
+    'projectType',
+    'subtitle',
+    'category',
+    'categoryNameCn',
+    'eyebrow',
+  ]);
   for (const row of edit) {
     const kept = row.filter(
       (cell) => cell?.name && !placed.has(cell.name) && cell.name !== 'categoryNameCn',

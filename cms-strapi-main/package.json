@@ -57,7 +57,9 @@
     "hide:work-category-name-cn-edit": "node ./scripts/hide-work-category-name-cn-edit.mjs",
     "hide:work-category-name-cn-edit:execute": "node ./scripts/hide-work-category-name-cn-edit.mjs --execute",
     "backfill:work-root-name-cn": "node ./scripts/backfill-work-root-category-name-cn.mjs",
-    "backfill:work-root-name-cn:execute": "node ./scripts/backfill-work-root-category-name-cn.mjs --execute"
+    "backfill:work-root-name-cn:execute": "node ./scripts/backfill-work-root-category-name-cn.mjs --execute",
+    "move:work-project-type-up": "node ./scripts/move-work-project-type-up.mjs",
+    "move:work-project-type-up:execute": "node ./scripts/move-work-project-type-up.mjs --execute"
   },
   "dependencies": {
     "@strapi/database": "5.52.1",
