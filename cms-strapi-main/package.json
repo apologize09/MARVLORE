@@ -55,7 +55,9 @@
     "hide:work-hero-media": "node ./scripts/hide-work-hero-media-fields.mjs",
     "hide:work-hero-media:execute": "node ./scripts/hide-work-hero-media-fields.mjs --execute",
     "hide:work-category-name-cn-edit": "node ./scripts/hide-work-category-name-cn-edit.mjs",
-    "hide:work-category-name-cn-edit:execute": "node ./scripts/hide-work-category-name-cn-edit.mjs --execute"
+    "hide:work-category-name-cn-edit:execute": "node ./scripts/hide-work-category-name-cn-edit.mjs --execute",
+    "backfill:work-root-name-cn": "node ./scripts/backfill-work-root-category-name-cn.mjs",
+    "backfill:work-root-name-cn:execute": "node ./scripts/backfill-work-root-category-name-cn.mjs --execute"
   },
   "dependencies": {
     "@strapi/database": "5.52.1",

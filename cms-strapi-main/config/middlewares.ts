@@ -40,6 +40,8 @@ const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Middlewar
   'strapi::session',
   'strapi::favicon',
   'strapi::public',
+  // After query parse so we can inject CM relation filters.
+  'global::work-category-relation-filter',
   'global::work-public-cache',
 ];
 
