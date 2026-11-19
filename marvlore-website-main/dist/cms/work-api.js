@@ -30,6 +30,11 @@ export function createWorkApi(config) {
     getProjects: (query = {}) => get('/work-projects', { pageSize: 48, sort: 'manual', ...query }, ['projects']),
     getFeatured: () => get('/work-projects/featured', { pageSize: 24 }, ['featured']),
     getProjectBySlug: (slug) => get(`/work-projects/slug/${encodeURIComponent(slug)}`, {}, ['project', slug]),
+    getRelated: (documentId, query = {}) =>
+      get(`/work-projects/related/${encodeURIComponent(documentId)}`, { pageSize: 6, ...query }, [
+        'related',
+        documentId,
+      ]),
     getTags: () => get('/work-tags', {}, ['tags']),
     search: (query = {}) =>
       get('/work-search', { pageSize: 12, sort: 'manual', ...query }, [

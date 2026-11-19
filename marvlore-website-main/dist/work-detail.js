@@ -1,7 +1,7 @@
 import {titleCase} from './typography.js?v=bff0b2cf2f';
 import PhotoSwipeLightbox from './vendor/photoswipe/photoswipe-lightbox.esm.min.js?v=b82c385604';
 import {Spring,reducedMotion,clamp} from './motion.js?v=53e5c054f1';
-import {getWorkDetail,ensureWorkDetail} from './cms/work-runtime.js?v=c0ed060a71';
+import {getWorkDetail,ensureWorkDetail} from './cms/work-runtime.js?v=711a0f69d6';
 
 // Editorial case-study structure: title, context, large media, next project.
 // Independently styled for MARVLORE; PhotoSwipe 5.4.4 (MIT) handles image zoom.
@@ -13,9 +13,38 @@ export function mountWorkDetails(){
  document.body.append(root);
  const scroller=root.querySelector('.case-scroll'),content=root.querySelector('.case-content');
  const main=document.querySelector('#app'),nav=document.querySelector('.floating-nav');
- let current=null,opened=false,closing=false,source=null,sourceFocus=null,returnHash='#work',ownedHistory=false;
+ let current=null,opened=false,closing=false,source=null,sourceFocus=null,returnHash='#work',returnUrl=null,ownedHistory=false,pathMode=false,notFound=false;
  let observer=null,scrollFrame=0,lightbox=null,animations=[];
  const pageTitle=document.title;
+ function detailPathFor(item){
+  const slug=item?.slug||item?.id;
+  return slug?`/work/${encodeURIComponent(slug)}`:'/work';
+ }
+ function upsertMeta(name,content){
+  let el=document.head.querySelector(`meta[name="${name}"]`);
+  if(!el){el=document.createElement('meta');el.setAttribute('name',name);document.head.append(el);}
+  el.setAttribute('content',content??'');
+ }
+ function upsertOg(property,content){
+  let el=document.head.querySelector(`meta[property="${property}"]`);
+  if(!el){el=document.createElement('meta');el.setAttribute('property',property);document.head.append(el);}
+  el.setAttribute('content',content??'');
+ }
+ function applyDetailSeo(item){
+  if(!item)return;
+  const title=`${item.title} · MARVLORE 迈络`;
+  document.title=title;
+  const description=item.summary||item.description||item.subtitle||'';
+  upsertMeta('description',description);
+  upsertOg('og:title',title);
+  upsertOg('og:description',description);
+  upsertOg('og:type','article');
+  const image=item.cover?.poster||item.cover?.src;
+  if(image){
+   const abs=String(image).startsWith('http')?image:new URL(image,location.origin).toString();
+   upsertOg('og:image',abs);
+  }
+ }
  const progress=new Spring(0,value=>{
   root.style.opacity=String(clamp(value,0,1));
   scroller.style.transform=reducedMotion.matches?'none':'translate3d(0,'+((1-value)*24)+'px,0)';
@@ -66,13 +95,23 @@ export function mountWorkDetails(){
    video.play().catch(()=>{video.muted=true;video.play().catch(()=>{});});
   });
  }
+ function renderNotFound(slug){
+  unloadVideos();
+  root.querySelector('.case-count').textContent='';
+  content.innerHTML='<article class="case-article case-not-found"><header class="case-heading"><div class="case-kicker"><i></i>Not found</div><div class="case-title-row"><div><h1 id="case-title">作品未找到</h1><p class="case-subtitle">'+esc(slug||'')+'</p></div><p class="case-summary">该项目不存在、尚未发布，或链接已失效。</p></div></header><footer class="case-footer"><button class="case-return" type="button" data-case-return>← 返回作品总览</button></footer></article>';
+  scroller.scrollTop=0;root.querySelector('.case-progress i').style.transform='scaleX(0)';
+  document.title='作品未找到 · MARVLORE 迈络';
+  lightbox?.destroy();lightbox=null;
+ }
  function render(item){
   unloadVideos();
   const next=getWorkDetail(item.nextId),media=item.media??[];
+  const nextHref=pathMode?detailPathFor(next):('#case/'+esc(next?.id||''));
+  const nextAttr=next?(pathMode?(next.slug||next.id):next.id):'';
   root.querySelector('.case-count').textContent=String(item.index).padStart(2,'0')+' / '+String(item.total).padStart(2,'0');
-  content.innerHTML='<article class="case-article"><header class="case-heading"><div class="case-kicker"><i></i>'+esc(item.eyebrow)+'</div><div class="case-title-row"><div><h1 id="case-title">'+esc(titleCase(item.title))+'</h1><p class="case-subtitle">'+esc(item.subtitle)+'</p></div><p class="case-summary">'+esc(item.summary)+'</p></div></header>'+mediaMarkup(item.cover,0,{cover:true})+'<section class="case-overview case-reveal" aria-labelledby="case-overview-title"><div class="case-section-label">01 / 项目介绍</div><div class="case-intro"><h2 id="case-overview-title">'+esc(titleCase(item.intro))+'</h2><div class="case-services"><span>服务领域</span><ul>'+item.tags.map(tag=>'<li>'+esc(tag)+'</li>').join('')+'</ul></div></div></section>'+(media.length?'<section class="case-visuals" aria-labelledby="case-visuals-title"><div class="case-section-header case-reveal"><h2 id="case-visuals-title">视觉展示<span>Selected Visuals</span></h2><span>'+String(media.length).padStart(2,'0')+' 张素材</span></div><div class="case-media-grid">'+media.map((asset,i)=>mediaMarkup(asset,i+1)).join('')+'</div></section>':'')+(next?'<footer class="case-footer case-reveal"><span class="case-section-label">继续探索</span><a href="#case/'+esc(next.id)+'" data-case-next="'+esc(next.id)+'" class="case-next"><div><span>下一个项目</span><h2>'+esc(titleCase(next.title))+'</h2><p>'+esc(next.subtitle)+'</p></div><span class="case-next-arrow" aria-hidden="true">↗</span></a><button class="case-return" type="button" data-case-return>← 返回全部作品</button></footer>':'')+'</article>';
+  content.innerHTML='<article class="case-article"><header class="case-heading"><div class="case-kicker"><i></i>'+esc(item.eyebrow)+'</div><div class="case-title-row"><div><h1 id="case-title">'+esc(titleCase(item.title))+'</h1><p class="case-subtitle">'+esc(item.subtitle)+'</p></div><p class="case-summary">'+esc(item.summary)+'</p></div></header>'+mediaMarkup(item.cover,0,{cover:true})+'<section class="case-overview case-reveal" aria-labelledby="case-overview-title"><div class="case-section-label">01 / 项目介绍</div><div class="case-intro"><h2 id="case-overview-title">'+esc(titleCase(item.intro))+'</h2><div class="case-services"><span>服务领域</span><ul>'+item.tags.map(tag=>'<li>'+esc(tag)+'</li>').join('')+'</ul></div></div></section>'+(media.length?'<section class="case-visuals" aria-labelledby="case-visuals-title"><div class="case-section-header case-reveal"><h2 id="case-visuals-title">视觉展示<span>Selected Visuals</span></h2><span>'+String(media.length).padStart(2,'0')+' 张素材</span></div><div class="case-media-grid">'+media.map((asset,i)=>mediaMarkup(asset,i+1)).join('')+'</div></section>':'')+(next?'<footer class="case-footer case-reveal"><span class="case-section-label">继续探索</span><a href="'+nextHref+'" data-case-next="'+esc(nextAttr)+'" class="case-next"><div><span>下一个项目</span><h2>'+esc(titleCase(next.title))+'</h2><p>'+esc(next.subtitle)+'</p></div><span class="case-next-arrow" aria-hidden="true">↗</span></a><button class="case-return" type="button" data-case-return>← 返回全部作品</button></footer>':'<footer class="case-footer case-reveal"><button class="case-return" type="button" data-case-return>← 返回全部作品</button></footer>')+'</article>';
   scroller.scrollTop=0;root.querySelector('.case-progress i').style.transform='scaleX(0)';
-  document.title=item.title+' · MARVLORE 迈络';
+  applyDetailSeo(item);
   initZoom();revealContent();hydrateVideos();
  }
  function lock(){
@@ -89,37 +128,72 @@ export function mountWorkDetails(){
   observer?.disconnect();animations.forEach(a=>a.cancel());animations=[];lightbox?.destroy();lightbox=null;
   sourceFocus?.isConnected&&sourceFocus.focus({preventScroll:true});current=null;
  }
- async function open({id,source:trigger=null,historyMode='push'}={}){
-  let item=getWorkDetail(id);if(!item)return;
-  if(opened&&!closing&&current?.id===id)return;
+ async function open({id,slug=null,source:trigger=null,historyMode='push',pathMode:nextPathMode=null,returnUrl:nextReturnUrl=null}={}){
+  const key=slug||id;if(!key)return;
+  if(nextPathMode!=null)pathMode=Boolean(nextPathMode);
+  else if(location.pathname.startsWith('/work/'))pathMode=true;
+  let item=getWorkDetail(key);
+  if(!item){
+   try{item=await ensureWorkDetail(key);}catch{}
+  }
+  if(!item){
+   const wasOpen=opened;
+   if(!wasOpen){
+    source=trigger;sourceFocus=trigger?.closest('a,button')??document.activeElement;
+    returnHash=location.hash.startsWith('#case/')?(history.state?.returnHash??'#work'):(location.hash||'#work');
+    returnUrl=nextReturnUrl||history.state?.returnUrl||(pathMode?'/work':'/#work');
+    ownedHistory=historyMode==='push'||Boolean(history.state?.marvloreCase||history.state?.workRoute);
+   }
+   current=null;notFound=true;opened=true;closing=false;root.hidden=false;lock();renderNotFound(key);
+   if(!wasOpen)progress.jump(reducedMotion.matches?1:0);progress.to(1);
+   if(historyMode!=='none'){
+    const url=pathMode?`/work/${encodeURIComponent(key)}`:`#case/${encodeURIComponent(key)}`;
+    history[wasOpen||historyMode==='replace'?'replaceState':'pushState']({marvloreCase:true,returnHash,returnUrl,workPath:pathMode},'',url);
+   }
+   root.querySelector('.case-back').focus({preventScroll:true});
+   return;
+  }
+  if(opened&&!closing&&(current?.id===item.id||current?.slug===item.slug))return;
   const wasOpen=opened;
   if(!wasOpen){
    source=trigger;sourceFocus=trigger?.closest('a,button')??document.activeElement;
    returnHash=location.hash.startsWith('#case/')?(history.state?.returnHash??'#work'):(location.hash||'#work');
-   ownedHistory=historyMode==='push'||Boolean(history.state?.marvloreCase);
+   returnUrl=nextReturnUrl||history.state?.returnUrl||(pathMode?(location.pathname.startsWith('/work/')?'/work':`${location.pathname}${location.search}`):'/#work');
+   ownedHistory=historyMode==='push'||Boolean(history.state?.marvloreCase||history.state?.workRoute);
   }
-  // Open immediately with light payload, then upgrade media from CMS if needed.
-  current=item;opened=true;closing=false;root.hidden=false;lock();render(item);
+  notFound=false;current=item;opened=true;closing=false;root.hidden=false;lock();render(item);
   if(!wasOpen)progress.jump(reducedMotion.matches?1:0);progress.to(1);
-  if(historyMode!=='none')history[wasOpen||historyMode==='replace'?'replaceState':'pushState']({marvloreCase:true,returnHash},'','#case/'+encodeURIComponent(id));
+  if(historyMode!=='none'){
+   const url=pathMode?detailPathFor(item):( '#case/'+encodeURIComponent(item.id));
+   history[wasOpen||historyMode==='replace'?'replaceState':'pushState']({marvloreCase:true,returnHash,returnUrl,workPath:pathMode},'',url);
+  }
   root.querySelector('.case-back').focus({preventScroll:true});
   try{
-   const full=await ensureWorkDetail(id);
-   if(full&&opened&&!closing&&current?.id===id&&full!==item){current=full;render(full);}
+   const full=await ensureWorkDetail(item.slug||item.id||key);
+   if(full&&opened&&!closing&&(current?.id===full.id||current?.slug===full.slug)&&full!==item){current=full;render(full);}
   }catch{}
  }
  function close({historyMode='back'}={}){
   if(!opened)return;
   if(historyMode==='back'){
-   if(ownedHistory&&history.state?.marvloreCase){history.back();return;}
-   history.replaceState(null,'',returnHash);
+   if(ownedHistory&&(history.state?.marvloreCase||history.state?.workRoute)){history.back();return;}
+   if(pathMode){
+    history.replaceState({workRoute:{type:'work-list'}},'',returnUrl||'/work');
+    // replaceState does not emit popstate — notify route owner explicitly
+    window.dispatchEvent(new PopStateEvent('popstate'));
+   }else history.replaceState(null,'',returnHash);
   }
   closing=true;unloadVideos();lightbox?.pswp?.close();progress.to(0);
  }
  function syncRoute(){
+  // Path /work/:slug is owned by work-route (app). Hash #case/:id stays here.
+  if(/^\/work\/[^/]+\/?$/.test(location.pathname)){
+   if(opened&&pathMode)return;
+   return;
+  }
   if(location.hash.startsWith('#case/')){
    let id;try{id=decodeURIComponent(location.hash.slice(6));}catch{return;}
-   open({id,historyMode:'none'});
+   open({id,historyMode:'none',pathMode:false});
   }else if(opened)close({historyMode:'none'});
  }
  root.querySelector('.case-back').addEventListener('click',()=>close());

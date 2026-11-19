@@ -122,11 +122,14 @@ export function normalizeProjectToDetail(projectDto, { index = 1, total = 1, nex
 
   return {
     id: projectDto.legacyId || projectDto.slug,
+    slug: projectDto.slug || projectDto.legacyId || null,
+    documentId: projectDto.documentId || null,
     category: projectDto.category?.slug || 'visual',
     title: projectDto.title,
     subtitle: projectDto.subtitle || '',
     eyebrow: projectDto.eyebrow || '',
     summary: projectDto.summary || '',
+    description: projectDto.description || '',
     intro: projectDto.description || projectDto.summary || projectDto.title,
     tags: Array.isArray(projectDto.tags)
       ? projectDto.tags.map((t) => (typeof t === 'string' ? t : t.name || t.slug)).filter(Boolean)
