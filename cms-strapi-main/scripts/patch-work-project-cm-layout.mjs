@@ -24,9 +24,9 @@ function patchProject(cfg) {
   next.metadatas.categoryNameCn = {
     edit: {
       label: '所属分类中文名',
-      description: '由所属分类自动同步，列表筛选用。一般无需手改。',
+      description: '由所属分类自动同步，列表筛选用；编辑页不展示。',
       placeholder: '影视动画',
-      visible: true,
+      visible: false,
       editable: false,
     },
     list: { label: '所属分类', searchable: true, sortable: true },
@@ -71,14 +71,18 @@ function patchProject(cfg) {
     return { name: cell.name, size: size ?? cell.size ?? 6 };
   };
 
+  // categoryNameCn is list-only (auto-synced); omit from edit layout.
+  byName.delete('categoryNameCn');
   const rebuilt = [
     [take('title', 6), take('slug', 6)],
     [take('subtitle', 6), take('category', 6)],
-    [take('categoryNameCn', 6), take('eyebrow', 6)],
+    [take('eyebrow', 6)],
   ];
   const placed = new Set(['title', 'slug', 'subtitle', 'category', 'categoryNameCn', 'eyebrow']);
   for (const row of edit) {
-    const kept = row.filter((cell) => cell?.name && !placed.has(cell.name));
+    const kept = row.filter(
+      (cell) => cell?.name && !placed.has(cell.name) && cell.name !== 'categoryNameCn',
+    );
     if (kept.length) rebuilt.push(kept.map((c) => ({ name: c.name, size: c.size })));
   }
   const leftovers = [...byName.values()].filter((c) => !placed.has(c.name));

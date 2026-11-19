@@ -53,7 +53,9 @@
     "hide:work-preview-video": "node ./scripts/hide-work-preview-video-fields.mjs",
     "hide:work-preview-video:execute": "node ./scripts/hide-work-preview-video-fields.mjs --execute",
     "hide:work-hero-media": "node ./scripts/hide-work-hero-media-fields.mjs",
-    "hide:work-hero-media:execute": "node ./scripts/hide-work-hero-media-fields.mjs --execute"
+    "hide:work-hero-media:execute": "node ./scripts/hide-work-hero-media-fields.mjs --execute",
+    "hide:work-category-name-cn-edit": "node ./scripts/hide-work-category-name-cn-edit.mjs",
+    "hide:work-category-name-cn-edit:execute": "node ./scripts/hide-work-category-name-cn-edit.mjs --execute"
   },
   "dependencies": {
     "@strapi/database": "5.52.1",
