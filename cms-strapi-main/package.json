@@ -51,7 +51,9 @@
     "hide:work-thumb-poster": "node ./scripts/hide-work-thumb-poster-fields.mjs",
     "hide:work-thumb-poster:execute": "node ./scripts/hide-work-thumb-poster-fields.mjs --execute",
     "hide:work-preview-video": "node ./scripts/hide-work-preview-video-fields.mjs",
-    "hide:work-preview-video:execute": "node ./scripts/hide-work-preview-video-fields.mjs --execute"
+    "hide:work-preview-video:execute": "node ./scripts/hide-work-preview-video-fields.mjs --execute",
+    "hide:work-hero-media": "node ./scripts/hide-work-hero-media-fields.mjs",
+    "hide:work-hero-media:execute": "node ./scripts/hide-work-hero-media-fields.mjs --execute"
   },
   "dependencies": {
     "@strapi/database": "5.52.1",
