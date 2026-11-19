@@ -65,6 +65,7 @@ test('normalizeProjectToReelItem and detail keep legacyId + media paths', async 
     category: { slug: 'film' },
     coverUrl: './assets/work/aurora.jpg',
     thumbnailUrl: './assets/work/aurora-thumb.jpg',
+    homePreviewVideoUrl: './assets/hero-video/aurora-home-360p.mp4',
     previewVideoUrl: './assets/hero-video/aurora-preview.mp4',
     videoUrl: './assets/hero-video/aurora.mp4',
     focusX: 42,
@@ -88,8 +89,9 @@ test('normalizeProjectToReelItem and detail keep legacyId + media paths', async 
   assert.equal(reel.id, 'reel-aurora');
   assert.equal(reel.category, 'film');
   assert.equal(reel.src, './assets/work/aurora.jpg');
-  assert.equal(reel.thumbnailSrc, './assets/work/aurora-thumb.jpg');
-  assert.equal(reel.previewSrc, './assets/hero-video/aurora-preview.mp4');
+  assert.equal(reel.thumbnailSrc, './assets/work/aurora.jpg');
+  assert.equal(reel.homePreviewSrc, './assets/hero-video/aurora-home-360p.mp4');
+  assert.equal(reel.previewSrc, './assets/hero-video/aurora-home-360p.mp4');
   assert.equal(reel.focusX, 42);
 
   const detail = normalizeProjectToDetail(dto, { index: 1, total: 2, nextId: 'next' });

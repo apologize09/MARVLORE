@@ -34,8 +34,8 @@ const LABELS = {
     videoUrl: '视频 URL（静态回退）',
     poster: '海报（已停用）',
     posterUrl: '海报 URL（已停用）',
-    previewVideo: '预览视频',
-    previewVideoUrl: '预览视频 URL（静态回退）',
+    previewVideo: '预览视频（已停用）',
+    previewVideoUrl: '预览视频 URL（已停用）',
     homePreviewVideo: '首页预览视频',
     homePreviewVideoUrl: '首页预览视频 URL（静态回退）',
     clientName: '客户名称',
@@ -241,8 +241,9 @@ const DESCRIPTIONS = {
     heroMediaUrl: '可选',
     videoUrl: '可选',
     posterUrl: '已停用：前台统一使用封面。',
-    previewVideoUrl: '可选',
-    homePreviewVideoUrl: '可选',
+    previewVideoUrl: '已停用：前台统一使用首页预览视频。',
+    homePreviewVideo: '首页圆柱卡片循环预览（轻量）；列表预览也使用此视频。',
+    homePreviewVideoUrl: '可选；无媒体库文件时的静态资源回退路径。',
   },
 };
 

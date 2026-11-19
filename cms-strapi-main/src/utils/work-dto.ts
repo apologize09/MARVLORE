@@ -118,10 +118,11 @@ export function toProjectCardDto(project: AnyRecord | null | undefined) {
     videoUrl: siteUrlFromMedia(project.video, project.videoUrl),
     poster: pickMedia(project.cover, project.coverUrl),
     posterUrl: siteUrlFromMedia(project.cover, project.coverUrl),
-    previewVideo: pickMedia(project.previewVideo, project.previewVideoUrl),
-    previewVideoUrl: siteUrlFromMedia(project.previewVideo, project.previewVideoUrl),
     homePreviewVideo: pickMedia(project.homePreviewVideo, project.homePreviewVideoUrl),
     homePreviewVideoUrl: siteUrlFromMedia(project.homePreviewVideo, project.homePreviewVideoUrl),
+    // Legacy previewVideo slots mirror home preview (single preview tier).
+    previewVideo: pickMedia(project.homePreviewVideo, project.homePreviewVideoUrl),
+    previewVideoUrl: siteUrlFromMedia(project.homePreviewVideo, project.homePreviewVideoUrl),
     category: category
       ? {
           documentId: category.documentId,

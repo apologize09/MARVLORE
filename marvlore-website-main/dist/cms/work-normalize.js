@@ -56,11 +56,14 @@ export function normalizeProjectToReelItem(projectDto) {
     alt: projectDto.cover?.alternativeText || `${projectDto.title}项目封面`,
     src,
     thumbnailSrc: src,
-    previewSrc: projectDto.previewVideoUrl ? toWebPath(projectDto.previewVideoUrl) : null,
-    videoSrc: projectDto.videoUrl ? toWebPath(projectDto.videoUrl) : null,
+    // Single preview tier: home 360p loop. previewSrc mirrors it for carousel gate/fallback.
     homePreviewSrc: projectDto.homePreviewVideoUrl
       ? toWebPath(projectDto.homePreviewVideoUrl)
       : null,
+    previewSrc: projectDto.homePreviewVideoUrl
+      ? toWebPath(projectDto.homePreviewVideoUrl)
+      : null,
+    videoSrc: projectDto.videoUrl ? toWebPath(projectDto.videoUrl) : null,
     width: projectDto.cover?.width || 1920,
     height: projectDto.cover?.height || 1080,
     aspect: (projectDto.cover?.width || 1920) / (projectDto.cover?.height || 1080),
@@ -135,8 +138,10 @@ export function normalizeProjectToDetail(projectDto, { index = 1, total = 1, nex
     nextId,
     focusX: projectDto.focusX ?? 50,
     videoUrl: projectDto.videoUrl ? toWebPath(projectDto.videoUrl) : null,
-    previewVideoUrl: projectDto.previewVideoUrl ? toWebPath(projectDto.previewVideoUrl) : null,
     homePreviewVideoUrl: projectDto.homePreviewVideoUrl
+      ? toWebPath(projectDto.homePreviewVideoUrl)
+      : null,
+    previewVideoUrl: projectDto.homePreviewVideoUrl
       ? toWebPath(projectDto.homePreviewVideoUrl)
       : null,
   };
