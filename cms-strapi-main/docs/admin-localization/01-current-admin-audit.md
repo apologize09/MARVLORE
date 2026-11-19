@@ -58,14 +58,14 @@ No custom plugins under `src/plugins/`. Components: `src/components/shared/` (e.
 
 | UID | Current displayName | Pack suggestion |
 |-----|---------------------|-----------------|
-| about-page | About | 关于我们页面 |
+| about-page | About | 关于我们 |
 | article | （归档）Article | 文章 |
 | author | （归档）Author | 作者 |
 | award | Awards | 奖项 |
 | certification | （归档）Certification | 认证资质 |
 | category | （归档）Category | 文章分类 |
 | faq | FAQ | 常见问题 |
-| global-setting | Contact | 全局网站配置 |
+| global-setting | Contact | 网站配置 |
 | hero-item | Hero | 首页主视觉 |
 | page-seo | SEO | SEO配置 |
 | service-item | Services | 服务项目 |

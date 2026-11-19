@@ -16,10 +16,10 @@ const STORAGE_KEY = 'strapi-admin-language';
 const contentTypeNameTranslations = {
   'zh-Hans': {
     'content-manager.api::hero-item.hero-item': '首页主视觉',
-    'content-manager.api::about-page.about-page': '关于我们页面',
+    'content-manager.api::about-page.about-page': '关于我们',
     'content-manager.api::service-item.service-item': '服务项目',
     'content-manager.api::award.award': '奖项',
-    'content-manager.api::global-setting.global-setting': '全局网站配置',
+    'content-manager.api::global-setting.global-setting': '网站配置',
     'content-manager.api::faq.faq': '常见问题',
     'content-manager.api::page-seo.page-seo': 'SEO配置',
     'content-manager.api::work-page.work-page': '作品页面配置',
