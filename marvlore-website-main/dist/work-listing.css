@@ -108,28 +108,44 @@ body.work-channel-active {
   font: 400 clamp(13px, 1.2vw, 18px) / 1.6 var(--font-sans, inherit);
 }
 
+/* Filter toolbar: category → search/sort → tags, one rhythm */
+.work-listing-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin: 0 0 clamp(28px, 4vw, 40px);
+  padding-bottom: clamp(20px, 3vw, 28px);
+  border-bottom: 1px solid #1c1c1f;
+}
+
 .work-listing-categories {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 20px;
+  gap: 6px;
+  margin: 0;
 }
 
 .work-listing-categories button {
   appearance: none;
-  border: 1px solid #2a2a2e;
+  border: 0;
   background: transparent;
-  color: #cfcfd2;
-  font: 400 13px / 1 var(--font-sans, inherit);
+  color: #8c8c91;
+  font: 500 13px / 1 var(--font-sans, inherit);
+  letter-spacing: 0.02em;
   padding: 10px 14px;
   cursor: pointer;
+  border-bottom: 2px solid transparent;
   transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
 .work-listing-categories button[aria-pressed='true'] {
-  color: #0a0a0a;
-  background: #c8e79e;
-  border-color: #c8e79e;
+  color: #f2f2f2;
+  border-bottom-color: #c8e79e;
+  background: transparent;
+}
+
+.work-listing-categories button:hover {
+  color: #f2f2f2;
 }
 
 .work-listing-categories button:focus-visible {
@@ -139,49 +155,97 @@ body.work-channel-active {
 
 .work-listing-filters {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+}
+
+.work-listing-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 10px;
   align-items: center;
-  margin-bottom: 18px;
+}
+
+.work-listing-search {
+  display: block;
+  min-width: 0;
 }
 
 .work-listing-search input,
 .work-listing-sort select {
   appearance: none;
-  background: #121214;
-  border: 1px solid #2a2a2e;
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #2a2a2e;
+  border-radius: 0;
   color: #f2f2f2;
   font: 400 13px / 1.4 var(--font-sans, inherit);
-  padding: 10px 12px;
-  min-width: min(100%, 220px);
+  padding: 10px 2px;
+  min-width: 0;
+}
+
+.work-listing-sort select {
+  width: auto;
+  min-width: 7.5rem;
+  padding-right: 18px;
+  background-image: linear-gradient(45deg, transparent 50%, #8c8c91 50%),
+    linear-gradient(135deg, #8c8c91 50%, transparent 50%);
+  background-position: calc(100% - 8px) 55%, calc(100% - 3px) 55%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.work-listing-search input::placeholder {
+  color: #6f6f74;
 }
 
 .work-listing-search input:focus-visible,
 .work-listing-sort select:focus-visible {
-  outline: 2px solid #c8e79e;
-  outline-offset: 2px;
+  outline: none;
+  border-bottom-color: #c8e79e;
 }
 
 .work-listing-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  flex: 1 1 100%;
+  gap: 8px 10px;
+  margin: 0;
+  padding-top: 2px;
 }
 
 .work-listing-tags button {
   appearance: none;
-  border: 1px solid #2a2a2e;
+  border: 0;
   background: transparent;
-  color: #9a9a9f;
-  font: 400 12px / 1 var(--font-sans, inherit);
-  padding: 7px 10px;
+  color: #6f6f74;
+  font: 400 12px / 1.2 var(--font-sans, inherit);
+  padding: 0;
   cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.work-listing-tags button:not(:last-child)::after {
+  content: '·';
+  margin-left: 10px;
+  color: #3a3a3e;
+  pointer-events: none;
 }
 
 .work-listing-tags button[aria-pressed='true'] {
   color: #c8e79e;
-  border-color: #c8e79e;
+}
+
+.work-listing-tags button:hover {
+  color: #cfcfd2;
+}
+
+.work-listing-tags button:focus-visible {
+  outline: 2px solid #c8e79e;
+  outline-offset: 3px;
 }
 
 .work-listing-clear {
@@ -189,14 +253,21 @@ body.work-channel-active {
   border: 0;
   background: transparent;
   color: #c8e79e;
-  text-decoration: underline;
-  font: 400 13px / 1 var(--font-sans, inherit);
+  font: 400 12px / 1 var(--font-sans, inherit);
+  letter-spacing: 0.02em;
+  padding: 8px 0;
   cursor: pointer;
+  white-space: nowrap;
+}
+
+.work-listing-clear:hover,
+.work-listing-clear:focus-visible {
+  text-decoration: underline;
 }
 
 .work-listing-status {
   min-height: 1.2em;
-  margin-bottom: 14px;
+  margin: 0 0 16px;
   color: #6f6f74;
   font: 400 12px / 1.4 var(--font-sans, inherit);
 }
@@ -360,11 +431,25 @@ body.work-channel-active {
   .work-listing-grid {
     grid-template-columns: 1fr;
   }
+
+  .work-listing-controls {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .work-listing-sort select {
+    width: 100%;
+  }
+
+  .work-listing-clear {
+    justify-self: start;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .work-listing-back,
   .work-listing-categories button,
+  .work-listing-tags button,
   .work-project-card,
   .work-listing-more {
     transition: none;

@@ -60,23 +60,27 @@ function renderShell({ title, intro, categories }) {
       <h1 id="work-listing-title">${escapeHtml(title)}</h1>
       <p class="work-listing-intro">${escapeHtml(intro)}</p>
     </header>
-    <div class="work-listing-categories" role="toolbar" aria-label="作品分类">${catButtons}</div>
-    <div class="work-listing-filters" data-work-listing-filters>
-      <label class="work-listing-search">
-        <span class="sr-only">搜索作品</span>
-        <input type="search" name="q" placeholder="搜索作品、客户、标签…" autocomplete="off" enterkeyhint="search">
-      </label>
-      <div class="work-listing-tags" data-work-listing-tags role="group" aria-label="标签筛选"></div>
-      <label class="work-listing-sort">
-        <span class="sr-only">排序</span>
-        <select name="sort" aria-label="排序">
-          <option value="manual">默认排序</option>
-          <option value="latest">最新</option>
-          <option value="oldest">最早</option>
-          <option value="featured">精选优先</option>
-        </select>
-      </label>
-      <button type="button" class="work-listing-clear" data-work-listing-clear hidden>清空筛选</button>
+    <div class="work-listing-toolbar" data-work-listing-toolbar>
+      <div class="work-listing-categories" role="toolbar" aria-label="作品分类">${catButtons}</div>
+      <div class="work-listing-filters" data-work-listing-filters>
+        <div class="work-listing-controls">
+          <label class="work-listing-search">
+            <span class="sr-only">搜索作品</span>
+            <input type="search" name="q" placeholder="搜索作品、客户、标签…" autocomplete="off" enterkeyhint="search">
+          </label>
+          <label class="work-listing-sort">
+            <span class="sr-only">排序</span>
+            <select name="sort" aria-label="排序">
+              <option value="manual">默认排序</option>
+              <option value="latest">最新</option>
+              <option value="oldest">最早</option>
+              <option value="featured">精选优先</option>
+            </select>
+          </label>
+          <button type="button" class="work-listing-clear" data-work-listing-clear hidden>清空筛选</button>
+        </div>
+        <div class="work-listing-tags" data-work-listing-tags role="group" aria-label="标签筛选"></div>
+      </div>
     </div>
     <div class="work-listing-status" data-work-listing-status role="status" aria-live="polite"></div>
     <div class="work-listing-grid" data-work-listing-grid></div>
@@ -314,11 +318,28 @@ export function mountWorkListingPage(root, opts = {}) {
     commit({ ...state, q, page: 1 }, { replace: true });
   }, DEBOUNCE_MS);
 
+  // Hide tags that merely echo level-2 category names/slugs (already in the category row).
+  const categoryEcho = new Set(
+    level2Categories(categories).flatMap((c) =>
+      [c.id, c.label].filter(Boolean).map((v) => String(v).trim().toLowerCase()),
+    ),
+  );
+
   api
     .getTags()
     .then((res) => {
       if (destroyed) return;
-      tagCatalog = res?.data || [];
+      tagCatalog = (res?.data || []).filter((tag) => {
+        const slug = String(tag.slug || tag.id || '')
+          .trim()
+          .toLowerCase();
+        const name = String(tag.name || '')
+          .trim()
+          .toLowerCase();
+        if (!slug && !name) return false;
+        if (categoryEcho.has(slug) || categoryEcho.has(name)) return false;
+        return true;
+      });
       renderTags(tagsEl, tagCatalog, state.tags);
     })
     .catch(() => {});
