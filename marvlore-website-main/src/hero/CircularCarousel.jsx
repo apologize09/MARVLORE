@@ -938,7 +938,7 @@ const CircularCarousel = ({
           className="circular-carousel__frame"
           style={{ height: axis === 'x' ? size : cardH, borderRadius: frameRadius }}
         >
-          {item.previewSrc&&!back&&tile.total===1?<VideoPreview item={item} style={photoStyle} paused={paused||reduced||!previewReady} delay={index*90}/>:<img
+          {(item.homePreviewSrc||item.previewSrc)&&!back&&tile.total===1?<VideoPreview item={item} style={photoStyle} paused={paused||reduced||!previewReady} delay={index*90}/>:<img
             className="circular-carousel__photo"
             src={item.src}
             alt=""

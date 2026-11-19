@@ -49,7 +49,9 @@
     "dedupe:work-cm-edit": "node ./scripts/dedupe-work-project-cm-edit-layout.mjs",
     "dedupe:work-cm-edit:execute": "node ./scripts/dedupe-work-project-cm-edit-layout.mjs --execute",
     "hide:work-thumb-poster": "node ./scripts/hide-work-thumb-poster-fields.mjs",
-    "hide:work-thumb-poster:execute": "node ./scripts/hide-work-thumb-poster-fields.mjs --execute"
+    "hide:work-thumb-poster:execute": "node ./scripts/hide-work-thumb-poster-fields.mjs --execute",
+    "hide:work-preview-video": "node ./scripts/hide-work-preview-video-fields.mjs",
+    "hide:work-preview-video:execute": "node ./scripts/hide-work-preview-video-fields.mjs --execute"
   },
   "dependencies": {
     "@strapi/database": "5.52.1",
