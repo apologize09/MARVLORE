@@ -32,3 +32,32 @@ test('built work-listing exposes mountWorkListingPage', async () => {
   assert.equal(typeof listing.mountWorkListingPage, 'function');
   assert.equal(typeof listing.applyWorkListingSeo, 'function');
 });
+
+test('tagsForActiveCategory filters by scoped category', async () => {
+  const helpers = await import(pathToFileURL(path.join(root, 'src/work/listing-tags.js')).href);
+  const tags = [
+    { slug: 'cgi', name: 'CGI', categorySlugs: ['film'] },
+    { slug: 'brand-visual', name: '品牌视觉', categories: [{ slug: 'visual' }] },
+    { slug: 'loose', name: 'Loose', categorySlugs: [] },
+  ];
+  assert.deepEqual(
+    helpers.tagsForActiveCategory(tags, 'film').map((t) => t.slug),
+    ['cgi'],
+  );
+  assert.deepEqual(
+    helpers.tagsForActiveCategory(tags, 'visual').map((t) => t.slug),
+    ['brand-visual'],
+  );
+  assert.equal(helpers.tagsForActiveCategory(tags, 'all').length, 3);
+  assert.deepEqual(helpers.pruneSelectedTags(['cgi', 'brand-visual'], tags.slice(0, 1)), ['cgi']);
+});
+
+test('inferTagCategoriesFromProjects maps project tags to L2 slugs', async () => {
+  const helpers = await import(pathToFileURL(path.join(root, 'src/work/listing-tags.js')).href);
+  const map = helpers.inferTagCategoriesFromProjects([
+    { category: { slug: 'film' }, tags: ['cgi', '3d-animation'] },
+    { category: { slug: 'visual' }, tags: [{ slug: 'brand-visual' }] },
+  ]);
+  assert.ok(map.get('cgi').has('film'));
+  assert.ok(map.get('brand-visual').has('visual'));
+});
