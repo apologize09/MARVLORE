@@ -1,8 +1,8 @@
 import { buildStaticBundle } from './work-fallback.js?v=efa3d94e78';
-import { resolveWorkBundle } from './work-loader.js?v=a25aaba3ad';
+import { resolveWorkBundle } from './work-loader.js?v=e7cc889dc5';
 import { getCmsConfig } from './config.js?v=1e182ce0a2';
 import { createWorkApi } from './work-api.js?v=32753a3ef8';
-import { normalizeProjectToDetail } from './work-normalize.js?v=5cce48ed19';
+import { normalizeProjectToDetail } from './work-normalize.js?v=46a1346312';
 
 let bundle = buildStaticBundle();
 const hydrateInflight = new Map();

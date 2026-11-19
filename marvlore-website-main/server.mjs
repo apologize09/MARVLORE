@@ -116,7 +116,9 @@ const server=http.createServer(async(req,res)=>{
   }
   const requested=decodeURIComponent(url.pathname);
   const version=url.searchParams.get('v');
-  const file=path.resolve(root,'.'+(requested==='/'?'/index.html':requested));
+  // SPA fallback for Creative Work channel paths (refresh must not 404)
+  const workSpa=/^\/work\/?$/.test(requested)||(/^\/work\/[^/]+\/?$/.test(requested)&&!path.extname(requested));
+  const file=path.resolve(root,'.'+(requested==='/'||workSpa?'/index.html':requested));
   if(!file.startsWith(root)){res.writeHead(403).end();return;}
   const body=await readFile(file);
   const ext=path.extname(file).toLowerCase();
@@ -146,5 +148,5 @@ const server=http.createServer(async(req,res)=>{
  }catch{res.writeHead(404).end('Not found');}
 });
 const host=process.env.HOST||'0.0.0.0';
-const port=Number(process.env.PORT)||5173;
+const port=process.env.PORT===undefined||process.env.PORT===''?5173:Number(process.env.PORT);
 server.listen(port,host,()=>console.log(`Local: http://127.0.0.1:${server.address().port} (bind ${host})`));

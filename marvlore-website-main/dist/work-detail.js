@@ -1,7 +1,7 @@
 import {titleCase} from './typography.js?v=bff0b2cf2f';
 import PhotoSwipeLightbox from './vendor/photoswipe/photoswipe-lightbox.esm.min.js?v=b82c385604';
 import {Spring,reducedMotion,clamp} from './motion.js?v=53e5c054f1';
-import {getWorkDetail,ensureWorkDetail} from './cms/work-runtime.js?v=c0ed060a71';
+import {getWorkDetail,ensureWorkDetail} from './cms/work-runtime.js?v=3708223355';
 
 // Editorial case-study structure: title, context, large media, next project.
 // Independently styled for MARVLORE; PhotoSwipe 5.4.4 (MIT) handles image zoom.

@@ -1,19 +1,19 @@
 import {mountAwardEffects} from './award-effects.js?v=75358a56db';
 import {mountContactInteractions} from './contact-interactions.js?v=d6e35aeffa';
 import {mountSiteNavigation} from './navigation/menu.js?v=8f8a524dc7';
-import {mountWorkDetails} from './work-detail.js?v=c9232d31e7';
+import {mountWorkDetails} from './work-detail.js?v=5c5cb0355d';
 import {mountWorkInteractions} from './work-interactions.js?v=203fae0eaf';
 import {mountWorkEntrance} from './work-entrance.js?v=70df8c2b46';
-import {mountWorkReel} from './work-reel.js?v=d91f2d6ce5';
-import { Hero,Services,About,Work,Explore,Portal,Awards,Contact } from './components.js?v=fdcd80ea1d';
-import { bootWorkBundle,getProjects,getWorkReelItems,getAwards,getWorkPage,getBundleLocale,getHeroProjects } from './cms/work-runtime.js?v=c0ed060a71';
-import { mountWorkFilters } from './cms/work-filter-mount.js?v=d7aaa23267';
+import {mountWorkReel} from './work-reel.js?v=93285e98d8';
+import { Hero,Services,About,Work,Explore,Portal,Awards,Contact } from './components.js?v=a95147c98f';
+import { bootWorkBundle,getProjects,getWorkReelItems,getAwards,getWorkPage,getBundleLocale,getHeroProjects } from './cms/work-runtime.js?v=3708223355';
+import { mountWorkFilters } from './cms/work-filter-mount.js?v=96cdf9086f';
 import { getCmsConfig } from './cms/config.js?v=1e182ce0a2';
 import { applyDocumentLang } from './cms/locale.js?v=654d705d77';
 import { applyWorkSeo } from './cms/seo.js?v=53dbe2d483';
 import { mountWorkCacheSync } from './cms/work-cache-sync.js?v=9068347e6b';
 import { Spring,reducedMotion,createAwardsCarousel } from './motion.js?v=53e5c054f1';
-import { mountHeroOrbit } from './hero/orbit.js?v=a4001d3d57';
+import { mountHeroOrbit } from './hero/orbit.js?v=4b28d9d1f5';
 import { observeCardCorners } from './card-shape.js?v=dc5814bef2';
 import { createProjectGallery } from './project-gallery.js?v=2847385654';
 import { mountServices } from './services/experience.js?v=482268d7dd';
@@ -21,6 +21,8 @@ import { mountExploreScene } from './explore-scene.js?v=8011054c86';
 import { mountPortalWall } from './portal-wall.js?v=2a736d75bc';
 import { mountReferenceCollage,mountWorkTextReveal,mountSectionTextReveal } from './about/reference.js?v=aa1da4205d';
 import { assetUrl } from './media-cdn.js?v=4a6c7d09a5';
+import { mountWorkRouteOwner,bindWorkPathLinks,navigateWork,parseWorkPath } from './work-route.js?v=d8ddbef5d6';
+import { renderWorkListingShell,hideWorkListingShell,applyWorkListingSeo } from './work-listing.js?v=8ec8de4700';
 
 async function start(){
  const cms=getCmsConfig();
@@ -29,15 +31,23 @@ async function start(){
  const projects=getProjects();
  const workReelItems=getWorkReelItems();
  const awards=getAwards();
+ const workPage=getWorkPage();
  if(cms.enabled){
-  applyWorkSeo(getWorkPage()?.seo,{
+  applyWorkSeo(workPage?.seo,{
    locale:getBundleLocale(),
-   fallbackTitle:getWorkPage()?.title||document.title,
-   fallbackDescription:getWorkPage()?.intro||undefined,
+   fallbackTitle:workPage?.title||document.title,
+   fallbackDescription:workPage?.intro||undefined,
   });
  }
 
  document.querySelector('#app').innerHTML=[Hero,Services,About,Work,Explore,Portal,Awards,Contact].map(component=>component()).join('');
+ let workChannel=document.getElementById('work-channel');
+ if(!workChannel){
+  workChannel=document.createElement('div');
+  workChannel.id='work-channel';
+  workChannel.hidden=true;
+  document.body.append(workChannel);
+ }
  document.documentElement.classList.add('js');
  const brandProjects=getHeroProjects();
  const workProjects=projects.map(project=>({id:`work-${project.id}`,src:project.image?assetUrl(project.image):null,title:project.title}));
@@ -76,6 +86,53 @@ async function start(){
  }
  mountSiteNavigation();
  window.addEventListener('marvlore:work-mode',()=>workTextReveal.refresh());
+
+ function applyWorkChannel(route){
+  const active=route?.type==='work-list'||route?.type==='work-detail';
+  document.body.classList.toggle('work-channel-active',active);
+  if(!active){
+   hideWorkListingShell(workChannel);
+   if(cms.enabled){
+    applyWorkSeo(workPage?.seo,{
+     locale:getBundleLocale(),
+     fallbackTitle:workPage?.title||document.title,
+     fallbackDescription:workPage?.intro||undefined,
+    });
+   }
+   return;
+  }
+  if(route.type==='work-detail'){
+   renderWorkListingShell(workChannel,{
+    title:workPage?.title,
+    intro:workPage?.intro,
+    mode:'detail-placeholder',
+    slug:route.slug,
+   });
+   applyWorkListingSeo({title:route.slug,seoTitle:workPage?.seo?.metaTitle});
+   return;
+  }
+  renderWorkListingShell(workChannel,{
+   title:workPage?.title,
+   intro:workPage?.intro,
+   mode:'list',
+  });
+  applyWorkListingSeo({
+   title:workPage?.title,
+   seoTitle:workPage?.seo?.metaTitle,
+  });
+ }
+
+ const workRouteOwner=mountWorkRouteOwner(applyWorkChannel);
+ const unbindWorkLinks=bindWorkPathLinks(document);
+ // Home back from listing uses full navigation to "/" via href; also handle via owner
+ workChannel.addEventListener('click',event=>{
+  const back=event.target.closest('[data-work-listing-back]');
+  if(!back)return;
+  if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+  event.preventDefault();
+  navigateWork({type:'home'},{mode:'push'});
+ });
+ void workRouteOwner;void unbindWorkLinks;void parseWorkPath;
 
  function openProject(id,trigger,historyMode='push'){
   if(trigger?.closest('#work')){workDetails.open({id,source:trigger,historyMode});return;}
