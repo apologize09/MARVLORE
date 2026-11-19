@@ -61,7 +61,9 @@
     "move:work-project-type-up": "node ./scripts/move-work-project-type-up.mjs",
     "move:work-project-type-up:execute": "node ./scripts/move-work-project-type-up.mjs --execute",
     "rename:work-tag-slugs-en": "node ./scripts/rename-work-tag-slugs-en.mjs",
-    "rename:work-tag-slugs-en:execute": "node ./scripts/rename-work-tag-slugs-en.mjs --execute"
+    "rename:work-tag-slugs-en:execute": "node ./scripts/rename-work-tag-slugs-en.mjs --execute",
+    "dedupe:work-category-cm-edit": "node ./scripts/dedupe-work-category-cm-edit-layout.mjs",
+    "dedupe:work-category-cm-edit:execute": "node ./scripts/dedupe-work-category-cm-edit-layout.mjs --execute"
   },
   "dependencies": {
     "@strapi/database": "5.52.1",
