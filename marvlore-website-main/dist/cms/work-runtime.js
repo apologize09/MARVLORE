@@ -1,8 +1,8 @@
 import { buildStaticBundle } from './work-fallback.js?v=efa3d94e78';
-import { resolveWorkBundle } from './work-loader.js?v=e7cc889dc5';
+import { resolveWorkBundle } from './work-loader.js?v=387ba4e255';
 import { getCmsConfig } from './config.js?v=1e182ce0a2';
-import { createWorkApi } from './work-api.js?v=32753a3ef8';
-import { normalizeProjectToDetail } from './work-normalize.js?v=46a1346312';
+import { createWorkApi } from './work-api.js?v=ae2aac4d08';
+import { normalizeProjectToDetail } from './work-normalize.js?v=2ccfb94979';
 
 let bundle = buildStaticBundle();
 const hydrateInflight = new Map();
@@ -24,7 +24,11 @@ export function getWorkReelOptions() {
 }
 
 export function getWorkDetail(id) {
-  return bundle.detailById?.get(id) || bundle.workDetailCases?.find((item) => item.id === id);
+  if (!id) return null;
+  return (
+    bundle.detailById?.get(id) ||
+    bundle.workDetailCases?.find((item) => item.id === id || item.slug === id)
+  );
 }
 
 /**
@@ -54,12 +58,26 @@ export async function ensureWorkDetail(id) {
         nextId: existing?.nextId || null,
       });
       hydrated._cmsFull = true;
+      // Prefer related (same category / shared tags) for next when API provides it.
+      try {
+        const documentId = full.data.documentId || hydrated.documentId;
+        if (documentId) {
+          const related = await api.getRelated(documentId, { pageSize: 4 });
+          const next = (related?.data || []).find(
+            (row) => (row.legacyId || row.slug) && (row.legacyId || row.slug) !== hydrated.id,
+          );
+          if (next) hydrated.nextId = next.legacyId || next.slug;
+        }
+      } catch {
+        /* keep list-order nextId */
+      }
       if (!Array.isArray(bundle.workDetailCases)) bundle.workDetailCases = [];
-      const idx = bundle.workDetailCases.findIndex((c) => c.id === hydrated.id);
+      const idx = bundle.workDetailCases.findIndex((c) => c.id === hydrated.id || c.slug === hydrated.slug);
       if (idx >= 0) bundle.workDetailCases[idx] = hydrated;
       else bundle.workDetailCases.push(hydrated);
       if (!(bundle.detailById instanceof Map)) bundle.detailById = new Map();
       bundle.detailById.set(hydrated.id, hydrated);
+      if (hydrated.slug) bundle.detailById.set(hydrated.slug, hydrated);
       return hydrated;
     } catch (err) {
       console.warn('[cms] ensureWorkDetail failed:', err?.message || err);

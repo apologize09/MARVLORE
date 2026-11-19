@@ -165,10 +165,17 @@ export function bindWorkPathLinks(root = typeof document !== 'undefined' ? docum
     // Allow explicit full document navigation when requested
     if (link.target && link.target !== '_self') return;
     event.preventDefault();
+    const state = {};
+    if (route.type === 'work-detail' && typeof location !== 'undefined') {
+      state.returnUrl = `${location.pathname}${location.search}`;
+      state.returnScroll = window.scrollY || 0;
+    }
     navigateWork(route, {
       mode: 'push',
-      search: url.search,
+      // Detail URLs stay clean; filters live in returnUrl state.
+      search: route.type === 'work-detail' ? '' : url.search,
       hash: url.hash,
+      state,
     });
   };
   root.addEventListener('click', onClick);

@@ -1,4 +1,6 @@
 /* Desktop editorial project pages. The home-page gallery stays independent. */
+.case-not-found .case-title-row{grid-template-columns:1fr;}
+.case-not-found .case-footer{padding-top:48px;}
 html.work-detail-open,html.work-detail-open body{overflow:hidden;}
 html.work-detail-open .floating-nav{visibility:hidden;pointer-events:none;}
 #work-detail{position:fixed;inset:0;z-index:15000;background:#080808;color:#f2f2ed;font-family:var(--font-sans);isolation:isolate;}

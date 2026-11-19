@@ -1,13 +1,13 @@
 import {mountAwardEffects} from './award-effects.js?v=75358a56db';
 import {mountContactInteractions} from './contact-interactions.js?v=d6e35aeffa';
 import {mountSiteNavigation} from './navigation/menu.js?v=8f8a524dc7';
-import {mountWorkDetails} from './work-detail.js?v=5c5cb0355d';
+import {mountWorkDetails} from './work-detail.js?v=c730500987';
 import {mountWorkInteractions} from './work-interactions.js?v=203fae0eaf';
 import {mountWorkEntrance} from './work-entrance.js?v=70df8c2b46';
-import {mountWorkReel} from './work-reel.js?v=93285e98d8';
-import { Hero,Services,About,Work,Explore,Portal,Awards,Contact } from './components.js?v=a95147c98f';
-import { bootWorkBundle,getProjects,getWorkReelItems,getAwards,getWorkPage,getBundleLocale,getHeroProjects } from './cms/work-runtime.js?v=3708223355';
-import { mountWorkFilters } from './cms/work-filter-mount.js?v=96cdf9086f';
+import {mountWorkReel} from './work-reel.js?v=418adbd485';
+import { Hero,Services,About,Work,Explore,Portal,Awards,Contact } from './components.js?v=4a574b38b5';
+import { bootWorkBundle,getProjects,getWorkReelItems,getAwards,getWorkPage,getBundleLocale,getHeroProjects } from './cms/work-runtime.js?v=711a0f69d6';
+import { mountWorkFilters } from './cms/work-filter-mount.js?v=f41724251b';
 import { getCmsConfig } from './cms/config.js?v=1e182ce0a2';
 import { applyDocumentLang } from './cms/locale.js?v=654d705d77';
 import { applyWorkSeo } from './cms/seo.js?v=53dbe2d483';
@@ -21,8 +21,8 @@ import { mountExploreScene } from './explore-scene.js?v=8011054c86';
 import { mountPortalWall } from './portal-wall.js?v=2a736d75bc';
 import { mountReferenceCollage,mountWorkTextReveal,mountSectionTextReveal } from './about/reference.js?v=aa1da4205d';
 import { assetUrl } from './media-cdn.js?v=4a6c7d09a5';
-import { mountWorkRouteOwner,bindWorkPathLinks,navigateWork,parseWorkPath } from './work-route.js?v=d8ddbef5d6';
-import { mountWorkListingPage,renderWorkListingShell,hideWorkListingShell,applyWorkListingSeo } from './work-listing.js?v=94653e70e6';
+import { mountWorkRouteOwner,bindWorkPathLinks,navigateWork,parseWorkPath } from './work-route.js?v=4591b22067';
+import { mountWorkListingPage,renderWorkListingShell,hideWorkListingShell,applyWorkListingSeo } from './work-listing.js?v=ce558ecf61';
 
 async function start(){
  const cms=getCmsConfig();
@@ -111,14 +111,16 @@ async function start(){
   }
   if(route.type==='work-detail'){
    tearDownListing();
+   hideWorkListingShell(workChannel);
    channelMode='detail';
-   renderWorkListingShell(workChannel,{
-    title:workPage?.title,
-    intro:workPage?.intro,
-    mode:'detail-placeholder',
+   document.body.classList.remove('work-channel-active');
+   workDetails.open({
+    id:route.slug,
     slug:route.slug,
+    historyMode:'none',
+    pathMode:true,
+    returnUrl:history.state?.returnUrl||'/work',
    });
-   applyWorkListingSeo({title:route.slug,seoTitle:workPage?.seo?.metaTitle});
    return;
   }
   if(channelMode!=='list'||!listingController){
