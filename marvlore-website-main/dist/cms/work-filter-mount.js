@@ -1,6 +1,6 @@
 import { getCmsConfig } from './config.js?v=1e182ce0a2';
-import { createWorkApi } from './work-api.js?v=32753a3ef8';
-import { normalizeProjectToReelItem } from './work-normalize.js?v=46a1346312';
+import { createWorkApi } from './work-api.js?v=ae2aac4d08';
+import { normalizeProjectToReelItem } from './work-normalize.js?v=2ccfb94979';
 import {
   emptyWorkFilters,
   filtersEqual,

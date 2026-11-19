@@ -1,11 +1,11 @@
 import { getCmsConfig } from './config.js?v=1e182ce0a2';
-import { createWorkApi } from './work-api.js?v=32753a3ef8';
+import { createWorkApi } from './work-api.js?v=ae2aac4d08';
 import { buildStaticBundle, getStaticOverviewById } from './work-fallback.js?v=efa3d94e78';
 import {
   buildDetailList,
   normalizeCategoryToOverview,
   normalizeProjectToReelItem,
-} from './work-normalize.js?v=46a1346312';
+} from './work-normalize.js?v=2ccfb94979';
 
 const DIRECTION_SHELL_IDS = new Set(['film', 'visual', 'web', 'culture']);
 
