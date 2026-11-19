@@ -9,6 +9,17 @@ const shared={
   legalComments:'linked',
 };
 
+/** Map @marvlore/cms/<name> → ./cms/<name>.js (external, resolved from dist/). */
+const cmsExternalPlugin={
+  name:'marvlore-cms-external',
+  setup(buildApi){
+    buildApi.onResolve({filter:/^@marvlore\/cms\//},(args)=>{
+      const name=args.path.slice('@marvlore/cms/'.length);
+      return {path:`./cms/${name}.js`,external:true};
+    });
+  },
+};
+
 await build({
   ...shared,
   entryPoints:['src/work-navigation.js'],
@@ -23,6 +34,7 @@ await build({
   ...shared,
   entryPoints:['src/work/listing.js'],
   outfile:'dist/work-listing.js',
+  plugins:[cmsExternalPlugin],
 });
 await copyFile('src/work/listing.css','dist/work-listing.css');
 await copyFile('node_modules/motion/LICENSE.md','dist/vendor/MOTION-LICENSE.txt');

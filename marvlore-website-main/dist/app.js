@@ -22,7 +22,7 @@ import { mountPortalWall } from './portal-wall.js?v=2a736d75bc';
 import { mountReferenceCollage,mountWorkTextReveal,mountSectionTextReveal } from './about/reference.js?v=aa1da4205d';
 import { assetUrl } from './media-cdn.js?v=4a6c7d09a5';
 import { mountWorkRouteOwner,bindWorkPathLinks,navigateWork,parseWorkPath } from './work-route.js?v=d8ddbef5d6';
-import { renderWorkListingShell,hideWorkListingShell,applyWorkListingSeo } from './work-listing.js?v=8ec8de4700';
+import { mountWorkListingPage,renderWorkListingShell,hideWorkListingShell,applyWorkListingSeo } from './work-listing.js?v=94653e70e6';
 
 async function start(){
  const cms=getCmsConfig();
@@ -87,11 +87,19 @@ async function start(){
  mountSiteNavigation();
  window.addEventListener('marvlore:work-mode',()=>workTextReveal.refresh());
 
+ let listingController=null;
+ let channelMode=null;
+ function tearDownListing(){
+  listingController?.destroy?.();
+  listingController=null;
+ }
  function applyWorkChannel(route){
   const active=route?.type==='work-list'||route?.type==='work-detail';
   document.body.classList.toggle('work-channel-active',active);
   if(!active){
+   tearDownListing();
    hideWorkListingShell(workChannel);
+   channelMode=null;
    if(cms.enabled){
     applyWorkSeo(workPage?.seo,{
      locale:getBundleLocale(),
@@ -102,6 +110,8 @@ async function start(){
    return;
   }
   if(route.type==='work-detail'){
+   tearDownListing();
+   channelMode='detail';
    renderWorkListingShell(workChannel,{
     title:workPage?.title,
     intro:workPage?.intro,
@@ -111,20 +121,19 @@ async function start(){
    applyWorkListingSeo({title:route.slug,seoTitle:workPage?.seo?.metaTitle});
    return;
   }
-  renderWorkListingShell(workChannel,{
-   title:workPage?.title,
-   intro:workPage?.intro,
-   mode:'list',
-  });
-  applyWorkListingSeo({
-   title:workPage?.title,
-   seoTitle:workPage?.seo?.metaTitle,
-  });
+  if(channelMode!=='list'||!listingController){
+   tearDownListing();
+   channelMode='list';
+   listingController=mountWorkListingPage(workChannel,{
+    workPage,
+    categories:projects,
+    fallbackItems:workReelItems,
+   });
+  }
  }
 
  const workRouteOwner=mountWorkRouteOwner(applyWorkChannel);
  const unbindWorkLinks=bindWorkPathLinks(document);
- // Home back from listing uses full navigation to "/" via href; also handle via owner
  workChannel.addEventListener('click',event=>{
   const back=event.target.closest('[data-work-listing-back]');
   if(!back)return;
