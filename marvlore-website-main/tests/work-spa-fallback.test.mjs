@@ -50,11 +50,16 @@ test('server.mjs serves index.html for /work and /work/:slug', async () => {
     assert.equal(home.status, 200);
     assert.match(home.body, /<main id="app"><\/main>/);
 
-    for (const pathname of ['/work', '/work/', '/work/sample-slug', '/work/sample-slug/']) {
+    for (const pathname of ['/work', '/work/sample-slug']) {
       const res = await get(port, pathname);
       assert.equal(res.status, 200, pathname);
       assert.match(res.type, /text\/html/);
       assert.match(res.body, /<main id="app"><\/main>/);
+      assert.match(res.body, /<base href="\/">/);
+    }
+    for (const pathname of ['/work/', '/work/sample-slug/']) {
+      const res = await get(port, pathname);
+      assert.equal(res.status, 308, pathname);
     }
 
     const missing = await get(port, '/definitely-missing-path');
