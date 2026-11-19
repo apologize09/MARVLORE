@@ -45,10 +45,9 @@ export function normalizeCategoryToOverview(categoryDto, fallbackById = {}) {
 }
 
 export function normalizeProjectToReelItem(projectDto) {
+  // Cover is the single project image: reel open, collapsed thumb, and video poster all use it.
   const coverUrl = projectDto.coverUrl || projectDto.cover?.url;
-  const thumb = projectDto.thumbnailUrl || projectDto.thumbnail?.url || coverUrl;
-  const poster = projectDto.posterUrl || coverUrl;
-  const src = toWebPath(coverUrl || poster);
+  const src = toWebPath(coverUrl);
   return {
     id: projectDto.legacyId || projectDto.slug,
     category: projectDto.category?.slug || projectDto.categorySlug || 'visual',
@@ -56,7 +55,7 @@ export function normalizeProjectToReelItem(projectDto) {
     subtitle: projectDto.subtitle || projectDto.summary || '',
     alt: projectDto.cover?.alternativeText || `${projectDto.title}项目封面`,
     src,
-    thumbnailSrc: thumb ? toWebPath(thumb) : null,
+    thumbnailSrc: src,
     previewSrc: projectDto.previewVideoUrl ? toWebPath(projectDto.previewVideoUrl) : null,
     videoSrc: projectDto.videoUrl ? toWebPath(projectDto.videoUrl) : null,
     homePreviewSrc: projectDto.homePreviewVideoUrl
@@ -96,18 +95,19 @@ export function normalizeMediaBlock(block) {
 export function normalizeProjectToDetail(projectDto, { index = 1, total = 1, nextId = null } = {}) {
   const reel = normalizeProjectToReelItem(projectDto);
   const isVideo = Boolean(projectDto.videoUrl) || projectDto.projectType === 'video';
+  const coverUrl = projectDto.coverUrl || projectDto.cover?.url;
   const cover = isVideo
     ? {
         type: 'video',
         src: toWebPath(projectDto.videoUrl),
-        poster: toWebPath(projectDto.posterUrl || projectDto.coverUrl || projectDto.cover?.url),
+        poster: toWebPath(coverUrl),
         alt: projectDto.cover?.alternativeText || projectDto.title,
         width: projectDto.cover?.width || 1920,
         height: projectDto.cover?.height || 1080,
       }
     : {
         type: 'image',
-        src: toWebPath(projectDto.coverUrl || projectDto.cover?.url),
+        src: toWebPath(coverUrl),
         alt: projectDto.cover?.alternativeText || projectDto.title,
         width: projectDto.cover?.width || 1920,
         height: projectDto.cover?.height || 1080,
