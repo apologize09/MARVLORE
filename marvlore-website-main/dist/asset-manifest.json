@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-19T08:06:59.521Z",
+  "generatedAt": "2026-11-19T08:15:58.906Z",
   "hashLength": 10,
   "assets": {
     "about/reference.css": "3cb381c423",
@@ -230,7 +230,7 @@
     "work-filter.css": "63310a6759",
     "work-interactions.css": "9921a8b283",
     "work-interactions.js": "203fae0eaf",
-    "work-listing.css": "61ab5d4b34",
+    "work-listing.css": "633c83d363",
     "work-listing.js": "2e331fa8e1",
     "work-navigation.js": "314b940e5b",
     "work-reel-data.js": "f80cf439f9",

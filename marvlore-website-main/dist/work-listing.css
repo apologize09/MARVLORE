@@ -1,38 +1,59 @@
-/* Work channel listing + home "view more" CTA */
+/* Work channel listing + home "view more" CTA
+   Matches homepage pill language (work-categories / portal-cta). */
 
 .work-channel-cta {
-  margin-top: clamp(18px, 2.4vw, 28px);
+  margin-top: clamp(20px, 2.6vw, 32px);
 }
 
 .work-view-more {
+  appearance: none;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
-  color: #c8e79e;
-  font: 500 clamp(12px, 1.1vw, 18px) / 1.2 var(--font-sans, inherit);
+  min-height: 44px;
+  padding: 10px 24px;
+  border: 1px solid #626262;
+  border-radius: 100px;
+  background: #171719;
+  color: #f2f2f2;
+  font: 500 13px / 1.2 var(--font-sans, inherit);
   letter-spacing: 0.02em;
   text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  box-shadow: 0 1px 3px #0005;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.25s ease;
 }
 
 .work-view-more > span[aria-hidden] {
-  transition: transform 0.25s ease;
+  color: #c8e79e;
+  font-size: 1.05em;
+  line-height: 1;
+  transition: transform 0.25s ease, color 0.2s ease;
 }
 
 .work-view-more:hover {
-  color: #e8ffb5;
-  border-bottom-color: #e8ffb580;
+  color: #fff;
+  background: #242428;
+  border-color: #c8e79e;
 }
 
 .work-view-more:hover > span[aria-hidden] {
+  color: #e8ffb5;
   transform: translate(3px, -2px);
 }
 
+.work-view-more:active {
+  background: #2e2e33;
+  transform: translateY(1px);
+}
+
 .work-view-more:focus-visible {
-  outline: 2px solid #c8e79e;
-  outline-offset: 6px;
-  border-radius: 2px;
+  outline: 2px solid var(--lime, #c8e79e);
+  outline-offset: 5px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -40,7 +61,8 @@
   .work-view-more > span[aria-hidden] {
     transition: none;
   }
-  .work-view-more:hover > span[aria-hidden] {
+  .work-view-more:hover > span[aria-hidden],
+  .work-view-more:active {
     transform: none;
   }
 }
