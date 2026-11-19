@@ -22,7 +22,7 @@ import { mountPortalWall } from './portal-wall.js?v=2a736d75bc';
 import { mountReferenceCollage,mountWorkTextReveal,mountSectionTextReveal } from './about/reference.js?v=aa1da4205d';
 import { assetUrl } from './media-cdn.js?v=4a6c7d09a5';
 import { mountWorkRouteOwner,bindWorkPathLinks,navigateWork,parseWorkPath } from './work-route.js?v=4591b22067';
-import { mountWorkListingPage,renderWorkListingShell,hideWorkListingShell,applyWorkListingSeo } from './work-listing.js?v=ce558ecf61';
+import { mountWorkListingPage,renderWorkListingShell,hideWorkListingShell,applyWorkListingSeo } from './work-listing.js?v=f6c0e311f0';
 
 async function start(){
  const cms=getCmsConfig();

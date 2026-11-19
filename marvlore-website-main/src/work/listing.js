@@ -60,23 +60,29 @@ function renderShell({ title, intro, categories }) {
       <h1 id="work-listing-title">${escapeHtml(title)}</h1>
       <p class="work-listing-intro">${escapeHtml(intro)}</p>
     </header>
-    <div class="work-listing-categories" role="toolbar" aria-label="作品分类">${catButtons}</div>
-    <div class="work-listing-filters" data-work-listing-filters>
-      <label class="work-listing-search">
-        <span class="sr-only">搜索作品</span>
-        <input type="search" name="q" placeholder="搜索作品、客户、标签…" autocomplete="off" enterkeyhint="search">
-      </label>
-      <div class="work-listing-tags" data-work-listing-tags role="group" aria-label="标签筛选"></div>
-      <label class="work-listing-sort">
-        <span class="sr-only">排序</span>
-        <select name="sort" aria-label="排序">
-          <option value="manual">默认排序</option>
-          <option value="latest">最新</option>
-          <option value="oldest">最早</option>
-          <option value="featured">精选优先</option>
-        </select>
-      </label>
-      <button type="button" class="work-listing-clear" data-work-listing-clear hidden>清空筛选</button>
+    <div class="work-listing-toolbar" data-work-listing-toolbar>
+      <div class="work-listing-categories" role="toolbar" aria-label="作品分类">${catButtons}</div>
+      <div class="work-listing-filters" data-work-listing-filters>
+        <div class="work-listing-controls">
+          <label class="work-listing-search">
+            <span class="sr-only">搜索作品</span>
+            <input type="search" name="q" placeholder="搜索作品、客户、标签…" autocomplete="off" enterkeyhint="search">
+          </label>
+          <div class="work-listing-sort" data-work-listing-sort>
+            <button type="button" class="work-listing-sort-trigger" data-work-listing-sort-trigger aria-haspopup="listbox" aria-expanded="false" aria-label="排序">
+              <span data-work-listing-sort-label>默认排序</span>
+            </button>
+            <ul class="work-listing-sort-menu" data-work-listing-sort-menu role="listbox" aria-label="排序" hidden>
+              <li role="option" data-sort="manual" aria-selected="true">默认排序</li>
+              <li role="option" data-sort="latest" aria-selected="false">最新</li>
+              <li role="option" data-sort="oldest" aria-selected="false">最早</li>
+              <li role="option" data-sort="featured" aria-selected="false">精选优先</li>
+            </ul>
+          </div>
+          <button type="button" class="work-listing-clear" data-work-listing-clear hidden>清空筛选</button>
+        </div>
+        <div class="work-listing-tags" data-work-listing-tags role="group" aria-label="标签筛选"></div>
+      </div>
     </div>
     <div class="work-listing-status" data-work-listing-status role="status" aria-live="polite"></div>
     <div class="work-listing-grid" data-work-listing-grid></div>
@@ -199,12 +205,39 @@ export function mountWorkListingPage(root, opts = {}) {
   let pageCount = 1;
   let total = null;
 
+  const SORT_LABELS = {
+    manual: '默认排序',
+    latest: '最新',
+    oldest: '最早',
+    featured: '精选优先',
+  };
+
+  const syncSortChrome = () => {
+    const sortValue = state.sort || 'manual';
+    const label = filtersEl?.querySelector('[data-work-listing-sort-label]');
+    const trigger = filtersEl?.querySelector('[data-work-listing-sort-trigger]');
+    const menu = filtersEl?.querySelector('[data-work-listing-sort-menu]');
+    if (label) label.textContent = SORT_LABELS[sortValue] || SORT_LABELS.manual;
+    menu?.querySelectorAll('[data-sort]').forEach((opt) => {
+      const selected = opt.getAttribute('data-sort') === sortValue;
+      opt.setAttribute('aria-selected', String(selected));
+    });
+    if (trigger) trigger.setAttribute('aria-expanded', 'false');
+    if (menu) menu.hidden = true;
+  };
+
+  const closeSortMenu = () => {
+    const trigger = filtersEl?.querySelector('[data-work-listing-sort-trigger]');
+    const menu = filtersEl?.querySelector('[data-work-listing-sort-menu]');
+    if (trigger) trigger.setAttribute('aria-expanded', 'false');
+    if (menu) menu.hidden = true;
+  };
+
   const syncChrome = () => {
     const input = filtersEl?.querySelector('input[name="q"]');
-    const sort = filtersEl?.querySelector('select[name="sort"]');
     const clearBtns = root.querySelectorAll('[data-work-listing-clear]');
     if (input && input.value !== (state.q || '')) input.value = state.q || '';
-    if (sort) sort.value = state.sort || 'manual';
+    syncSortChrome();
     clearBtns.forEach((btn) => {
       btn.hidden = !hasActiveFilters(state);
     });
@@ -314,11 +347,28 @@ export function mountWorkListingPage(root, opts = {}) {
     commit({ ...state, q, page: 1 }, { replace: true });
   }, DEBOUNCE_MS);
 
+  // Hide tags that merely echo level-2 category names/slugs (already in the category row).
+  const categoryEcho = new Set(
+    level2Categories(categories).flatMap((c) =>
+      [c.id, c.label].filter(Boolean).map((v) => String(v).trim().toLowerCase()),
+    ),
+  );
+
   api
     .getTags()
     .then((res) => {
       if (destroyed) return;
-      tagCatalog = res?.data || [];
+      tagCatalog = (res?.data || []).filter((tag) => {
+        const slug = String(tag.slug || tag.id || '')
+          .trim()
+          .toLowerCase();
+        const name = String(tag.name || '')
+          .trim()
+          .toLowerCase();
+        if (!slug && !name) return false;
+        if (categoryEcho.has(slug) || categoryEcho.has(name)) return false;
+        return true;
+      });
       renderTags(tagsEl, tagCatalog, state.tags);
     })
     .catch(() => {});
@@ -326,11 +376,32 @@ export function mountWorkListingPage(root, opts = {}) {
   filtersEl?.querySelector('input[name="q"]')?.addEventListener('input', (event) => {
     debouncedQuery(event.target.value.trim());
   });
-  filtersEl?.querySelector('select[name="sort"]')?.addEventListener('change', (event) => {
-    commit({ ...state, sort: event.target.value || 'manual', page: 1 }, { replace: false });
-  });
+
+  const onDocClickCloseSort = (event) => {
+    if (!filtersEl?.querySelector('[data-work-listing-sort]')?.contains(event.target)) {
+      closeSortMenu();
+    }
+  };
+  document.addEventListener('click', onDocClickCloseSort);
 
   root.addEventListener('click', (event) => {
+    const sortTrigger = event.target.closest('[data-work-listing-sort-trigger]');
+    if (sortTrigger) {
+      event.stopPropagation();
+      const menu = filtersEl?.querySelector('[data-work-listing-sort-menu]');
+      const nextOpen = Boolean(menu?.hidden);
+      sortTrigger.setAttribute('aria-expanded', String(nextOpen));
+      if (menu) menu.hidden = !nextOpen;
+      return;
+    }
+    const sortOpt = event.target.closest('[data-work-listing-sort-menu] [data-sort]');
+    if (sortOpt) {
+      event.stopPropagation();
+      const value = sortOpt.getAttribute('data-sort') || 'manual';
+      closeSortMenu();
+      commit({ ...state, sort: value, page: 1 }, { replace: false });
+      return;
+    }
     const catBtn = event.target.closest('[data-work-listing-category]');
     if (catBtn) {
       const id = catBtn.getAttribute('data-work-listing-category');
@@ -389,6 +460,7 @@ export function mountWorkListingPage(root, opts = {}) {
     destroy() {
       destroyed = true;
       window.removeEventListener('popstate', onPopState);
+      document.removeEventListener('click', onDocClickCloseSort);
     },
   };
 }
