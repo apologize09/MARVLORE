@@ -1,0 +1,21 @@
+/* ScrollSmoother shell — feel only; no parallax helpers. */
+
+#smooth-wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+#smooth-content {
+  width: 100%;
+  min-height: 100%;
+  will-change: transform;
+}
+
+/* Avoid double-smoothing against native CSS scroll-behavior. */
+html.has-scroll-smoother {
+  scroll-behavior: auto;
+}
+
+html.has-scroll-smoother body {
+  overscroll-behavior-y: none;
+}

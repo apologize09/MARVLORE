@@ -1,6 +1,6 @@
 import {mountAwardEffects} from './award-effects.js?v=75358a56db';
 import {mountContactInteractions} from './contact-interactions.js?v=d6e35aeffa';
-import {mountSiteNavigation} from './navigation/menu.js?v=8f8a524dc7';
+import {mountSiteNavigation} from './navigation/menu.js?v=9cda9d290d';
 import {mountWorkDetails} from './work-detail.js?v=c730500987';
 import {mountWorkInteractions} from './work-interactions.js?v=203fae0eaf';
 import {mountWorkEntrance} from './work-entrance.js?v=70df8c2b46';
@@ -13,16 +13,17 @@ import { applyDocumentLang } from './cms/locale.js?v=654d705d77';
 import { applyWorkSeo } from './cms/seo.js?v=53dbe2d483';
 import { mountWorkCacheSync } from './cms/work-cache-sync.js?v=9068347e6b';
 import { Spring,reducedMotion,createAwardsCarousel } from './motion.js?v=53e5c054f1';
-import { mountHeroOrbit } from './hero/orbit.js?v=4b28d9d1f5';
+import { mountHeroOrbit } from './hero/orbit.js?v=903bbc5f97';
 import { observeCardCorners } from './card-shape.js?v=dc5814bef2';
 import { createProjectGallery } from './project-gallery.js?v=2847385654';
 import { mountServices } from './services/experience.js?v=482268d7dd';
 import { mountExploreScene } from './explore-scene.js?v=8011054c86';
 import { mountPortalWall } from './portal-wall.js?v=2a736d75bc';
-import { mountReferenceCollage,mountWorkTextReveal,mountSectionTextReveal } from './about/reference.js?v=aa1da4205d';
+import { mountReferenceCollage,mountWorkTextReveal,mountSectionTextReveal } from './about/reference.js?v=8024438dbd';
 import { assetUrl } from './media-cdn.js?v=4a6c7d09a5';
 import { mountWorkRouteOwner,bindWorkPathLinks,navigateWork,parseWorkPath } from './work-route.js?v=4591b22067';
 import { mountWorkListingPage,renderWorkListingShell,hideWorkListingShell,applyWorkListingSeo } from './work-listing.js?v=2e331fa8e1';
+import { mountScrollSmoother,refreshScrollSmoother } from './scroll-smoother.js?v=55a93e1689';
 
 async function start(){
  const cms=getCmsConfig();
@@ -41,14 +42,18 @@ async function start(){
  }
 
  document.querySelector('#app').innerHTML=[Hero,Services,About,Work,Explore,Portal,Awards,Contact].map(component=>component()).join('');
+ const smoothContent=document.querySelector('#smooth-content')||document.body;
  let workChannel=document.getElementById('work-channel');
  if(!workChannel){
   workChannel=document.createElement('div');
   workChannel.id='work-channel';
   workChannel.hidden=true;
-  document.body.append(workChannel);
+  smoothContent.append(workChannel);
+ }else if(workChannel.parentElement!==smoothContent){
+  smoothContent.append(workChannel);
  }
  document.documentElement.classList.add('js');
+ mountScrollSmoother();
  const brandProjects=getHeroProjects();
  const workProjects=projects.map(project=>({id:`work-${project.id}`,src:project.image?assetUrl(project.image):null,title:project.title}));
  const gallery=createProjectGallery({groups:[brandProjects,workProjects,workReelItems],sourceFor:id=>{
@@ -107,6 +112,7 @@ async function start(){
      fallbackDescription:workPage?.intro||undefined,
     });
    }
+   requestAnimationFrame(()=>refreshScrollSmoother());
    return;
   }
   if(route.type==='work-detail'){
@@ -121,6 +127,7 @@ async function start(){
     pathMode:true,
     returnUrl:history.state?.returnUrl||'/work',
    });
+   requestAnimationFrame(()=>refreshScrollSmoother());
    return;
   }
   if(channelMode!=='list'||!listingController){
@@ -132,6 +139,7 @@ async function start(){
     fallbackItems:workReelItems,
    });
   }
+  requestAnimationFrame(()=>refreshScrollSmoother());
  }
 
  const workRouteOwner=mountWorkRouteOwner(applyWorkChannel);

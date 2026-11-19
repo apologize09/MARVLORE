@@ -54,23 +54,3 @@ react/cjs/react-jsx-runtime.production.js:
    * This source code is licensed under the MIT license found in the
    * LICENSE file in the root directory of this source tree.
    */
-
-gsap/gsap-core.js:
-  /*!
-   * GSAP 3.13.0
-   * https://gsap.com
-   *
-   * @license Copyright 2008-2025, GreenSock. All rights reserved.
-   * Subject to the terms at https://gsap.com/standard-license
-   * @author: Jack Doyle, jack@greensock.com
-  */
-
-gsap/CSSPlugin.js:
-  /*!
-   * CSSPlugin 3.13.0
-   * https://gsap.com
-   *
-   * Copyright 2008-2025, GreenSock. All rights reserved.
-   * Subject to the terms at https://gsap.com/standard-license
-   * @author: Jack Doyle, jack@greensock.com
-  */

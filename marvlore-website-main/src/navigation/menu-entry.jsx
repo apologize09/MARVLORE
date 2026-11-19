@@ -1,6 +1,7 @@
 import React from 'react';
 import {createRoot} from 'react-dom/client';
 import {gsap} from 'gsap';
+import {ScrollSmoother} from 'gsap/ScrollSmoother';
 import StaggeredMenu from './StaggeredMenu.jsx';
 
 export const menuItems=[
@@ -20,6 +21,11 @@ function navigate(link){
  requestAnimationFrame(()=>{
   scrollTween?.kill();
   history.replaceState(null,'',link);
+  const smoother=ScrollSmoother.get?.();
+  if(smoother){
+   smoother.scrollTo(target,!matchMedia('(prefers-reduced-motion: reduce)').matches,'top 72px');
+   return;
+  }
   const y=Math.max(0,Math.min(window.scrollY+target.getBoundingClientRect().top,document.documentElement.scrollHeight-innerHeight));
   if(matchMedia('(prefers-reduced-motion: reduce)').matches){window.scrollTo({top:y,behavior:'instant'});return;}
   const state={y:window.scrollY};
