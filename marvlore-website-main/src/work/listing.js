@@ -14,6 +14,19 @@ import {
   writeWorkFilters,
 } from '@marvlore/cms/work-filter-state';
 import { projectDtoToCard, reelItemToCard, renderProjectCardGrid } from './project-card.js';
+import {
+  inferTagCategoriesFromProjects,
+  pruneSelectedTags,
+  tagCategorySlugs,
+  tagsForActiveCategory,
+} from './listing-tags.js';
+
+export {
+  inferTagCategoriesFromProjects,
+  pruneSelectedTags,
+  tagCategorySlugs,
+  tagsForActiveCategory,
+} from './listing-tags.js';
 
 const DEBOUNCE_MS = 300;
 
@@ -105,9 +118,10 @@ function renderShell({ title, intro, categories }) {
 
 function renderTags(container, tags, selected) {
   if (!container) return;
+  const list = (tags || []).slice(0, 16);
   const selectedSet = new Set(selected || []);
-  container.innerHTML = (tags || [])
-    .slice(0, 16)
+  container.hidden = list.length === 0;
+  container.innerHTML = list
     .map((tag) => {
       const slug = tag.slug || tag.id;
       const name = tag.name || slug;
@@ -233,6 +247,10 @@ export function mountWorkListingPage(root, opts = {}) {
     if (menu) menu.hidden = true;
   };
 
+  const activeCategoryId = () => state.subcategory || state.category || 'all';
+
+  const visibleTagCatalog = () => tagsForActiveCategory(tagCatalog, activeCategoryId());
+
   const syncChrome = () => {
     const input = filtersEl?.querySelector('input[name="q"]');
     const clearBtns = root.querySelectorAll('[data-work-listing-clear]');
@@ -241,12 +259,12 @@ export function mountWorkListingPage(root, opts = {}) {
     clearBtns.forEach((btn) => {
       btn.hidden = !hasActiveFilters(state);
     });
-    const active = state.subcategory || state.category || 'all';
+    const active = activeCategoryId();
     root.querySelectorAll('[data-work-listing-category]').forEach((btn) => {
       const id = btn.getAttribute('data-work-listing-category');
       btn.setAttribute('aria-pressed', String(id === active || (active === 'all' && id === 'all')));
     });
-    renderTags(tagsEl, tagCatalog, state.tags);
+    renderTags(tagsEl, visibleTagCatalog(), state.tags);
   };
 
   const paintGrid = ({ append = false } = {}) => {
@@ -354,22 +372,39 @@ export function mountWorkListingPage(root, opts = {}) {
     ),
   );
 
-  api
-    .getTags()
-    .then((res) => {
+  Promise.all([api.getTags().catch(() => null), api.getProjects({ pageSize: 48 }).catch(() => null)])
+    .then(([tagRes, projectRes]) => {
       if (destroyed) return;
-      tagCatalog = (res?.data || []).filter((tag) => {
-        const slug = String(tag.slug || tag.id || '')
-          .trim()
-          .toLowerCase();
-        const name = String(tag.name || '')
-          .trim()
-          .toLowerCase();
-        if (!slug && !name) return false;
-        if (categoryEcho.has(slug) || categoryEcho.has(name)) return false;
-        return true;
-      });
-      renderTags(tagsEl, tagCatalog, state.tags);
+      const inferred = inferTagCategoriesFromProjects(projectRes?.data || []);
+      tagCatalog = (tagRes?.data || [])
+        .map((tag) => {
+          const slug = String(tag.slug || tag.id || '')
+            .trim()
+            .toLowerCase();
+          const fromDto = tagCategorySlugs(tag);
+          const fromProjects = inferred.get(slug);
+          const categorySlugs = new Set(fromDto);
+          if (fromProjects) for (const c of fromProjects) categorySlugs.add(c);
+          return { ...tag, categorySlugs: [...categorySlugs] };
+        })
+        .filter((tag) => {
+          const slug = String(tag.slug || tag.id || '')
+            .trim()
+            .toLowerCase();
+          const name = String(tag.name || '')
+            .trim()
+            .toLowerCase();
+          if (!slug && !name) return false;
+          if (categoryEcho.has(slug) || categoryEcho.has(name)) return false;
+          return true;
+        });
+      const visible = visibleTagCatalog();
+      const nextTags = pruneSelectedTags(state.tags, visible);
+      if (nextTags.length !== (state.tags || []).length) {
+        commit({ ...state, tags: nextTags, page: 1 }, { replace: true });
+        return;
+      }
+      renderTags(tagsEl, visible, state.tags);
     })
     .catch(() => {});
 
@@ -405,11 +440,14 @@ export function mountWorkListingPage(root, opts = {}) {
     const catBtn = event.target.closest('[data-work-listing-category]');
     if (catBtn) {
       const id = catBtn.getAttribute('data-work-listing-category');
+      const nextCategory = id && id !== 'all' ? id : '';
+      const nextVisible = tagsForActiveCategory(tagCatalog, nextCategory || 'all');
       commit(
         {
           ...state,
-          subcategory: id && id !== 'all' ? id : '',
+          subcategory: nextCategory,
           category: '',
+          tags: pruneSelectedTags(state.tags, nextVisible),
           page: 1,
         },
         { replace: true },
