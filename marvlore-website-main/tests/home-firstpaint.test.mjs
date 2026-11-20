@@ -45,6 +45,19 @@ test('hero-entry does not wait for all posters and fonts before ready', () => {
   assert.match(src, /scrollY/);
 });
 
+test('CircularCarousel does not gate intro on a 2.4s full-deck decode', () => {
+  const src = load('src/hero/CircularCarousel.jsx');
+  assert.match(src, /slice\(0,\s*2\)/);
+  assert.match(src, /320/);
+  assert.doesNotMatch(src, /setTimeout\(resolve,\s*2400\)/);
+});
+
+test('hash-assets rewrites dynamic import() queries', () => {
+  const src = load('scripts/hash-assets.mjs');
+  assert.match(src, /\[\^'"\\s\)\?\]\+/);
+  assert.match(src, /import\)\\s\*\\\(\?\\s\*\['"\]/);
+});
+
 test('index.html modulepreloads hero orbit and shows a boot poster', () => {
   const html = load('dist/index.html');
   assert.match(html, /rel="modulepreload"[^>]*hero\/orbit\.js/);

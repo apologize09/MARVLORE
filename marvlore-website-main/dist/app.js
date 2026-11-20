@@ -32,7 +32,7 @@ async function start(){
  const initialRoute=parseWorkPath(location.pathname);
  const preferWork=initialRoute.type==='work-list'||initialRoute.type==='work-detail';
  // Start downloading the hero island immediately (overlaps paint + optional CMS).
- const heroImportP=preferWork?null:import('./hero/orbit.js?v=4b28d9d1f5');
+ const heroImportP=preferWork?null:import('./hero/orbit.js?v=86005d2035');
  // CMS resolve in parallel — module already holds a static bundle for first paint.
  const cmsBoot=bootWorkBundle();
 
@@ -170,7 +170,7 @@ async function start(){
    {createProjectGallery},
    {mountWorkCacheSync},
   ]=await Promise.all([
-   import('./work-detail.js?v=c730500987'),
+   import('./work-detail.js?v=3babfa22fa'),
    import('./project-gallery.js?v=2847385654'),
    import('./cms/work-cache-sync.js?v=9068347e6b'),
   ]);
@@ -203,7 +203,7 @@ async function start(){
  }
 
  async function mountHero(){
-  const {mountHeroOrbit}=await (heroImportP||import('./hero/orbit.js?v=4b28d9d1f5'));
+  const {mountHeroOrbit}=await (heroImportP||import('./hero/orbit.js?v=86005d2035'));
   mountHeroOrbit();
  }
 

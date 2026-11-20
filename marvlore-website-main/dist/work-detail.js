@@ -61,7 +61,7 @@ export function mountWorkDetails(){
  function initZoom(){
   lightbox?.destroy();
   lightbox=new PhotoSwipeLightbox({gallery:root,children:'a[data-case-zoom]',
-   pswpModule:()=>import('./vendor/photoswipe/photoswipe.esm.min.js'),
+   pswpModule:()=>import('./vendor/photoswipe/photoswipe.esm.min.js?v=542069771b'),
    bgOpacity:1,padding:{top:74,bottom:48,left:42,right:42},
    showAnimationDuration:reducedMotion.matches?0:320,hideAnimationDuration:reducedMotion.matches?0:260,
    zoomAnimationDuration:reducedMotion.matches?0:260,closeTitle:'关闭图片',zoomTitle:'放大图片',arrowPrevTitle:'上一张',arrowNextTitle:'下一张',

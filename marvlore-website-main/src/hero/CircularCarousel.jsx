@@ -378,6 +378,7 @@ const CircularCarousel = ({
       setLeaving(null);
       setList(next);
     }
+    // Warm a couple of frames quickly; do not block intro on the full deck (was up to 2.4s).
     const sources = next.slice(0, 16).map(item => item.src);
     const load = src =>
       new Promise(resolve => {
@@ -387,8 +388,10 @@ const CircularCarousel = ({
         image.onerror = resolve;
         image.src = src;
       });
-    const timeout = new Promise(resolve => setTimeout(resolve, 2400));
-    Promise.race([Promise.all(sources.map(load)), timeout]).then(() => {
+    const critical = sources.slice(0, 2).map(load);
+    sources.slice(2).forEach(load);
+    const timeout = new Promise(resolve => setTimeout(resolve, 320));
+    Promise.race([Promise.all(critical), timeout]).then(() => {
       if (cancelled) return;
       const state = stateRef.current;
       if (smooth) {
