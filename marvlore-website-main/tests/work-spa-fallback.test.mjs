@@ -48,13 +48,14 @@ test('server.mjs serves index.html for /work and /work/:slug', async () => {
   try {
     const home = await get(port, '/');
     assert.equal(home.status, 200);
-    assert.match(home.body, /<main id="app"><\/main>/);
+    assert.match(home.body, /<main id="app">/);
+    assert.match(home.body, /id="hero-orbit"/);
 
     for (const pathname of ['/work', '/work/sample-slug']) {
       const res = await get(port, pathname);
       assert.equal(res.status, 200, pathname);
       assert.match(res.type, /text\/html/);
-      assert.match(res.body, /<main id="app"><\/main>/);
+      assert.match(res.body, /<main id="app">/);
       assert.match(res.body, /<base href="\/">/);
     }
     for (const pathname of ['/work/', '/work/sample-slug/']) {

@@ -1,10 +1,18 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="boot-pending">
 <head>
  <meta charset="UTF-8">
  <!-- Root base so /work and /work/:slug resolve ./assets and ./app.js correctly -->
  <base href="/">
  <script src="./page-start.js?v=289443e760"></script>
+ <!-- Instant first paint before module graph: black bg + hero title (avoids empty black wait). -->
+ <style>
+  html,body{margin:0;background:#000;color:#f4f4f0}
+  .boot-shell{max-width:1800px;margin:auto;padding:clamp(60px,7.2vw,135px) 0 clamp(100px,12vw,220px)}
+  .boot-shell .hero-inner{padding:0 clamp(22px,4.4vw,80px)}
+  .boot-shell h1{margin:0;font-weight:400;font-size:clamp(33px,8.8vw,158px);letter-spacing:-.072em;line-height:1.06;white-space:nowrap}
+  .boot-shell .hero-stage{min-height:clamp(220px,42vw,520px)}
+ </style>
 
  <meta name="viewport" content="width=device-width,initial-scale=1">
  <meta name="theme-color" content="#000000">
@@ -20,26 +28,48 @@
  <link rel="stylesheet" href="./layout.css?v=a6bf469766">
  <link rel="stylesheet" href="./interactions.css?v=0e671feba2">
  <link rel="stylesheet" href="./hero/orbit.css?v=d5eca766d4">
- <link rel="stylesheet" href="./project-gallery.css?v=0713a5cff7">
- <link rel="stylesheet" href="./services/experience.css?v=b2603a71c8">
- <link rel="stylesheet" href="./about/reference.css?v=3cb381c423">
- <link rel="stylesheet" href="./explore-scene.css?v=21fc8f8222">
- <link rel="stylesheet" href="./portal-wall.css?v=650b05dafd">
  <link rel="stylesheet" href="./fonts.css?v=c3c2d1a78e">
- <link rel="stylesheet" href="./work-interactions.css?v=9921a8b283">
- <link rel="stylesheet" href="./work-reel.css?v=369a8ae5ce">
+ <!-- /work listing+detail stay blocking so deep links do not FOUC. -->
  <link rel="stylesheet" href="./work-listing.css?v=4ce65ecc5e">
  <link rel="stylesheet" href="./work-filter.css?v=63310a6759">
- <link rel="stylesheet" href="./vendor/photoswipe/photoswipe.css?v=bb5e956812">
  <link rel="stylesheet" href="./work-detail.css?v=25432dd7f0">
- <link rel="stylesheet" href="./navigation/menu.css?v=6151d420a9">
- <link rel="stylesheet" href="./award-effects.css?v=c7efd7d53e">
- <link rel="stylesheet" href="./contact-layout.css?v=e76c53b8e3">
+ <!-- Below-fold CSS: non-blocking for home first paint. -->
+ <link rel="stylesheet" href="./project-gallery.css?v=0713a5cff7" media="print" onload="this.media='all'">
+ <link rel="stylesheet" href="./services/experience.css?v=b2603a71c8" media="print" onload="this.media='all'">
+ <link rel="stylesheet" href="./about/reference.css?v=3cb381c423" media="print" onload="this.media='all'">
+ <link rel="stylesheet" href="./explore-scene.css?v=21fc8f8222" media="print" onload="this.media='all'">
+ <link rel="stylesheet" href="./portal-wall.css?v=650b05dafd" media="print" onload="this.media='all'">
+ <link rel="stylesheet" href="./work-interactions.css?v=9921a8b283" media="print" onload="this.media='all'">
+ <link rel="stylesheet" href="./work-reel.css?v=369a8ae5ce" media="print" onload="this.media='all'">
+ <link rel="stylesheet" href="./vendor/photoswipe/photoswipe.css?v=bb5e956812" media="print" onload="this.media='all'">
+ <link rel="stylesheet" href="./navigation/menu.css?v=6151d420a9" media="print" onload="this.media='all'">
+ <link rel="stylesheet" href="./award-effects.css?v=c7efd7d53e" media="print" onload="this.media='all'">
+ <link rel="stylesheet" href="./contact-layout.css?v=e76c53b8e3" media="print" onload="this.media='all'">
+ <noscript>
+  <link rel="stylesheet" href="./project-gallery.css?v=0713a5cff7">
+  <link rel="stylesheet" href="./services/experience.css?v=b2603a71c8">
+  <link rel="stylesheet" href="./about/reference.css?v=3cb381c423">
+  <link rel="stylesheet" href="./explore-scene.css?v=21fc8f8222">
+  <link rel="stylesheet" href="./portal-wall.css?v=650b05dafd">
+  <link rel="stylesheet" href="./work-interactions.css?v=9921a8b283">
+  <link rel="stylesheet" href="./work-reel.css?v=369a8ae5ce">
+  <link rel="stylesheet" href="./vendor/photoswipe/photoswipe.css?v=bb5e956812">
+  <link rel="stylesheet" href="./navigation/menu.css?v=6151d420a9">
+  <link rel="stylesheet" href="./award-effects.css?v=c7efd7d53e">
+  <link rel="stylesheet" href="./contact-layout.css?v=e76c53b8e3">
+ </noscript>
 </head>
 <body>
  <a class="skip-link" href="#services">跳至正文</a>
- <main id="app"></main>
+ <main id="app">
+  <section id="home" class="hero screen boot-shell" data-screen="01-hero" aria-labelledby="hero-title">
+   <div class="hero-inner">
+    <h1 id="hero-title">Ideas Make Brands POP</h1>
+    <div class="hero-stage"><div id="hero-orbit" aria-label="迈络品牌作品立体轮播"></div></div>
+   </div>
+  </section>
+ </main>
  <div class="toast" role="status" aria-live="polite"></div>
- <script type="module" src="./app.js?v=d502f317ce"></script>
+ <script type="module" src="./app.js?v=a85c03e88b"></script>
 </body>
 </html>
