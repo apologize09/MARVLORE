@@ -36,6 +36,7 @@ function activateSectionCss(section){
 
 /**
  * Phase 3: run loader once when #id intersects (or immediately if no IO / missing node).
+ * Returns a disposer. Call again after CMS replaceWith so the new node is observed.
  */
 function observeOnce(id,loader,{rootMargin='240px 0px'}={}){
  const el=document.getElementById(id);
@@ -44,17 +45,18 @@ function observeOnce(id,loader,{rootMargin='240px 0px'}={}){
   return ()=>{};
  }
  let done=false;
+ let io=null;
  const run=()=>{
   if(done)return;
   done=true;
-  io.disconnect();
+  io?.disconnect();
   void loader();
  };
- const io=new IntersectionObserver(entries=>{
+ io=new IntersectionObserver(entries=>{
   if(entries.some(entry=>entry.isIntersecting))run();
  },{root:null,rootMargin,threshold:0.01});
  io.observe(el);
- return ()=>io.disconnect();
+ return ()=>{done=true;io?.disconnect();};
 }
 
 /**
@@ -154,6 +156,8 @@ async function start(){
  let unbindWorkLinks=null;
  let awardsCarouselApi=null;
  let revealObserver=null;
+ /** Disposers for Phase-3 section IO — rebound after CMS DOM replace. */
+ const sectionWatchers={};
 
  function tearDownListing(){
   listingController?.destroy?.();
@@ -252,12 +256,24 @@ async function start(){
  });
 
  function ensureRevealObserver(){
-  if(mounted.reveal)return;
-  mounted.reveal=true;
-  revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
-   if(entry.isIntersecting){entry.target.classList.add('is-visible');revealObserver.unobserve(entry.target);}
-  }),{threshold:.08});
+  if(!revealObserver){
+   mounted.reveal=true;
+   revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
+    if(entry.isIntersecting){entry.target.classList.add('is-visible');revealObserver.unobserve(entry.target);}
+   }),{threshold:.08});
+  }
   document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+ }
+
+ /** After CMS replaceWith, watch the new #id and pick up fresh .reveal nodes. */
+ function rebindSectionWatch(id,loader){
+  sectionWatchers[id]?.();
+  sectionWatchers[id]=observeOnce(id,loader);
+  if(revealObserver){
+   const root=document.getElementById(id);
+   root?.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+   if(root?.classList.contains('reveal'))revealObserver.observe(root);
+  }
  }
 
  async function ensureCardShape(){
@@ -281,13 +297,19 @@ async function start(){
    });
   }
 
+  let rebound=false;
+
   if(!mounted.work){
    const workEl=document.getElementById('work');
    if(workEl){
     const wrap=document.createElement('div');
     wrap.innerHTML=Work();
     const next=wrap.firstElementChild;
-    if(next)workEl.replaceWith(next);
+    if(next){
+     workEl.replaceWith(next);
+     rebindSectionWatch('work',()=>mountWorkSection().catch(err=>console.error('[app] work mount failed',err)));
+     rebound=true;
+    }
    }
   }
 
@@ -297,7 +319,12 @@ async function start(){
     const wrap=document.createElement('div');
     wrap.innerHTML=Awards();
     const next=wrap.firstElementChild;
-    if(next)awardsEl.replaceWith(next);
+    if(next){
+     awardsEl.replaceWith(next);
+     // Critical: old IntersectionObserver target is detached; rebind or awards stays .reveal opacity:0.
+     rebindSectionWatch('awards',()=>mountAwardsSection().catch(err=>console.error('[app] awards mount failed',err)));
+     rebound=true;
+    }
    }
   }
 
@@ -307,9 +334,15 @@ async function start(){
     const wrap=document.createElement('div');
     wrap.innerHTML=Contact();
     const next=wrap.firstElementChild;
-    if(next)contactEl.replaceWith(next);
+    if(next){
+     contactEl.replaceWith(next);
+     rebindSectionWatch('contact',()=>mountContactSection().catch(err=>console.error('[app] contact mount failed',err)));
+     rebound=true;
+    }
    }
   }
+
+  if(rebound && revealObserver)ensureRevealObserver();
 
   if(channelMode==='list' && listingController){
    tearDownListing();
@@ -459,7 +492,7 @@ async function start(){
    {mountAwardEffects},
   ]=await Promise.all([
    import('./about/reference.js?v=aa1da4205d'),
-   import('./award-effects.js?v=75358a56db'),
+   import('./award-effects.js?v=aacf73b97d'),
   ]);
   mountSectionTextReveal({rootSelector:'#awards',textSelector:'[data-award-reveal]'});
   awardsCarouselApi=createAwardsCarousel(document.querySelector('.awards-carousel'),awards);
@@ -480,13 +513,17 @@ async function start(){
  function scheduleSectionMounts(){
   afterPaint(()=>whenIdle(()=>mountNav().catch(err=>console.error('[app] nav mount failed',err))));
 
-  observeOnce('services',()=>mountServicesSection().catch(err=>console.error('[app] services mount failed',err)));
-  observeOnce('about',()=>mountAboutSection().catch(err=>console.error('[app] about mount failed',err)));
-  observeOnce('work',()=>mountWorkSection().catch(err=>console.error('[app] work mount failed',err)));
-  observeOnce('explore',()=>mountExploreSection().catch(err=>console.error('[app] explore mount failed',err)));
-  observeOnce('marvlore-go',()=>mountPortalSection().catch(err=>console.error('[app] portal mount failed',err)));
-  observeOnce('awards',()=>mountAwardsSection().catch(err=>console.error('[app] awards mount failed',err)));
-  observeOnce('contact',()=>mountContactSection().catch(err=>console.error('[app] contact mount failed',err)));
+  const bind=(id,loader)=>{
+   sectionWatchers[id]?.();
+   sectionWatchers[id]=observeOnce(id,loader);
+  };
+  bind('services',()=>mountServicesSection().catch(err=>console.error('[app] services mount failed',err)));
+  bind('about',()=>mountAboutSection().catch(err=>console.error('[app] about mount failed',err)));
+  bind('work',()=>mountWorkSection().catch(err=>console.error('[app] work mount failed',err)));
+  bind('explore',()=>mountExploreSection().catch(err=>console.error('[app] explore mount failed',err)));
+  bind('marvlore-go',()=>mountPortalSection().catch(err=>console.error('[app] portal mount failed',err)));
+  bind('awards',()=>mountAwardsSection().catch(err=>console.error('[app] awards mount failed',err)));
+  bind('contact',()=>mountContactSection().catch(err=>console.error('[app] contact mount failed',err)));
 
   // Hash deep-links: eagerly mount the target section.
   const hash=location.hash?.slice(1);

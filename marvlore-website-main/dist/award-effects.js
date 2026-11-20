@@ -83,12 +83,17 @@ export function mountAwardEffects(){
   animations.forEach(animation=>entrance.add(animation));
   Promise.all(animations.map(animation=>animation.finished.catch(()=>{}))).then(()=>{if(entering)finishEntrance();});
  }
- Promise.all([document.fonts?.ready,...figures.map(figure=>figure.querySelector('img').decode().catch(()=>{}))])
+ const fontsReady=document.fonts?.ready
+  ?Promise.race([document.fonts.ready,new Promise(resolve=>setTimeout(resolve,900))])
+  :Promise.resolve();
+ Promise.all([fontsReady,...figures.map(figure=>figure.querySelector('img')?.decode?.().catch(()=>{})||Promise.resolve())])
   .then(()=>{entryReady=true;if(visible)enter();});
+ // Failsafe: never leave award-enter-ready (opacity:0) stuck if IO/fonts race.
+ setTimeout(()=>{if(!entered)finishEntrance();},2800);
  const observer=new IntersectionObserver(([entry])=>{
-  visible=entry.isIntersecting&&entry.intersectionRatio>=.3;if(visible){if(!entered)enter();else selected();}
+  visible=entry.isIntersecting&&entry.intersectionRatio>=.22;if(visible){if(!entered)enter();else selected();}
   else{if(entering)finishEntrance();clearTimeout(timer);running.forEach(a=>a.cancel());running.clear();}
- },{threshold:.3});observer.observe(viewport);
+ },{threshold:[0,.22,.3]});observer.observe(viewport);
  // Interaction can interrupt the reveal without overriding the carousel spring.
  carousel.addEventListener('pointerdown',()=>{if(!entered||entering)finishEntrance();},{capture:true});
  carousel.addEventListener('keydown',()=>{if(!entered||entering)finishEntrance();},{capture:true});

@@ -37,6 +37,15 @@ test('Phase3: sections mount via observeOnce / IntersectionObserver', () => {
   assert.doesNotMatch(src, /async function mountDeferredIslands/);
 });
 
+test('Phase3: CMS DOM replace rebinds section IO (awards/work/contact)', () => {
+  const src = load('dist/app.js');
+  assert.match(src, /function rebindSectionWatch/);
+  assert.match(src, /sectionWatchers/);
+  assert.match(src, /rebindSectionWatch\('awards'/);
+  assert.match(src, /rebindSectionWatch\('work'/);
+  assert.match(src, /rebindSectionWatch\('contact'/);
+});
+
 test('app.js dynamically imports heavy islands instead of static import', () => {
   const src = load('dist/app.js');
   assert.match(src, /import\('\.\/hero\/orbit\.js/);
