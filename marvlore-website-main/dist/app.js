@@ -28,18 +28,13 @@ function whenIdle(fn,timeout=1500){
 async function start(){
  const cms=getCmsConfig();
  applyDocumentLang(cms.locale);
- await bootWorkBundle();
- const projects=getProjects();
- const workReelItems=getWorkReelItems();
- const awards=getAwards();
- const workPage=getWorkPage();
- if(cms.enabled){
-  applyWorkSeo(workPage?.seo,{
-   locale:getBundleLocale(),
-   fallbackTitle:workPage?.title||document.title,
-   fallbackDescription:workPage?.intro||undefined,
-  });
- }
+
+ const initialRoute=parseWorkPath(location.pathname);
+ const preferWork=initialRoute.type==='work-list'||initialRoute.type==='work-detail';
+ // Start downloading the hero island immediately (overlaps paint + optional CMS).
+ const heroImportP=preferWork?null:import('./hero/orbit.js?v=4b28d9d1f5');
+ // CMS resolve in parallel — module already holds a static bundle for first paint.
+ const cmsBoot=bootWorkBundle();
 
  // First meaningful paint: section shells only (no heavy React islands yet).
  document.querySelector('#app').innerHTML=[Hero,Services,About,Work,Explore,Portal,Awards,Contact].map(component=>component()).join('');
@@ -53,8 +48,25 @@ async function start(){
  document.documentElement.classList.add('js');
  document.documentElement.classList.remove('boot-pending');
 
- const initialRoute=parseWorkPath(location.pathname);
- const preferWork=initialRoute.type==='work-list'||initialRoute.type==='work-detail';
+ let projects=getProjects();
+ let workReelItems=getWorkReelItems();
+ let awards=getAwards();
+ let workPage=getWorkPage();
+
+ async function ensureCms(){
+  await cmsBoot;
+  projects=getProjects();
+  workReelItems=getWorkReelItems();
+  awards=getAwards();
+  workPage=getWorkPage();
+  if(cms.enabled){
+   applyWorkSeo(workPage?.seo,{
+    locale:getBundleLocale(),
+    fallbackTitle:workPage?.title||document.title,
+    fallbackDescription:workPage?.intro||undefined,
+   });
+  }
+ }
 
  let gallery=null;
  let workDetails=null;
@@ -191,7 +203,7 @@ async function start(){
  }
 
  async function mountHero(){
-  const {mountHeroOrbit}=await import('./hero/orbit.js?v=4b28d9d1f5');
+  const {mountHeroOrbit}=await (heroImportP||import('./hero/orbit.js?v=4b28d9d1f5'));
   mountHeroOrbit();
  }
 
@@ -249,12 +261,13 @@ async function start(){
   mountContactInteractions();
  }
 
- // Home: hero first. /work: core route modules first.
+ // Home: hero overlaps CMS; /work: wait for CMS then core route modules.
  if(preferWork){
+  await ensureCms();
   await mountCoreInteractions();
   afterPaint(()=>{whenIdle(()=>mountHero().then(()=>mountDeferredIslands()).catch(err=>console.error('[app] deferred boot failed',err)));});
  }else{
-  await mountHero();
+  await Promise.all([mountHero(),ensureCms()]);
   afterPaint(()=>{
    whenIdle(()=>mountCoreInteractions().then(()=>mountDeferredIslands()).catch(err=>console.error('[app] deferred boot failed',err)));
   });

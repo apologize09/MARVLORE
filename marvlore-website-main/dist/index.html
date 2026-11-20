@@ -11,7 +11,8 @@
   .boot-shell{max-width:1800px;margin:auto;padding:clamp(60px,7.2vw,135px) 0 clamp(100px,12vw,220px)}
   .boot-shell .hero-inner{padding:0 clamp(22px,4.4vw,80px)}
   .boot-shell h1{margin:0;font-weight:400;font-size:clamp(33px,8.8vw,158px);letter-spacing:-.072em;line-height:1.06;white-space:nowrap}
-  .boot-shell .hero-stage{min-height:clamp(220px,42vw,520px)}
+  .boot-shell .hero-stage{min-height:clamp(220px,42vw,520px);position:relative}
+  .boot-hero-poster{position:absolute;inset:12% 18% auto;width:64%;max-width:720px;margin:auto;border-radius:12px;object-fit:cover;aspect-ratio:16/9;opacity:.92}
  </style>
 
  <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -23,7 +24,9 @@
  <meta property="og:url" content="https://marvlore-design-1026.chenwhale304.chatgpt.site/">
  <title>MARVLORE 迈络 — Ideas Make Brands POP</title>
  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg?v=543e532aed">
+ <link rel="preload" as="image" href="./assets/hero-video/swft-icon-poster.webp?v=b16550e768" fetchpriority="high">
  <link rel="preload" as="image" href="./assets/orbit/lophthy-pop.webp?v=3cc339e993">
+ <link rel="modulepreload" href="./hero/orbit.js?v=fa0ced8669">
  <link rel="stylesheet" href="./styles.css?v=131a963540">
  <link rel="stylesheet" href="./layout.css?v=a6bf469766">
  <link rel="stylesheet" href="./interactions.css?v=0e671feba2">
@@ -65,11 +68,11 @@
   <section id="home" class="hero screen boot-shell" data-screen="01-hero" aria-labelledby="hero-title">
    <div class="hero-inner">
     <h1 id="hero-title">Ideas Make Brands POP</h1>
-    <div class="hero-stage"><div id="hero-orbit" aria-label="迈络品牌作品立体轮播"></div></div>
+    <div class="hero-stage"><div id="hero-orbit" aria-label="迈络品牌作品立体轮播"><img class="boot-hero-poster" src="./assets/hero-video/swft-icon-poster.webp?v=b16550e768" alt="" width="1280" height="720" decoding="async" fetchpriority="high"></div></div>
    </div>
   </section>
  </main>
  <div class="toast" role="status" aria-live="polite"></div>
- <script type="module" src="./app.js?v=18c4cbf206"></script>
+ <script type="module" src="./app.js?v=f90cec721f"></script>
 </body>
 </html>

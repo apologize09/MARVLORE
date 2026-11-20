@@ -22,7 +22,8 @@ function HeroCarousel({titleTarget,items}){
  const [galleryOpen,setGalleryOpen]=useState(()=>document.documentElement.classList.contains('project-gallery-open'));
  const [ready,setReady]=useState(false),[replayKey,setReplayKey]=useState(0);
  const [introStarted,setIntroStarted]=useState(false);
- const [inView,setInView]=useState(false);
+ // Home is the first screen — assume in view unless scrolled away (avoids waiting for 55% IO).
+ const [inView,setInView]=useState(()=>(typeof window==='undefined')||(window.scrollY||0)<120);
  const [pageVisible,setPageVisible]=useState(()=>!document.hidden);
  const started=ready&&inView&&pageVisible;
  useEffect(()=>{if(!started)setIntroStarted(false);},[started]);
@@ -42,10 +43,13 @@ function HeroCarousel({titleTarget,items}){
  },[]);
  useEffect(()=>{
   let alive=true;
-  const media=[...carouselItems.map(item=>item.src),haloSrc].map(src=>{
-   const image=new Image();image.src=src;return image.decode().catch(()=>{});
-  });
-  Promise.all([...media,document.fonts?.ready]).then(()=>{if(alive)setReady(true);});
+  // Don't block intro on every poster + fonts — first 2 frames (or 280ms) is enough.
+  const warm=(src)=>{const image=new Image();image.src=src;return image.decode().catch(()=>{});};
+  const critical=carouselItems.slice(0,2).map(item=>warm(item.src));
+  const timeout=new Promise((resolve)=>setTimeout(resolve,280));
+  Promise.race([Promise.all(critical),timeout]).then(()=>{if(alive)setReady(true);});
+  carouselItems.slice(2).forEach(item=>warm(item.src));
+  if(haloSrc)warm(haloSrc);
   return ()=>{alive=false;};
  },[carouselItems]);
  useEffect(()=>{
@@ -53,10 +57,10 @@ function HeroCarousel({titleTarget,items}){
   if(!target||typeof IntersectionObserver==='undefined'){setInView(true);return;}
   const observer=new IntersectionObserver(entries=>{
    for(const entry of entries){
-    if(entry.intersectionRatio>=.55)setInView(true);
+    if(entry.intersectionRatio>=.35)setInView(true);
     else if(entry.intersectionRatio<.1)setInView(false);
    }
-  },{threshold:[0,.1,.55]});
+  },{threshold:[0,.1,.35]});
   observer.observe(target);return ()=>observer.disconnect();
  },[]);
  useEffect(()=>{
