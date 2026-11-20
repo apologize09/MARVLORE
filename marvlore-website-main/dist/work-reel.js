@@ -2,7 +2,7 @@ import {titleCase} from './typography.js?v=bff0b2cf2f';
 import {createWorkNavigation} from './work-navigation.js?v=314b940e5b';
 import {stepSpring,reducedMotion,clamp} from './motion.js?v=53e5c054f1';
 import {cardCornerRadius} from './card-shape.js?v=dc5814bef2';
-import {getWorkReelItems,getWorkReelOptions} from './cms/work-runtime.js?v=711a0f69d6';
+import {getWorkReelItems,getWorkReelOptions} from './cms/work-runtime.js?v=9ced1b3bd7';
 
 // Independent photo-reel implementation. Pointer-distance magnification follows
 // the open-source Dock pattern: https://github.com/ibelick/motion-primitives

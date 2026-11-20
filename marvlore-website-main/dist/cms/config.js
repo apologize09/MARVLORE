@@ -5,12 +5,18 @@
  *   ?cmsWork=off|categories|list|detail|all
  *   ?cmsSite=off|contact|awards|services|about|hero|all
  *   ?cmsFilter=on|off   (Work search/tag/sort bar; default off on homepage)
- *   ?cmsBase=http://127.0.0.1:1337
+ *   ?cmsBase=https://admin.marvlore.com
  *   localStorage.marvlore.cmsWork / cmsSite / cmsBase / cmsFilter
+ *   window.__MARVLORE_CMS_BASE__
  * Static fallback still applies when the API is unreachable.
+ *
+ * Default cmsBase: localhost/127.0.0.1 → http://127.0.0.1:1337
+ * otherwise → https://admin.marvlore.com (never ship 127.0.0.1 to www).
  */
 const STAGES = new Set(['off', 'categories', 'list', 'detail', 'all']);
 const SITE_STAGES = new Set(['off', 'contact', 'awards', 'services', 'about', 'hero', 'all']);
+const PROD_CMS_BASE = 'https://admin.marvlore.com';
+const LOCAL_CMS_BASE = 'http://127.0.0.1:1337';
 
 function readParam(name) {
   try {
@@ -28,6 +34,16 @@ function readStorage(name) {
   }
 }
 
+function defaultCmsBase() {
+  try {
+    const host = String(location?.hostname || '');
+    if (host === 'localhost' || host === '127.0.0.1') return LOCAL_CMS_BASE;
+  } catch {
+    /* ignore */
+  }
+  return PROD_CMS_BASE;
+}
+
 export function getCmsConfig() {
   const stageRaw = (readParam('cmsWork') || readStorage('marvlore.cmsWork') || 'all').toLowerCase();
   const stage = STAGES.has(stageRaw) ? stageRaw : 'all';
@@ -38,12 +54,22 @@ export function getCmsConfig() {
     : stage === 'all'
       ? 'all'
       : 'off';
-  const base = (
+  let base = (
     readParam('cmsBase') ||
     readStorage('marvlore.cmsBase') ||
     (typeof window !== 'undefined' && window.__MARVLORE_CMS_BASE__) ||
-    'http://127.0.0.1:1337'
+    defaultCmsBase()
   ).replace(/\/$/, '');
+  // Guard: never call the visitor's own loopback from a public host (CORS + dead requests).
+  try {
+    const host = String(location?.hostname || '');
+    const isLocalHost = host === 'localhost' || host === '127.0.0.1';
+    if (!isLocalHost && /^(https?:\/\/)?(127\.0\.0\.1|localhost)(:\d+)?$/i.test(base)) {
+      base = PROD_CMS_BASE;
+    }
+  } catch {
+    /* ignore */
+  }
   const locale = readParam('cmsLocale') || readStorage('marvlore.cmsLocale') || 'zh-CN';
   const timeoutMs = Number(readParam('cmsTimeout') || readStorage('marvlore.cmsTimeout') || 6000);
   // Work search/tag/sort bar: off on homepage by default. Keep module for later pages;

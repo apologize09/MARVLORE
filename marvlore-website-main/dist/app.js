@@ -1,17 +1,17 @@
 import {mountAwardEffects} from './award-effects.js?v=75358a56db';
 import {mountContactInteractions} from './contact-interactions.js?v=d6e35aeffa';
 import {mountSiteNavigation} from './navigation/menu.js?v=8f8a524dc7';
-import {mountWorkDetails} from './work-detail.js?v=c730500987';
+import {mountWorkDetails} from './work-detail.js?v=e6f6398e8d';
 import {mountWorkInteractions} from './work-interactions.js?v=203fae0eaf';
 import {mountWorkEntrance} from './work-entrance.js?v=70df8c2b46';
-import {mountWorkReel} from './work-reel.js?v=418adbd485';
-import { Hero,Services,About,Work,Explore,Portal,Awards,Contact } from './components.js?v=eafae8d7ff';
-import { bootWorkBundle,getProjects,getWorkReelItems,getAwards,getWorkPage,getBundleLocale,getHeroProjects } from './cms/work-runtime.js?v=711a0f69d6';
-import { mountWorkFilters } from './cms/work-filter-mount.js?v=f41724251b';
-import { getCmsConfig } from './cms/config.js?v=1e182ce0a2';
+import {mountWorkReel} from './work-reel.js?v=69584e8a45';
+import { Hero,Services,About,Work,Explore,Portal,Awards,Contact } from './components.js?v=8edd6c6edd';
+import { bootWorkBundle,getProjects,getWorkReelItems,getAwards,getWorkPage,getBundleLocale,getHeroProjects } from './cms/work-runtime.js?v=9ced1b3bd7';
+import { mountWorkFilters } from './cms/work-filter-mount.js?v=b084fc24c5';
+import { getCmsConfig } from './cms/config.js?v=570e58cba8';
 import { applyDocumentLang } from './cms/locale.js?v=654d705d77';
 import { applyWorkSeo } from './cms/seo.js?v=53dbe2d483';
-import { mountWorkCacheSync } from './cms/work-cache-sync.js?v=9068347e6b';
+import { mountWorkCacheSync } from './cms/work-cache-sync.js?v=8888eb175a';
 import { Spring,reducedMotion,createAwardsCarousel } from './motion.js?v=53e5c054f1';
 import { mountHeroOrbit } from './hero/orbit.js?v=4b28d9d1f5';
 import { observeCardCorners } from './card-shape.js?v=dc5814bef2';
@@ -22,7 +22,7 @@ import { mountPortalWall } from './portal-wall.js?v=2a736d75bc';
 import { mountReferenceCollage,mountWorkTextReveal,mountSectionTextReveal } from './about/reference.js?v=aa1da4205d';
 import { assetUrl } from './media-cdn.js?v=4a6c7d09a5';
 import { mountWorkRouteOwner,bindWorkPathLinks,navigateWork,parseWorkPath } from './work-route.js?v=4591b22067';
-import { mountWorkListingPage,renderWorkListingShell,hideWorkListingShell,applyWorkListingSeo } from './work-listing.js?v=2e331fa8e1';
+import { mountWorkListingPage,renderWorkListingShell,hideWorkListingShell,applyWorkListingSeo } from './work-listing.js?v=e03d0a9710';
 
 async function start(){
  const cms=getCmsConfig();

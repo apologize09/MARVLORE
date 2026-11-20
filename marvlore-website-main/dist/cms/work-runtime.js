@@ -1,6 +1,6 @@
 import { buildStaticBundle } from './work-fallback.js?v=efa3d94e78';
-import { resolveWorkBundle } from './work-loader.js?v=387ba4e255';
-import { getCmsConfig } from './config.js?v=1e182ce0a2';
+import { resolveWorkBundle } from './work-loader.js?v=17341720f3';
+import { getCmsConfig } from './config.js?v=570e58cba8';
 import { createWorkApi } from './work-api.js?v=ae2aac4d08';
 import { normalizeProjectToDetail } from './work-normalize.js?v=2ccfb94979';
 
