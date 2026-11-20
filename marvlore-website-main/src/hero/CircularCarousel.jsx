@@ -378,7 +378,8 @@ const CircularCarousel = ({
       setLeaving(null);
       setList(next);
     }
-    const sources = next.slice(0, 16).map(item => item.src);
+    // First-paint: only wait for the first two posters (or 320ms), not the full deck.
+    const sources = next.slice(0, 2).map(item => item.src);
     const load = src =>
       new Promise(resolve => {
         const image = new Image();
@@ -387,7 +388,7 @@ const CircularCarousel = ({
         image.onerror = resolve;
         image.src = src;
       });
-    const timeout = new Promise(resolve => setTimeout(resolve, 2400));
+    const timeout = new Promise(resolve => setTimeout(resolve, 320));
     Promise.race([Promise.all(sources.map(load)), timeout]).then(() => {
       if (cancelled) return;
       const state = stateRef.current;

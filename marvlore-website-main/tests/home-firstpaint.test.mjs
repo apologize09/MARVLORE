@@ -54,3 +54,42 @@ test('welcome.css ships enter + exit motion', () => {
   assert.match(css, /prefers-reduced-motion/);
   assert.match(css, /--lime|#bdff3b/);
 });
+
+test('Phase C: sections mount via observeOnce / dynamic import', () => {
+  const src = load('dist/app.js');
+  assert.match(src, /function observeOnce/);
+  assert.match(src, /IntersectionObserver/);
+  assert.match(src, /scheduleSectionMounts/);
+  assert.match(src, /import\('\.\/hero\/orbit\.js/);
+  assert.match(src, /import\('\.\/services\/experience\.js/);
+  assert.match(src, /import\('\.\/navigation\/menu\.js/);
+  assert.doesNotMatch(src, /import\s*\{[^}]*mountHeroOrbit[^}]*\}\s*from\s*'\.\/hero\/orbit/);
+  assert.doesNotMatch(src, /import\s*\{[^}]*mountSiteNavigation[^}]*\}\s*from\s*'\.\/navigation\/menu/);
+  assert.match(src, /rebindSectionWatch/);
+});
+
+test('Phase D: critical CSS blocks; section CSS deferred with data-defer-section', () => {
+  const html = load('dist/index.html');
+  assert.match(html, /styles\.css\?v=/);
+  assert.match(html, /hero\/orbit\.css\?v=/);
+  assert.match(html, /welcome\.css\?v=/);
+  assert.match(html, /services\/experience\.css[^>]*media="print"/);
+  assert.match(html, /data-defer-section="services"/);
+  assert.match(html, /data-defer-section="nav"/);
+  assert.match(html, /work-listing\.css[^>]*media="print"/);
+  assert.match(html, /data-defer-section="work"/);
+});
+
+test('Phase E: hero intro gates are short; hash-assets rewrites import()', () => {
+  const entry = load('src/hero/hero-entry.jsx');
+  assert.match(entry, /slice\(0,\s*2\)/);
+  assert.match(entry, /280/);
+  assert.doesNotMatch(entry, /document\.fonts\?\.ready/);
+  const carousel = load('src/hero/CircularCarousel.jsx');
+  assert.match(carousel, /slice\(0,\s*2\)/);
+  assert.match(carousel, /320/);
+  assert.doesNotMatch(carousel, /setTimeout\(resolve,\s*2400\)/);
+  const hash = load('scripts/hash-assets.mjs');
+  assert.match(hash, /import\\s\*\\\(/);
+  assert.match(hash, /\[\^'"\\s\)\?\]\+/);
+});

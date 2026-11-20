@@ -42,21 +42,25 @@ function HeroCarousel({titleTarget,items}){
  },[]);
  useEffect(()=>{
   let alive=true;
-  const media=[...carouselItems.map(item=>item.src),haloSrc].map(src=>{
+  // Unblock intro after first 2 posters or 280ms — do not wait for fonts / full deck.
+  const media=carouselItems.slice(0,2).map(item=>item.src).concat(haloSrc).map(src=>{
    const image=new Image();image.src=src;return image.decode().catch(()=>{});
   });
-  Promise.all([...media,document.fonts?.ready]).then(()=>{if(alive)setReady(true);});
+  const timeout=new Promise(resolve=>setTimeout(resolve,280));
+  Promise.race([Promise.all(media),timeout]).then(()=>{if(alive)setReady(true);});
   return ()=>{alive=false;};
  },[carouselItems]);
  useEffect(()=>{
+  // Home is the default landing view — treat as in-view unless scrolled away.
+  if(typeof window!=='undefined' && window.scrollY<80){setInView(true);}
   const target=document.querySelector('#home');
   if(!target||typeof IntersectionObserver==='undefined'){setInView(true);return;}
   const observer=new IntersectionObserver(entries=>{
    for(const entry of entries){
-    if(entry.intersectionRatio>=.55)setInView(true);
+    if(entry.intersectionRatio>=.35)setInView(true);
     else if(entry.intersectionRatio<.1)setInView(false);
    }
-  },{threshold:[0,.1,.55]});
+  },{threshold:[0,.1,.35]});
   observer.observe(target);return ()=>observer.disconnect();
  },[]);
  useEffect(()=>{
