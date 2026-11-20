@@ -27,9 +27,38 @@ function whenIdle(fn,timeout=1500){
 
 const BOOT_POSTER='./assets/hero-video/swft-icon-poster.webp?v=b16550e768';
 
+/** Phase 4: flip deferred stylesheet media to all for a section (once). */
+function activateSectionCss(section){
+ document.querySelectorAll(`link[data-defer-section="${section}"]`).forEach(link=>{
+  if(link.media!=='all')link.media='all';
+ });
+}
+
+/**
+ * Phase 3: run loader once when #id intersects (or immediately if no IO / missing node).
+ */
+function observeOnce(id,loader,{rootMargin='240px 0px'}={}){
+ const el=document.getElementById(id);
+ if(!el || typeof IntersectionObserver==='undefined'){
+  void loader();
+  return ()=>{};
+ }
+ let done=false;
+ const run=()=>{
+  if(done)return;
+  done=true;
+  io.disconnect();
+  void loader();
+ };
+ const io=new IntersectionObserver(entries=>{
+  if(entries.some(entry=>entry.isIntersecting))run();
+ },{root:null,rootMargin,threshold:0.01});
+ io.observe(el);
+ return ()=>io.disconnect();
+}
+
 /**
  * Phase 2: reuse HTML #home / #hero-orbit (keep poster). Append missing sections only.
- * Never wipe #app with a full innerHTML replace.
  */
 function paintAppShell(){
  const app=document.querySelector('#app');
@@ -75,10 +104,11 @@ async function start(){
 
  const initialRoute=parseWorkPath(location.pathname);
  const preferWork=initialRoute.type==='work-list'||initialRoute.type==='work-detail';
- // Kick hero download immediately (never gated on CMS).
  const heroImportP=preferWork?null:import('./hero/orbit.js?v=19ec8bfd6c');
- // Background CMS — module already has static bundle for first paint.
  const cmsBoot=bootWorkBundle();
+
+ // Phase 4: /work deep links need listing CSS immediately (avoid FOUC).
+ if(preferWork)activateSectionCss('work');
 
  paintAppShell();
 
@@ -100,9 +130,16 @@ async function start(){
  const mounted={
   hero:false,
   core:false,
-  deferred:false,
-  workInteractions:false,
-  awardsCarousel:false,
+  nav:false,
+  services:false,
+  about:false,
+  work:false,
+  explore:false,
+  portal:false,
+  awards:false,
+  contact:false,
+  cardShape:false,
+  reveal:false,
   projectClicks:false,
   hashScroll:false,
   cacheSync:false,
@@ -116,6 +153,7 @@ async function start(){
  let workRouteOwner=null;
  let unbindWorkLinks=null;
  let awardsCarouselApi=null;
+ let revealObserver=null;
 
  function tearDownListing(){
   listingController?.destroy?.();
@@ -144,6 +182,8 @@ async function start(){
    hideWorkListingShell(workChannel);
    channelMode='detail';
    document.body.classList.remove('work-channel-active');
+   activateSectionCss('work');
+   activateSectionCss('gallery');
    workDetails.open({
     id:route.slug,
     slug:route.slug,
@@ -156,6 +196,7 @@ async function start(){
   if(channelMode!=='list'||!listingController){
    tearDownListing();
    channelMode='list';
+   activateSectionCss('work');
    listingController=mountWorkListingPage(workChannel,{
     workPage,
     categories:projects,
@@ -171,6 +212,7 @@ async function start(){
   }
   const index=projects.findIndex(project=>project.id===id);
   if(index<0||!gallery)return;
+  activateSectionCss('gallery');
   const workProjects=projects.map(project=>({id:`work-${project.id}`,src:project.image?assetUrl(project.image):null,title:project.title}));
   gallery.open({items:workProjects,index,source:trigger?.querySelector('.work-image'),historyMode});
  }
@@ -209,7 +251,22 @@ async function start(){
   navigateWork({type:'home'},{mode:'push'});
  });
 
- /** Phase 1: apply CMS bundle without remounting already-live islands. */
+ function ensureRevealObserver(){
+  if(mounted.reveal)return;
+  mounted.reveal=true;
+  revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
+   if(entry.isIntersecting){entry.target.classList.add('is-visible');revealObserver.unobserve(entry.target);}
+  }),{threshold:.08});
+  document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+ }
+
+ async function ensureCardShape(){
+  if(mounted.cardShape)return;
+  mounted.cardShape=true;
+  const {observeCardCorners}=await import('./card-shape.js?v=dc5814bef2');
+  observeCardCorners();
+ }
+
  function applyCmsDomUpdate(){
   projects=getProjects();
   workReelItems=getWorkReelItems();
@@ -224,8 +281,7 @@ async function start(){
    });
   }
 
-  // Patch Work markup only before its interactions mount (avoids duplicate listeners).
-  if(!mounted.workInteractions){
+  if(!mounted.work){
    const workEl=document.getElementById('work');
    if(workEl){
     const wrap=document.createElement('div');
@@ -235,7 +291,7 @@ async function start(){
    }
   }
 
-  if(!mounted.awardsCarousel){
+  if(!mounted.awards){
    const awardsEl=document.getElementById('awards');
    if(awardsEl){
     const wrap=document.createElement('div');
@@ -245,8 +301,7 @@ async function start(){
    }
   }
 
-  // Contact shell before interactions
-  if(!mounted.deferred){
+  if(!mounted.contact){
    const contactEl=document.getElementById('contact');
    if(contactEl && getContact()){
     const wrap=document.createElement('div');
@@ -256,7 +311,6 @@ async function start(){
    }
   }
 
-  // Refresh open /work listing once with new data (destroy+create is intentional single replace).
   if(channelMode==='list' && listingController){
    tearDownListing();
    listingController=mountWorkListingPage(workChannel,{
@@ -274,6 +328,7 @@ async function start(){
  async function mountCoreInteractions(){
   if(mounted.core)return;
   mounted.core=true;
+  activateSectionCss('gallery');
   const [
    {mountWorkDetails},
    {createProjectGallery},
@@ -321,83 +376,150 @@ async function start(){
    document.getElementById('home')?.classList.remove('boot-shell');
   }catch(err){
    console.error('[app] hero mount failed; keeping static poster',err);
-   // Phase 2: static poster remains in #hero-orbit
   }
  }
 
- async function mountDeferredIslands(){
-  if(mounted.deferred)return;
-  mounted.deferred=true;
+ /** Necessary nav — early, not scroll-gated. */
+ async function mountNav(){
+  if(mounted.nav)return;
+  mounted.nav=true;
+  activateSectionCss('nav');
+  const {mountSiteNavigation}=await import('./navigation/menu.js?v=8f8a524dc7');
+  mountSiteNavigation();
+ }
+
+ async function mountServicesSection(){
+  if(mounted.services)return;
+  mounted.services=true;
+  activateSectionCss('services');
+  const {mountServices}=await import('./services/experience.js?v=482268d7dd');
+  mountServices();
+  ensureRevealObserver();
+ }
+
+ async function mountAboutSection(){
+  if(mounted.about)return;
+  mounted.about=true;
+  activateSectionCss('about');
+  const {mountReferenceCollage}=await import('./about/reference.js?v=aa1da4205d');
+  mountReferenceCollage();
+  ensureRevealObserver();
+ }
+
+ async function mountWorkSection(){
+  if(mounted.work)return;
+  mounted.work=true;
+  activateSectionCss('work');
+  activateSectionCss('gallery');
+  await ensureCardShape();
   const [
-   {mountServices},
-   {mountReferenceCollage,mountWorkTextReveal,mountSectionTextReveal},
-   {mountExploreScene},
-   {mountPortalWall},
-   {observeCardCorners},
+   {mountWorkTextReveal},
    {mountWorkInteractions},
    {mountWorkEntrance},
    {mountWorkReel},
    {mountWorkFilters},
-   {mountSiteNavigation},
-   {mountAwardEffects},
-   {mountContactInteractions},
   ]=await Promise.all([
-   import('./services/experience.js?v=482268d7dd'),
    import('./about/reference.js?v=aa1da4205d'),
-   import('./explore-scene.js?v=8011054c86'),
-   import('./portal-wall.js?v=2a736d75bc'),
-   import('./card-shape.js?v=dc5814bef2'),
    import('./work-interactions.js?v=203fae0eaf'),
    import('./work-entrance.js?v=70df8c2b46'),
    import('./work-reel.js?v=418adbd485'),
    import('./cms/work-filter-mount.js?v=f41724251b'),
-   import('./navigation/menu.js?v=8f8a524dc7'),
-   import('./award-effects.js?v=75358a56db'),
-   import('./contact-interactions.js?v=d6e35aeffa'),
   ]);
-
-  mountServices();
-  mountReferenceCollage();
-  mountExploreScene();
-  mountPortalWall();
   workTextReveal=mountWorkTextReveal();
-  mountSectionTextReveal({rootSelector:'#awards',textSelector:'[data-award-reveal]'});
-  observeCardCorners();
-
-  const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
-   if(entry.isIntersecting){entry.target.classList.add('is-visible');revealObserver.unobserve(entry.target);}
-  }),{threshold:.08});
-  document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
-
+  window.addEventListener('marvlore:work-mode',()=>workTextReveal?.refresh());
   mountWorkInteractions();
-  mounted.workInteractions=true;
   mountWorkEntrance();
   mountWorkReel();
   mountWorkFilters();
-  mountSiteNavigation();
-  window.addEventListener('marvlore:work-mode',()=>workTextReveal?.refresh());
+  ensureRevealObserver();
+ }
 
+ async function mountExploreSection(){
+  if(mounted.explore)return;
+  mounted.explore=true;
+  activateSectionCss('explore');
+  const {mountExploreScene}=await import('./explore-scene.js?v=8011054c86');
+  mountExploreScene();
+ }
+
+ async function mountPortalSection(){
+  if(mounted.portal)return;
+  mounted.portal=true;
+  activateSectionCss('portal');
+  const {mountPortalWall}=await import('./portal-wall.js?v=2a736d75bc');
+  mountPortalWall();
+ }
+
+ async function mountAwardsSection(){
+  if(mounted.awards)return;
+  mounted.awards=true;
+  activateSectionCss('awards');
+  const [
+   {mountSectionTextReveal},
+   {mountAwardEffects},
+  ]=await Promise.all([
+   import('./about/reference.js?v=aa1da4205d'),
+   import('./award-effects.js?v=75358a56db'),
+  ]);
+  mountSectionTextReveal({rootSelector:'#awards',textSelector:'[data-award-reveal]'});
   awardsCarouselApi=createAwardsCarousel(document.querySelector('.awards-carousel'),awards);
-  mounted.awardsCarousel=true;
   void awardsCarouselApi;
   mountAwardEffects();
+  ensureRevealObserver();
+ }
+
+ async function mountContactSection(){
+  if(mounted.contact)return;
+  mounted.contact=true;
+  activateSectionCss('contact');
+  const {mountContactInteractions}=await import('./contact-interactions.js?v=d6e35aeffa');
   mountContactInteractions();
+ }
+
+ /** Phase 3: schedule per-section loaders (IO). Nav is not scroll-gated. */
+ function scheduleSectionMounts(){
+  afterPaint(()=>whenIdle(()=>mountNav().catch(err=>console.error('[app] nav mount failed',err))));
+
+  observeOnce('services',()=>mountServicesSection().catch(err=>console.error('[app] services mount failed',err)));
+  observeOnce('about',()=>mountAboutSection().catch(err=>console.error('[app] about mount failed',err)));
+  observeOnce('work',()=>mountWorkSection().catch(err=>console.error('[app] work mount failed',err)));
+  observeOnce('explore',()=>mountExploreSection().catch(err=>console.error('[app] explore mount failed',err)));
+  observeOnce('marvlore-go',()=>mountPortalSection().catch(err=>console.error('[app] portal mount failed',err)));
+  observeOnce('awards',()=>mountAwardsSection().catch(err=>console.error('[app] awards mount failed',err)));
+  observeOnce('contact',()=>mountContactSection().catch(err=>console.error('[app] contact mount failed',err)));
+
+  // Hash deep-links: eagerly mount the target section.
+  const hash=location.hash?.slice(1);
+  if(hash){
+   const map={
+    services:mountServicesSection,
+    about:mountAboutSection,
+    work:mountWorkSection,
+    explore:mountExploreSection,
+    'marvlore-go':mountPortalSection,
+    awards:mountAwardsSection,
+    contact:mountContactSection,
+   };
+   const run=map[hash];
+   if(run)void run().catch(()=>{});
+  }
  }
 
  // Phase 1: never await CMS before first interactive paint / hero / work route.
  if(preferWork){
   void mountCoreInteractions().catch(err=>console.error('[app] core boot failed',err));
   afterPaint(()=>{
-   whenIdle(()=>mountHero().then(()=>mountDeferredIslands()).catch(err=>console.error('[app] deferred boot failed',err)));
+   whenIdle(()=>mountHero().catch(err=>console.error('[app] hero boot failed',err)));
   });
+  scheduleSectionMounts();
  }else{
   void mountHero().catch(err=>console.error('[app] hero boot failed',err));
   afterPaint(()=>{
-   whenIdle(()=>mountCoreInteractions().then(()=>mountDeferredIslands()).catch(err=>console.error('[app] deferred boot failed',err)));
+   whenIdle(()=>mountCoreInteractions().catch(err=>console.error('[app] core boot failed',err)));
   });
+  scheduleSectionMounts();
  }
 
- // CMS hydrates in background; failure keeps static DOM.
  cmsBoot.then(()=>{
   try{applyCmsDomUpdate();}
   catch(err){console.warn('[app] cms dom update failed',err);}

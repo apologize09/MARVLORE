@@ -16,13 +16,25 @@ test('index.html ships a static hero shell before app.js', () => {
   assert.match(html, /boot-shell/);
 });
 
-test('index.html defers below-fold CSS with media=print onload', () => {
+test('Phase4: critical CSS blocks; section CSS is deferred with data-defer-section', () => {
   const html = load('dist/index.html');
+  assert.match(html, /styles\.css\?v=/);
+  assert.match(html, /hero\/orbit\.css\?v=/);
   assert.match(html, /services\/experience\.css[^>]*media="print"/);
-  assert.match(html, /navigation\/menu\.css[^>]*media="print"/);
-  // Work channel CSS stays blocking for /work deep links.
-  assert.match(html, /work-listing\.css\?v=/);
-  assert.doesNotMatch(html, /work-listing\.css[^>]*media="print"/);
+  assert.match(html, /data-defer-section="services"/);
+  assert.match(html, /data-defer-section="nav"/);
+  assert.match(html, /work-listing\.css[^>]*media="print"/);
+  assert.match(html, /data-defer-section="work"/);
+});
+
+test('Phase3: sections mount via observeOnce / IntersectionObserver', () => {
+  const src = load('dist/app.js');
+  assert.match(src, /function observeOnce/);
+  assert.match(src, /IntersectionObserver/);
+  assert.match(src, /scheduleSectionMounts/);
+  assert.match(src, /mountServicesSection/);
+  assert.match(src, /mountNav/);
+  assert.doesNotMatch(src, /async function mountDeferredIslands/);
 });
 
 test('app.js dynamically imports heavy islands instead of static import', () => {
