@@ -20,9 +20,9 @@ const TEXT_EXTS = new Set(['.js', '.mjs', '.css', '.html']);
 const HASH_EXTS = new Set(['.js', '.mjs', '.css', '.woff2', '.ttf', '.webp', '.png', '.svg', '.mp4']);
 const MAX_PASSES = 8;
 
-// import/from/href/src/url("…") capturing a relative/root asset path
+// import/from/import()/href/src/url("…") — path stops at ? so dynamic import('x?v=') rewrites.
 const REF_RE =
-  /((?:from|import)\s*['"]|href=["']|src=["']|url\(\s*['"]?)(\.\/[^'"\s)]+|\/[^'"\s)]+)(\?[^'"\s)]*)?(['"]\s*\)?|['"])/g;
+  /((?:from|import)\s*['"]|import\s*\(\s*['"]|href=["']|src=["']|url\(\s*['"]?)(\.\/[^'"\s)?]+|\/[^'"\s)?]+)(\?[^'"\s)]*)?(['"]\s*\)?|['"])/g;
 
 function walk(dir, out = []) {
   for (const name of readdirSync(dir)) {
