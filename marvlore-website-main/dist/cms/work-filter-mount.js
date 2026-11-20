@@ -1,4 +1,4 @@
-import { getCmsConfig } from './config.js?v=1e182ce0a2';
+import { getCmsConfig } from './config.js?v=570e58cba8';
 import { createWorkApi } from './work-api.js?v=ae2aac4d08';
 import { normalizeProjectToReelItem } from './work-normalize.js?v=2ccfb94979';
 import {

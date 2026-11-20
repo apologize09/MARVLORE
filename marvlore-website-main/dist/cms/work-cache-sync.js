@@ -1,4 +1,4 @@
-import { getCmsConfig } from './config.js?v=1e182ce0a2';
+import { getCmsConfig } from './config.js?v=570e58cba8';
 import { cacheClear } from './work-cache.js?v=bb57b07579';
 
 /**

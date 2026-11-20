@@ -28,6 +28,10 @@ const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Middlewar
         'http://127.0.0.1:5174',
         'http://localhost:4173',
         'http://127.0.0.1:4173',
+        // Production site (browser → admin.marvlore.com API)
+        'https://www.marvlore.com',
+        'https://marvlore.com',
+        'https://admin.marvlore.com',
       ]),
       credentials: true,
       headers: ['Content-Type', 'Authorization', 'Origin', 'Accept'],

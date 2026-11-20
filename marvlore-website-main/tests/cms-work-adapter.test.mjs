@@ -6,8 +6,8 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const cms = (name) => pathToFileURL(path.join(root, 'dist/cms', name)).href;
 
-function stubBrowser({ search = '', storage = {} } = {}) {
-  globalThis.location = { search };
+function stubBrowser({ search = '', storage = {}, hostname = '127.0.0.1' } = {}) {
+  globalThis.location = { search, hostname };
   globalThis.localStorage = {
     getItem: (key) => (key in storage ? storage[key] : null),
     setItem: (key, value) => {
@@ -141,6 +141,7 @@ test('getCmsConfig defaults to all and stages progressively', async () => {
   assert.equal(defaults.stage, 'all');
   assert.equal(defaults.siteStage, 'all');
   assert.equal(defaults.enabled, true);
+  assert.equal(defaults.baseUrl, 'http://127.0.0.1:1337');
 
   stubBrowser({ search: '?cmsWork=categories&cmsBase=http://cms.test:1337' });
   const { getCmsConfig: get2 } = await import(`${cms('config.js')}?t=${Date.now()}-2`);
@@ -156,6 +157,19 @@ test('getCmsConfig defaults to all and stages progressively', async () => {
   const off = get3();
   assert.equal(off.stage, 'off');
   assert.equal(off.enabled, false);
+});
+
+test('getCmsConfig uses admin.marvlore.com on public hosts and ignores loopback override', async () => {
+  stubBrowser({ search: '', hostname: 'www.marvlore.com' });
+  const { getCmsConfig } = await import(`${cms('config.js')}?t=${Date.now()}-prod`);
+  assert.equal(getCmsConfig().baseUrl, 'https://admin.marvlore.com');
+
+  stubBrowser({
+    search: '?cmsBase=http://127.0.0.1:1337',
+    hostname: 'www.marvlore.com',
+  });
+  const { getCmsConfig: getLoop } = await import(`${cms('config.js')}?t=${Date.now()}-loop`);
+  assert.equal(getLoop().baseUrl, 'https://admin.marvlore.com');
 });
 
 test('resolveWorkBundle stays on static when flag is off', async () => {

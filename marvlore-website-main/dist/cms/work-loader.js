@@ -1,4 +1,4 @@
-import { getCmsConfig } from './config.js?v=1e182ce0a2';
+import { getCmsConfig } from './config.js?v=570e58cba8';
 import { createWorkApi } from './work-api.js?v=ae2aac4d08';
 import { buildStaticBundle, getStaticOverviewById } from './work-fallback.js?v=efa3d94e78';
 import {
