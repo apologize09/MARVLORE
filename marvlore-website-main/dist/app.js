@@ -1,5 +1,5 @@
-import { Hero,Services,About,Work,Explore,Portal,Awards,Contact } from './components.js?v=eafae8d7ff';
-import { bootWorkBundle,getProjects,getWorkReelItems,getAwards,getWorkPage,getBundleLocale,getHeroProjects } from './cms/work-runtime.js?v=711a0f69d6';
+import { Hero,Services,About,Work,Explore,Portal,Awards,Contact } from './components.js?v=f0ca2c47ac';
+import { bootWorkBundle,getProjects,getWorkReelItems,getAwards,getWorkPage,getBundleLocale,getHeroProjects,getContact } from './cms/work-runtime.js?v=711a0f69d6';
 import { getCmsConfig } from './cms/config.js?v=1e182ce0a2';
 import { applyDocumentLang } from './cms/locale.js?v=654d705d77';
 import { applyWorkSeo } from './cms/seo.js?v=53dbe2d483';
@@ -25,19 +25,63 @@ function whenIdle(fn,timeout=1500){
  }
 }
 
+const BOOT_POSTER='./assets/hero-video/swft-icon-poster.webp?v=b16550e768';
+
+/**
+ * Phase 2: reuse HTML #home / #hero-orbit (keep poster). Append missing sections only.
+ * Never wipe #app with a full innerHTML replace.
+ */
+function paintAppShell(){
+ const app=document.querySelector('#app');
+ if(!app)return;
+
+ let home=document.getElementById('home');
+ if(home){
+  home.classList.add('hero','screen');
+  home.setAttribute('data-screen','01-hero');
+  home.setAttribute('aria-labelledby','hero-title');
+  if(!home.querySelector('.hero-inner')){
+   home.innerHTML=`<div class="hero-inner"><h1 id="hero-title">Ideas Make Brands POP</h1><div class="hero-stage"><div id="hero-orbit" aria-label="迈络品牌作品立体轮播"></div></div></div>`;
+  }
+ }else{
+  app.insertAdjacentHTML('afterbegin',Hero());
+  home=document.getElementById('home');
+ }
+
+ const orbit=document.getElementById('hero-orbit');
+ if(orbit && !orbit.querySelector('.hero-carousel-island') && !orbit.querySelector('.boot-hero-poster')){
+  orbit.insertAdjacentHTML('beforeend',`<img class="boot-hero-poster" src="${BOOT_POSTER}" alt="" width="1280" height="720" decoding="async" fetchpriority="high">`);
+ }
+
+ const rest=[
+  ['services',Services],
+  ['about',About],
+  ['work',Work],
+  ['explore',Explore],
+  ['marvlore-go',Portal],
+  ['awards',Awards],
+  ['contact',Contact],
+ ];
+ for(const [id,render] of rest){
+  if(!document.getElementById(id)){
+   app.insertAdjacentHTML('beforeend',render());
+  }
+ }
+}
+
 async function start(){
  const cms=getCmsConfig();
  applyDocumentLang(cms.locale);
 
  const initialRoute=parseWorkPath(location.pathname);
  const preferWork=initialRoute.type==='work-list'||initialRoute.type==='work-detail';
- // Start downloading the hero island immediately (overlaps paint + optional CMS).
- const heroImportP=preferWork?null:import('./hero/orbit.js?v=86005d2035');
- // CMS resolve in parallel — module already holds a static bundle for first paint.
+ // Kick hero download immediately (never gated on CMS).
+ const heroImportP=preferWork?null:import('./hero/orbit.js?v=19ec8bfd6c');
+ // Background CMS — module already has static bundle for first paint.
  const cmsBoot=bootWorkBundle();
 
- // First meaningful paint: section shells only (no heavy React islands yet).
- document.querySelector('#app').innerHTML=[Hero,Services,About,Work,Explore,Portal,Awards,Contact].map(component=>component()).join('');
+ paintAppShell();
+
  let workChannel=document.getElementById('work-channel');
  if(!workChannel){
   workChannel=document.createElement('div');
@@ -53,20 +97,16 @@ async function start(){
  let awards=getAwards();
  let workPage=getWorkPage();
 
- async function ensureCms(){
-  await cmsBoot;
-  projects=getProjects();
-  workReelItems=getWorkReelItems();
-  awards=getAwards();
-  workPage=getWorkPage();
-  if(cms.enabled){
-   applyWorkSeo(workPage?.seo,{
-    locale:getBundleLocale(),
-    fallbackTitle:workPage?.title||document.title,
-    fallbackDescription:workPage?.intro||undefined,
-   });
-  }
- }
+ const mounted={
+  hero:false,
+  core:false,
+  deferred:false,
+  workInteractions:false,
+  awardsCarousel:false,
+  projectClicks:false,
+  hashScroll:false,
+  cacheSync:false,
+ };
 
  let gallery=null;
  let workDetails=null;
@@ -75,6 +115,7 @@ async function start(){
  let workTextReveal=null;
  let workRouteOwner=null;
  let unbindWorkLinks=null;
+ let awardsCarouselApi=null;
 
  function tearDownListing(){
   listingController?.destroy?.();
@@ -135,6 +176,8 @@ async function start(){
  }
 
  function wireProjectClicks(){
+  if(mounted.projectClicks)return;
+  mounted.projectClicks=true;
   document.addEventListener('click',event=>{
    const link=event.target.closest('[data-project]');
    if(link){event.preventDefault();openProject(link.dataset.project,link);}
@@ -148,6 +191,8 @@ async function start(){
  }
 
  function wireHashScroll(){
+  if(mounted.hashScroll)return;
+  mounted.hashScroll=true;
   if(location.hash&&!location.hash.startsWith('#project-')&&!location.hash.startsWith('#view/')&&!location.hash.startsWith('#case/')){
    const anchor=decodeURIComponent(location.hash.slice(1));
    const positionAnchor=()=>requestAnimationFrame(()=>document.getElementById(anchor)?.scrollIntoView({behavior:'instant'}));
@@ -164,7 +209,71 @@ async function start(){
   navigateWork({type:'home'},{mode:'push'});
  });
 
+ /** Phase 1: apply CMS bundle without remounting already-live islands. */
+ function applyCmsDomUpdate(){
+  projects=getProjects();
+  workReelItems=getWorkReelItems();
+  awards=getAwards();
+  workPage=getWorkPage();
+
+  if(cms.enabled){
+   applyWorkSeo(workPage?.seo,{
+    locale:getBundleLocale(),
+    fallbackTitle:workPage?.title||document.title,
+    fallbackDescription:workPage?.intro||undefined,
+   });
+  }
+
+  // Patch Work markup only before its interactions mount (avoids duplicate listeners).
+  if(!mounted.workInteractions){
+   const workEl=document.getElementById('work');
+   if(workEl){
+    const wrap=document.createElement('div');
+    wrap.innerHTML=Work();
+    const next=wrap.firstElementChild;
+    if(next)workEl.replaceWith(next);
+   }
+  }
+
+  if(!mounted.awardsCarousel){
+   const awardsEl=document.getElementById('awards');
+   if(awardsEl){
+    const wrap=document.createElement('div');
+    wrap.innerHTML=Awards();
+    const next=wrap.firstElementChild;
+    if(next)awardsEl.replaceWith(next);
+   }
+  }
+
+  // Contact shell before interactions
+  if(!mounted.deferred){
+   const contactEl=document.getElementById('contact');
+   if(contactEl && getContact()){
+    const wrap=document.createElement('div');
+    wrap.innerHTML=Contact();
+    const next=wrap.firstElementChild;
+    if(next)contactEl.replaceWith(next);
+   }
+  }
+
+  // Refresh open /work listing once with new data (destroy+create is intentional single replace).
+  if(channelMode==='list' && listingController){
+   tearDownListing();
+   listingController=mountWorkListingPage(workChannel,{
+    workPage,
+    categories:projects,
+    fallbackItems:workReelItems,
+   });
+  }
+
+  document.documentElement.dispatchEvent(new CustomEvent('marvlore:cms-ready',{
+   detail:{source:document.documentElement.dataset.cmsWorkSource||''},
+  }));
+ }
+
  async function mountCoreInteractions(){
+  if(mounted.core)return;
+  mounted.core=true;
   const [
    {mountWorkDetails},
    {createProjectGallery},
@@ -186,7 +295,8 @@ async function start(){
   workDetails=mountWorkDetails();
   window.addEventListener('marvlore:open-work',event=>workDetails.open(event.detail));
 
-  if(cms.enabled){
+  if(cms.enabled && !mounted.cacheSync){
+   mounted.cacheSync=true;
    mountWorkCacheSync({
     onInvalidate:()=>{
      console.info('[cms] work cache invalidated; reloading');
@@ -203,11 +313,21 @@ async function start(){
  }
 
  async function mountHero(){
-  const {mountHeroOrbit}=await (heroImportP||import('./hero/orbit.js?v=86005d2035'));
-  mountHeroOrbit();
+  if(mounted.hero)return;
+  try{
+   const {mountHeroOrbit}=await (heroImportP||import('./hero/orbit.js?v=19ec8bfd6c'));
+   mountHeroOrbit();
+   mounted.hero=true;
+   document.getElementById('home')?.classList.remove('boot-shell');
+  }catch(err){
+   console.error('[app] hero mount failed; keeping static poster',err);
+   // Phase 2: static poster remains in #hero-orbit
+  }
  }
 
  async function mountDeferredIslands(){
+  if(mounted.deferred)return;
+  mounted.deferred=true;
   const [
    {mountServices},
    {mountReferenceCollage,mountWorkTextReveal,mountSectionTextReveal},
@@ -250,28 +370,40 @@ async function start(){
   document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
 
   mountWorkInteractions();
+  mounted.workInteractions=true;
   mountWorkEntrance();
   mountWorkReel();
   mountWorkFilters();
   mountSiteNavigation();
   window.addEventListener('marvlore:work-mode',()=>workTextReveal?.refresh());
 
-  createAwardsCarousel(document.querySelector('.awards-carousel'),awards);
+  awardsCarouselApi=createAwardsCarousel(document.querySelector('.awards-carousel'),awards);
+  mounted.awardsCarousel=true;
+  void awardsCarouselApi;
   mountAwardEffects();
   mountContactInteractions();
  }
 
- // Home: hero overlaps CMS; /work: wait for CMS then core route modules.
+ // Phase 1: never await CMS before first interactive paint / hero / work route.
  if(preferWork){
-  await ensureCms();
-  await mountCoreInteractions();
-  afterPaint(()=>{whenIdle(()=>mountHero().then(()=>mountDeferredIslands()).catch(err=>console.error('[app] deferred boot failed',err)));});
+  void mountCoreInteractions().catch(err=>console.error('[app] core boot failed',err));
+  afterPaint(()=>{
+   whenIdle(()=>mountHero().then(()=>mountDeferredIslands()).catch(err=>console.error('[app] deferred boot failed',err)));
+  });
  }else{
-  await Promise.all([mountHero(),ensureCms()]);
+  void mountHero().catch(err=>console.error('[app] hero boot failed',err));
   afterPaint(()=>{
    whenIdle(()=>mountCoreInteractions().then(()=>mountDeferredIslands()).catch(err=>console.error('[app] deferred boot failed',err)));
   });
  }
+
+ // CMS hydrates in background; failure keeps static DOM.
+ cmsBoot.then(()=>{
+  try{applyCmsDomUpdate();}
+  catch(err){console.warn('[app] cms dom update failed',err);}
+ }).catch(err=>{
+  console.warn('[app] cms boot failed; static content kept',err);
+ });
 }
 
 start().catch(err=>{

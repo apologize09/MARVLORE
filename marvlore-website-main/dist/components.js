@@ -25,7 +25,7 @@ const workMedia=p=>{
 const arrow='<span class="pixel-arrow" aria-hidden="true">↘</span>';
 const sectionHead=(en,cn)=>`<div class="section-label reveal"><h2>${titleCase(en)}<span>${cn}</span></h2>${arrow}</div>`;
 
-export function Hero(){return `<section id="home" class="hero screen" data-screen="01-hero" aria-labelledby="hero-title"><div class="hero-inner"><h1 id="hero-title">Ideas Make Brands POP</h1><div class="hero-stage"><div id="hero-orbit" aria-label="迈络品牌作品立体轮播"></div></div></div></section>`;}
+export function Hero(){return `<section id="home" class="hero screen boot-shell" data-screen="01-hero" aria-labelledby="hero-title"><div class="hero-inner"><h1 id="hero-title">Ideas Make Brands POP</h1><div class="hero-stage"><div id="hero-orbit" aria-label="迈络品牌作品立体轮播"><img class="boot-hero-poster" src="./assets/hero-video/swft-icon-poster.webp?v=b16550e768" alt="" width="1280" height="720" decoding="async" fetchpriority="high"></div></div></div></section>`;}
 
 export function Services(){return `<section id="services" class="services screen wrap" data-screen="02-services" aria-label="创意服务"><div class="services-stage"><div id="services-title" class="services-title"></div><div id="services-directory" class="services-directory" inert></div></div></section>`;}
 

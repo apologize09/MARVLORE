@@ -126,8 +126,12 @@ export function mountHeroOrbit(){
  const title=document.querySelector('#hero-title');
  const target=document.querySelector('#hero-orbit');
  const items=resolveHeroProjects();
- if(target){
+ if(!target)return;
+ try{
+  // Reuse existing #hero-orbit (may hold a static boot poster). React replaces children on render.
   if(title){title.replaceChildren();title.setAttribute('aria-label','Ideas Make Brands POP');}
   createRoot(target).render(<HeroCarousel titleTarget={title} items={items}/>);
+ }catch(err){
+  console.error('[hero] mount failed; static poster kept',err);
  }
 }

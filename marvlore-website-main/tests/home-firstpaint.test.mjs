@@ -37,6 +37,27 @@ test('app.js dynamically imports heavy islands instead of static import', () => 
   assert.match(src, /heroImportP/);
 });
 
+test('Phase1: CMS boot is not awaited before hero/core paint', () => {
+  const src = load('dist/app.js');
+  assert.match(src, /paintAppShell/);
+  assert.match(src, /applyCmsDomUpdate/);
+  assert.match(src, /cmsBoot\.then/);
+  assert.doesNotMatch(src, /await\s+ensureCms\s*\(/);
+  assert.doesNotMatch(src, /await\s+cmsBoot\b/);
+  assert.doesNotMatch(src, /await\s+bootWorkBundle\s*\(/);
+  assert.doesNotMatch(src, /#app'\)\.innerHTML\s*=/);
+});
+
+test('Phase2: shell reuses #home and keeps boot poster', () => {
+  const src = load('dist/app.js');
+  assert.match(src, /getElementById\('home'\)/);
+  assert.match(src, /boot-hero-poster/);
+  assert.match(src, /insertAdjacentHTML/);
+  const html = load('dist/index.html');
+  assert.match(html, /boot-hero-poster/);
+  assert.match(html, /id="hero-orbit"/);
+});
+
 test('hero-entry does not wait for all posters and fonts before ready', () => {
   const src = load('src/hero/hero-entry.jsx');
   assert.match(src, /slice\(0,\s*2\)/);
