@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-11-20T07:06:53.001Z",
+  "generatedAt": "2026-11-20T07:44:49.051Z",
   "hashLength": 10,
   "assets": {
     "about/reference.css": "3cb381c423",
@@ -8,7 +8,7 @@
     "about-cards.js": "9850e4be8e",
     "about-experience.js": "df70632841",
     "about-motion-model.js": "9c1e646b9b",
-    "app.js": "126a6e6f08",
+    "app.js": "38d96a9c17",
     "assets/about-arc-bottom.webp": "82760c4116",
     "assets/about-arc-top.webp": "6b2d982b8f",
     "assets/about-white/daily-mark.webp": "6a65d470ab",
@@ -223,6 +223,7 @@
     "visual-projects.js": "39d9e54d6f",
     "wall-cards.js": "a29d7fba44",
     "wall-tone.js": "69c5e58aa8",
+    "welcome.css": "21ee45b9ec",
     "work-detail-data.js": "420832bd60",
     "work-detail.css": "25432dd7f0",
     "work-detail.js": "e6f6398e8d",
